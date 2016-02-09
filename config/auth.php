@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Anticafe\User::class,
+            'model' => \Anticafe\Http\Models\User::class,
         ],
 
         // 'users' => [
