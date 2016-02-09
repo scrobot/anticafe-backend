@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Anticafe\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

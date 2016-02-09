@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Anticafe\Http\Controllers\Auth;
 
-use App\User;
+use Anticafe\User;
+use Illuminate\Http\Request;
 use Validator;
-use App\Http\Controllers\Controller;
+use Anticafe\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -28,7 +29,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -38,6 +39,16 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    public function getLogin()
+    {
+        return view('login');
+    }
+
+    public function postLogin(Request $request)
+    {
+        return $this->login($request);
     }
 
     /**

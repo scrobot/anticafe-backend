@@ -1,5 +1,12 @@
 /vendor
+/.idea
+composer.lock
 /node_modules
 Homestead.yaml
 Homestead.json
+### Laravel template
+/bootstrap/compiled.php
+.env.*.php
+.env.php
 .env
+

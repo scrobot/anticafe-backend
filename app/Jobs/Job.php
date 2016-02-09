@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Anticafe\Jobs;
 
 use Illuminate\Bus\Queueable;
 

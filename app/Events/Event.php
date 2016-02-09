@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Anticafe\Events;
 
 abstract class Event
 {
