@@ -6,7 +6,8 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::post('/login', '\Anticafe\Http\Controllers\Auth\AuthController@postLogin');
-Route::get('/login', '\Anticafe\Http\Controllers\Auth\AuthController@getLogin');
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
 
-
+    Route::get('/home', 'HomeController@index');
+});

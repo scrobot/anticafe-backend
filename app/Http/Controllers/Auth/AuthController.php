@@ -2,7 +2,7 @@
 
 namespace Anticafe\Http\Controllers\Auth;
 
-use Anticafe\User;
+use Anticafe\Http\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 use Anticafe\Http\Controllers\Controller;
