@@ -10,9 +10,11 @@ namespace Anticafe\Http\Models;
 
 
 use Anticafe\Http\Interfaces\ModelNameable;
+use Anticafe\Http\Services\ImageProcessor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Anticafe extends Model implements ModelNameable
 {
@@ -61,6 +63,7 @@ class Anticafe extends Model implements ModelNameable
             return $validator;
 
         $this->update($request->except('logo', 'cover'));
+        $this->images($request->file('logo'), $request->file('cover'));
 
         return true;
     }
@@ -73,5 +76,26 @@ class Anticafe extends Model implements ModelNameable
     public static function getModelName()
     {
         return (new static)->setModelName();
+    }
+
+    private function images(File $logo = null, File $cover = null)
+    {
+        if($logo == null && $cover == null) {
+            return false;
+        }
+
+        // TODO: Потом отрефакторить класс обработчика, чтобы все операцию производил одной инициализацией.
+        $logo = $logo == null ?: (new ImageProcessor($logo, 'logos'))->start();
+        $cover = $cover == null ?: (new ImageProcessor($cover, 'covers'))->start();
+
+        if($logo != null) {
+            $this->logo = $logo;
+        }
+
+        if($cover != null) {
+            $this->cover = $cover;
+        }
+
+        $this->save();
     }
 }

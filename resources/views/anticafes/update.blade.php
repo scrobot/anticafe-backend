@@ -68,7 +68,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <img src="{{$anticafe->logo ? $anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
+                                <img src="{{$anticafe->logo ? "/images/anticafes/logos/".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
                             </div>
                             {{Form::label('logo', "Логотип")}}
                             {{Form::file('logo', ["class" => "form-control"])}}
@@ -76,7 +76,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <img src="{{$anticafe->logo ? $anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
+                                <img src="{{$anticafe->cover ? "/images/anticafes/covers/".$anticafe->cover : "/images/no-image.png"}}" width="100" height="100">
                             </div>
                             {{Form::label('cover', "Обложка")}}
                             {{Form::file('cover', ["class" => "form-control"])}}
