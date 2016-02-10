@@ -12,7 +12,8 @@
         "doctrine/dbal": "2.*",
         "laravelcollective/html": "5.2.*",
         "laravelcollective/annotations": "5.2.*",
-        "graham-campbell/exceptions": "5.*"
+        "graham-campbell/exceptions": "5.*",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -1,0 +1,25 @@
+{
+  "name": "pinerp/image-handler",
+  "description": "Image handler module",
+  "require-dev": {
+    "laravel/framework": "5.*"
+  },
+  "authors": [
+    {
+      "name": "Alex Scrobot",
+      "email": "scrobot91@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "illuminate/support": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pinerp\\ImageHandler\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  }
+}

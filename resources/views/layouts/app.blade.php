@@ -90,6 +90,10 @@
                 <ul class="nav nav-pills nav-stacked">
                     <h3>Основное</h3>
                     <li><a href="{{route('users')}}">Пользователи</a></li>
+                    <li><a href="{{route('anticafes')}}">Антикафе</a></li>
+                    <h3>Права и роли</h3>
+                    <li><a href="#">Права</a></li>
+                    <li><a href="#">Роли</a></li>
                 </ul>
             </div>
             <div class="col-md-10">
@@ -112,5 +116,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('a.btn-danger').on("click", function (e) {
+
+                if (!confirm("Подтвердите действие")) {
+                    e.preventDefault();
+                } else {
+                    //
+                }
+
+            });
+
+        });
+
+    </script>
 </body>
 </html>
