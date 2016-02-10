@@ -59,19 +59,6 @@
                         </tr>
                     </table>
                 </div>
-
-                <div class="form-group">
-                    {{Form::label('relative', "Относительная обрезка")}}
-                    {{Form::checkbox('relative', 1)}}
-                    <p class="small">Определить, что изменение размера будет происходить в относительном режиме. Это означает, что значения ширины или высоты будет добавлен или вычитается из текущего высоты изображения.</p>
-                </div>
-
-                <div class="form-group">
-                    {{Form::label('bgcolor', "Изображение фона")}}
-                    {{Form::text('bgcolor', null, ["class" => "form-control"])}}
-                    <p class="small">Цвет фона для новых областей изображения. Цвет фона может быть принят в разных цветовых <a href="http://image.intervention.io/getting_started/formats">форматов</a>. Если это поле будет пустое, по умолчанию создастся #000000</p>
-                </div>
-
                 <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.ok')}}</button>
             {{ Form::close() }}
         </div>

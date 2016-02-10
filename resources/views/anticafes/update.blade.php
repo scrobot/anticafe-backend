@@ -81,6 +81,22 @@
                             {{Form::label('cover', "Обложка")}}
                             {{Form::file('cover', ["class" => "form-control"])}}
                         </div>
+
+                        <div class="col-md-12">
+                            <h4>Миниатюры</h4>
+                            <p>Логотип</p>
+                            @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
+                                <img src="{{"/images/anticafes/logos/{$option->name}/{$option->name}_".$anticafe->logo}}">
+                            @endforeach
+                        </div>
+
+                        <div class="col-md-12">
+                            <h4>Миниатюры</h4>
+                            <p>Ковер</p>
+                            @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
+                                <img src="{{"/images/anticafes/covers/{$option->name}/{$option->name}_".$anticafe->cover}}">
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

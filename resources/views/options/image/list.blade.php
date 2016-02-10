@@ -29,8 +29,6 @@
             <th>ширина изображения</th>
             <th>высота изображения</th>
             <th>Якорь</th>
-            <th>Относительная образка(Да\Нет)</th>
-            <th>Цвет фона</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -41,9 +39,7 @@
                 <td>{{$option->name}}</td>
                 <td>{{$option->width}}</td>
                 <td>{{$option->height}}</td>
-                <td>{{$option->anchor}}</td>
-                <td>{{$option->relative ? "Да" : "Нет"}}</td>
-                <td><div class="bg-sq" style="background-color: {{$option->bgcolor}}"></div></td>
+                <td>{{$option->anchor}}</td>>
                 <td>
                     <a href="{{action('ImageOptionsController@getUpdate', $option->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="{{action('ImageOptionsController@getDestroy', $option->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>

@@ -66,7 +66,8 @@ class ImageProcessor
     {
         foreach (ImageOption::all() as $option) {
             $this->file
-                ->resizeCanvas($option->width, $option->height, $option->anchor, $option->relative ? true : false, $option->bgcolor)
+                ->fit($option->width, $option->height, null, $option->anchor)
+                /*->resizeCanvas($option->width, $option->height, $option->anchor, $option->relative ? true : false, $option->bgcolor)*/
                 ->save($this->dirs[$this->type]."/{$option->name}/".$option->name."_".$this->filename);
         }
     }
