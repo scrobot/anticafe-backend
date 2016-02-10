@@ -3,6 +3,7 @@
 namespace Anticafe\Http\Controllers\Auth;
 
 use Anticafe\Http\Models\User;
+use Anticafe\Http\Traits\UserValidatorTrait;
 use Illuminate\Http\Request;
 use Validator;
 use Anticafe\Http\Controllers\Controller;
@@ -22,7 +23,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins, UserValidatorTrait;
 
     /**
      * Where to redirect users after login / registration.
@@ -30,6 +31,8 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
+    protected $username = "username";
 
     /**
      * Create a new authentication controller instance.
@@ -52,21 +55,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
-    }
-
-    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
@@ -75,7 +63,7 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'username' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

@@ -2,10 +2,16 @@
 
 namespace Anticafe\Http\Models;
 
+use Anticafe\Http\Interfaces\ModelNameable;
+use Anticafe\Http\Traits\UserValidatorTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements ModelNameable
 {
+
+    use SoftDeletes, UserValidatorTrait;
+
     protected $table = "users";
 
     /**
@@ -26,8 +32,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function setPasswordAttribute($value)
+    protected $dates = ['deleted_at'];
+
+    private $name;
+
+    public function setModelName()
     {
-        $this->attributes['password'] = \Hash::make($value);
+        return $this->name = "Пользователи";
+    }
+
+    public static function getModelName()
+    {
+        return (new static)->setModelName();
     }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "yadeshevlebackend/roles",
+  "description": "Modules template",
+  "require-dev": {
+    "laravel/framework": "5.*"
+  },
+  "authors": [
+    {
+      "name": "Alex Scrobot",
+      "email": "scrobot91@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "illuminate/support": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Yadeshevle\\Roles\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  }
+}
