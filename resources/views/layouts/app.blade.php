@@ -24,6 +24,8 @@
             margin-right: 6px;
         }
     </style>
+
+    @yield('css')
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default">
@@ -94,6 +96,8 @@
                     <h3>Права и роли</h3>
                     <li><a href="#">Права</a></li>
                     <li><a href="#">Роли</a></li>
+                    <h3>Опции</h3>
+                    <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
                 </ul>
             </div>
             <div class="col-md-10">
@@ -133,5 +137,6 @@
         });
 
     </script>
+    @yield('js')
 </body>
 </html>

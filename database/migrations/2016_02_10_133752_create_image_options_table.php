@@ -12,8 +12,14 @@ class CreateImageOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('image_options', function (Blueprint $table) {
-            //
+        Schema::create('image_options', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->integer('width');
+            $table->integer('height');
+            $table->string('anchor');
+            $table->boolean('relative');
+            $table->string('bgcolor')->default('#000000');
         });
     }
 
@@ -24,8 +30,6 @@ class CreateImageOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('image_options', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('image_options');
     }
 }
