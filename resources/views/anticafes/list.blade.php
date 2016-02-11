@@ -37,6 +37,7 @@
                 <td>{{$item->phone}}</td>
                 <td style="text-align: center"><img src="{{$item->cover ? "/images/anticafes/covers/100x100/100x100_".$item->cover : "/images/no-image.png"}}" width="100" height="100"/></td>
                 <td>
+                    <a href="{{action('AnticafeController@getShow', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.show')}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a>
                     <a href="{{action('AnticafeController@getUpdate', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="{{action('AnticafeController@getDelete', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                 </td>

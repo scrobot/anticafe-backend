@@ -35,6 +35,13 @@ class AnticafeController extends Controller
 
     }
 
+    public function getShow($id)
+    {
+        $anticafe = Anticafe::find($id);
+
+        return view('anticafes.show')->withAnticafe($anticafe)->withTitle($this->title);
+    }
+
     public function getCreate()
     {
         return view('anticafes.create')->withTitle($this->title);
