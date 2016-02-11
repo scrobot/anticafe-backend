@@ -29,13 +29,13 @@
         @forelse($anticafes as $item)
             <tr>
                 <td>{{$item->id}}</td>
-                <td style="text-align: center"><img src="{{$item->logo ? "/images/anticafes/logos/".$item->logo : "/images/no-image.png"}}" width="100" height="100"/></td>
+                <td style="text-align: center"><img src="{{$item->logo ? "/images/anticafes/logos/100x100/100x100_".$item->logo : "/images/no-image.png"}}" width="100" height="100"/></td>
                 <td>{{$item->name}}</td>
                 <td>{{$item->city}}</td>
                 <td>{{$item->metro}}</td>
                 <td>{{$item->address}}</td>
                 <td>{{$item->phone}}</td>
-                <td style="text-align: center"><img src="{{$item->cover ? "/images/anticafes/covers/".$item->cover : "/images/no-image.png"}}" width="100" height="100"/></td>
+                <td style="text-align: center"><img src="{{$item->cover ? "/images/anticafes/covers/100x100/100x100_".$item->cover : "/images/no-image.png"}}" width="100" height="100"/></td>
                 <td>
                     <a href="{{action('AnticafeController@getUpdate', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="{{action('AnticafeController@getDelete', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>

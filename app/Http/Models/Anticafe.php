@@ -85,8 +85,8 @@ class Anticafe extends Model implements ModelNameable
         }
 
         // TODO: Потом отрефакторить класс обработчика, чтобы все операцию производил одной инициализацией.
-        $logo = $logo == null ?: (new ImageProcessor($logo, 'logos'))->start();
-        $cover = $cover == null ?: (new ImageProcessor($cover, 'covers'))->start();
+        $logo = $logo == null ? null : (new ImageProcessor($logo, 'logos'))->start();
+        $cover = $cover == null ? null : (new ImageProcessor($cover, 'covers'))->start();
 
         if($logo != null) {
             $this->logo = $logo;
