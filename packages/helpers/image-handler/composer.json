@@ -1,0 +1,12 @@
+{
+    "name": "helpers/image-handler",
+    "description": "anticafe helper package",
+    "authors": [
+        {
+            "name": "Alex Scrobot",
+            "email": "scrobot91@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

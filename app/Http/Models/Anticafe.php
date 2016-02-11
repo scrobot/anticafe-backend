@@ -11,6 +11,8 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Anticafe\Http\Services\ImageProcessor;
+use Helpers\ImageHandler\ImageableTrait;
+use Helpers\ImageHandler\ImageRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -18,8 +20,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class Anticafe extends Model implements ModelNameable
 {
-
-    use SoftDeletes;
+    use SoftDeletes, ImageableTrait;
 
     protected $table = "anticafes";
 
@@ -52,6 +53,8 @@ class Anticafe extends Model implements ModelNameable
 
         $entity = static::create($request->all());
 
+        ImageRepository::saveFromSession($entity, $request->input('_session'));
+
         return $entity;
     }
 
@@ -63,7 +66,9 @@ class Anticafe extends Model implements ModelNameable
             return $validator;
 
         $this->update($request->except('logo', 'cover'));
-        $this->images($request->file('logo'), $request->file('cover'));
+        $this->attachImages($request->file('logo'), $request->file('cover'));
+
+        ImageRepository::saveFromSession($this, $request->input('_session'));
 
         return true;
     }
@@ -78,7 +83,7 @@ class Anticafe extends Model implements ModelNameable
         return (new static)->setModelName();
     }
 
-    private function images(File $logo = null, File $cover = null)
+    private function attachImages(File $logo = null, File $cover = null)
     {
         if($logo == null && $cover == null) {
             return false;

@@ -16,9 +16,12 @@ class CreateImageHadlerTable extends Migration
 
             $table->increments('id');
             $table->text('filename');
+            $table->text('original_name');
             $table->text('preferences');
-            $table->integer('imageable_id');//imageable_id - integer
-            $table->string('imageable_type');//imageable_type - string
+            $table->string('session_token', 64)->nullable();
+            $table->boolean('preview');
+            $table->integer('imageable_id')->nullable();//imageable_id - integer
+            $table->string('imageable_type')->nullable();//imageable_type - string
 
         });
     }

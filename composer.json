@@ -27,8 +27,12 @@
             "database"
         ],
         "psr-4": {
-            "Anticafe\\": "app/"
-        }
+            "Anticafe\\": "app/",
+            "Helpers\\ImageHandler\\": "packages/helpers/image-handler/src"
+        },
+        "files": [
+            "packages/helpers/image-handler/src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

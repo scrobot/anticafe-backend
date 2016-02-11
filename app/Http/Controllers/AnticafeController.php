@@ -10,6 +10,7 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Helpers\ImageHandler\ImageHandler;
 use Illuminate\Http\Request;
 
 class AnticafeController extends Controller
