@@ -48,7 +48,13 @@ class AnticafeController extends Controller
             return back()->withErrors($query->errors());
         }
 
-        return redirect(action('AnticafeController@getUpdate', $query->id))->withMsg('common.msg.create');
+        return redirect(action('AnticafeController@getCreateStepTwo', $query->id))->withMsg('common.msg.create');
+    }
+
+    public function getCreateStepTwo($id)
+    {
+        $q = Anticafe::find($id);
+        return view('anticafes.create-step-2')->withAnticafe($q)->withTitle($this->title);
     }
 
     public function getUpdate($id)
@@ -57,14 +63,18 @@ class AnticafeController extends Controller
         return view('anticafes.update')->withAnticafe($q)->withTitle($this->title);
     }
 
-    public function postUpdate(Request $request, $id)
+    public function postUpdate(Request $request, $id, $step = null)
     {
         $anticafe = Anticafe::find($id);
 
-        $validator = $anticafe->customUpdate($request);
+        $validator = $anticafe->customUpdate($request, $step);
 
         if($validator != true) {
             return back()->withErrors($validator->errors());
+        }
+
+        if($step != null) {
+            return redirect(action('AnticafeController@getUpdate', $anticafe->id))->withMsg('common.msg.create');
         }
 
         return back()->withMsg('common.msg.edit');

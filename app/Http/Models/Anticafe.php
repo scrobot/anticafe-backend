@@ -53,22 +53,23 @@ class Anticafe extends Model implements ModelNameable
 
         $entity = static::create($request->all());
 
-        ImageRepository::saveFromSession($entity, $request->input('_session'));
-
         return $entity;
     }
 
-    public function customUpdate(Request $request)
+    public function customUpdate(Request $request, $step = null)
     {
-        $validator = static::validator($request);
+        if($step == null) {
+            $validator = static::validator($request);
+            if($validator->fails())
+                return $validator;
 
-        if($validator->fails())
-            return $validator;
+            $this->update($request->except('logo', 'cover'));
+        }
 
-        $this->update($request->except('logo', 'cover'));
         $this->attachImages($request->file('logo'), $request->file('cover'));
 
-        ImageRepository::saveFromSession($this, $request->input('_session'));
+        if($request->input('_session') != null)
+            ImageRepository::saveFromSession($this, $request->input('_session'));
 
         return true;
     }

@@ -153,6 +153,7 @@ class ImageRepository
         $id = explode('/', $data['id']);
         $sessionImage = ImageHandler::where('original_name', 'like', $id)->first();
 
+        /*TODO: Разрбрать этот костыль и оптимизировать все в один запрос*/
         if(is_null($sessionImage))
             $sessionImage = ImageHandler::where('filename', explode('.', $id[count($id)-1])[0])->first();
 
