@@ -71,8 +71,8 @@
                                 {{Form::text('vk', null, ["class" => "form-control"])}}
                             </div>
                             <div class="form-group">
-                                {{Form::label('ok', "Одноклассники")}}
-                                {{Form::text('ok', null, ["class" => "form-control"])}}
+                                {{Form::label('inst', "Instagram")}}
+                                {{Form::text('inst', null, ["class" => "form-control"])}}
                             </div>
                             <div class="form-group">
                                 {{Form::label('fb', "Facebook")}}

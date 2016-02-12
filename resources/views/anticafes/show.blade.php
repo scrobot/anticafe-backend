@@ -138,8 +138,8 @@
                             <p>{{$anticafe->vk}}</p>
                         </div>
                         <div class="form-group">
-                            {{Form::label('ok', "Одноклассники")}}:
-                            <p>{{$anticafe->ok}}</p>
+                            {{Form::label('Instagram', "Instagram")}}:
+                            <p>{{$anticafe->inst}}</p>
                         </div>
                         <div class="form-group">
                             {{Form::label('fb', "Facebook")}}:
