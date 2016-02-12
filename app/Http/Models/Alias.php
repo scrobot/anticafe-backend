@@ -18,6 +18,8 @@ class Alias extends Model
 
     public $incrementing = false;
 
+    public $timestamps = false;
+
     public function setIdAttribute($value)
     {
         $this->attributes['id'] = StaticStringy::slugify($value);

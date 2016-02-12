@@ -29,7 +29,7 @@ class EventsController extends Controller
 
     public function getCreate()
     {
-        return view('events.model')->withEvent(null)->withAnticafes(Anticafe::all())->withAction(action('EventsController@postCreate'))->withTitle($this->title);
+        return view('events.model')->withEvent(null)->withAnticafes(Anticafe::where('id', '!=', 0)->orderBy('name')->get())->withAction(action('EventsController@postCreate'))->withTitle($this->title);
     }
 
     public function postCreate(Request $request)

@@ -17,11 +17,18 @@ class Tag extends Model
 
     protected $table = 'tags';
 
+    public $timestamps = false;
+
     public $incrementing = false;
 
     public function setIdAttribute($value)
     {
         $this->attributes['id'] = StaticStringy::slugify($value);
+    }
+
+    public function scopeSorted($query)
+    {
+        return $query->orderBy('name');
     }
 
     public function Aliases()

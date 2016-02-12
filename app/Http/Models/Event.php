@@ -112,8 +112,9 @@ class Event extends Model implements ModelNameable
         return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
-    private function syncWithAnticafes(array $anticafes)
+    private function syncWithAnticafes($anticafes)
     {
+        $anticafes = $anticafes == null ? [] : $anticafes;
         $this->anticafes()->sync($anticafes);
     }
 

@@ -73,10 +73,11 @@ class Anticafe extends Model implements ModelNameable
             if($validator->fails())
                 return $validator;
 
-            $this->update($request->except('logo', 'cover'));
+            $this->update($request->except('logo', 'cover', 'tags'));
         }
 
         $this->attachImages($request->file('logo'), $request->file('cover'));
+        $this->attachTags($request->input('tags'));
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
@@ -128,5 +129,11 @@ class Anticafe extends Model implements ModelNameable
     public function setDescriptionAttribute($value)
     {
         $this->attributes['description'] = nl2br($value);
+    }
+
+    private function attachTags($tags)
+    {
+        $tags = $tags == null ? [] : $tags;
+        $this->Tags()->sync($tags);
     }
 }

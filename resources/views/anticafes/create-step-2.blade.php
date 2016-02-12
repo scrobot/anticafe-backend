@@ -73,6 +73,23 @@
             </div>
 
             <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2>Возможности</h2>
+                    </div>
+                    <div class="panel-body">
+                       @foreach($tags as $tag)
+                           <div class="col-md-4">
+                               <div class="form-group">
+                                   <label>{{ Form::checkbox('tags[]', $tag->id, false) }} {{$tag->name}}</label>
+                               </div>
+                           </div>
+                       @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
                 <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.edit')}}</button>
             </div>
             {{ Form::close() }}

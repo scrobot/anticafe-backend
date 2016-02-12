@@ -10,6 +10,7 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Anticafe\Http\Models\Tag;
 use Helpers\ImageHandler\ImageHandler;
 use Illuminate\Http\Request;
 
@@ -61,13 +62,13 @@ class AnticafeController extends Controller
     public function getCreateStepTwo($id)
     {
         $q = Anticafe::find($id);
-        return view('anticafes.create-step-2')->withAnticafe($q)->withTitle($this->title);
+        return view('anticafes.create-step-2')->withAnticafe($q)->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function getUpdate($id)
     {
         $q = Anticafe::find($id);
-        return view('anticafes.update')->withAnticafe($q)->withTitle($this->title);
+        return view('anticafes.update')->withAnticafe($q)->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function postUpdate(Request $request, $id, $step = null)
