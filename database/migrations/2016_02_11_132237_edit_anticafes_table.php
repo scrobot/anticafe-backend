@@ -14,10 +14,10 @@ class EditAnticafesTable extends Migration
     {
         Schema::table('anticafes', function (Blueprint $table) {
             $table->text('description')->nullable()->after('prices');
-            $table->text('vk')->nullable()->after('phone');
-            $table->text('ok')->nullable()->after('phone');
-            $table->text('fb')->nullable()->after('phone');
-            $table->text('tw')->nullable()->after('phone');
+            $table->string('vk')->nullable()->after('phone');
+            $table->string('ok')->nullable()->after('phone');
+            $table->string('fb')->nullable()->after('phone');
+            $table->string('tw')->nullable()->after('phone');
         });
     }
 

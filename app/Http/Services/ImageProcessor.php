@@ -29,6 +29,7 @@ class ImageProcessor
             "covers" => $this->anticafes_dir . 'covers/',
             "logos" => $this->anticafes_dir . 'logos/',
             "gallery" => $this->anticafes_dir . 'logos/',
+            "events" => $this->anticafes_dir . 'events/',
         ];
         $this->type = $type;
         $this->file_original_name = md5($file->getClientOriginalName());

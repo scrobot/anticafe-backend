@@ -39,6 +39,11 @@ class Anticafe extends Model implements ModelNameable
         "phone" => "required",
     ];
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+
     public static function validator(Request $request)
     {
         return \Validator::make($request->all(), static::$rules);
@@ -103,5 +108,20 @@ class Anticafe extends Model implements ModelNameable
         }
 
         $this->save();
+    }
+
+    public function setPricesAttribute($value)
+    {
+        $this->attributes['prices'] = nl2br($value);
+    }
+
+    public function setMetroAttribute($value)
+    {
+        $this->attributes['metro'] = nl2br($value);
+    }
+
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = nl2br($value);
     }
 }

@@ -155,7 +155,7 @@
             </div>
 
             <div class="col-md-12">
-                <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.edit')}}</button>
+                <a href="{{action('AnticafeController@getUpdate', $anticafe->id)}}" class="btn btn-lg btn-primary">{{trans('common.button.edit')}}</a>
             </div>
         </div>
     </div>
