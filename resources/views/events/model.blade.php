@@ -111,7 +111,7 @@
 
                         <div class="form-group">
                             {{Form::label('excerpt', "Краткое описание")}}
-                            {!! Form::textarea('excerpt', null, ["class" => "form-control", 'rows' => 4]) !!}
+                            <textarea id="excerpt" class="form-control" rows=4>{!! !$event ?: $event->excerpt !!}</textarea>
                         </div>
 
                         <div class="form-group">

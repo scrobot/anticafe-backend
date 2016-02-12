@@ -72,6 +72,11 @@ class Event extends Model implements ModelNameable
         $this->attributes['excerpt'] = nl2br($value);
     }
 
+    public function getExcerptAttribute($value)
+    {
+        return html_entity_decode($value);
+    }
+
     public function setDescriptionAttribute($value)
     {
         $this->attributes['description'] = nl2br($value);
@@ -80,6 +85,11 @@ class Event extends Model implements ModelNameable
     public function setPriceAttribute($value)
     {
         $this->attributes['price'] = nl2br($value);
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return html_entity_decode($value);
     }
 
     public function setStartAtAttribute($value)
