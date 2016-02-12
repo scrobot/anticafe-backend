@@ -29,5 +29,10 @@ class Tag extends Model
         return $this->belongsToMany(Alias::class);
     }
 
+    public function Anticafes()
+    {
+        return $this->belongsToMany(Anticafe::class);
+    }
+
 
 }

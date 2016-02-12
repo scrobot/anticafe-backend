@@ -44,6 +44,11 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(Event::class);
     }
 
+    public function Tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public static function validator(Request $request)
     {
         return \Validator::make($request->all(), static::$rules);

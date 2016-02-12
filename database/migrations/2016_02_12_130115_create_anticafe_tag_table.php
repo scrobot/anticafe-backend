@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAliasTagTable extends Migration
+class CreateAnticafeTagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateAliasTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('alias_tag', function (Blueprint $table) {
+        Schema::create('anticafe_tag', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('alias_id');
+            $table->unsignedInteger('anticafe_id');
             $table->string('tag_id');
-            $table->index('alias_id', 'tag_id');
-            $table->foreign('alias_id')->references('id')->on('aliases');
+            $table->index('anticafe_id', 'tag_id');
+            $table->foreign('anticafe_id')->references('id')->on('anticafes');
             $table->foreign('tag_id')->references('id')->on('tags');
         });
     }
@@ -29,7 +29,7 @@ class CreateAliasTagTable extends Migration
      */
     public function down()
     {
-        \DB::table('alias_tag')->truncate();
-        Schema::drop('alias_tag');
+        \DB::table('anticafe_tag')->truncate();
+        Schema::drop('anticafe_tag');
     }
 }
