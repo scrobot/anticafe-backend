@@ -9,14 +9,19 @@
 namespace Anticafe\Http\Models;
 
 
+use Anticafe\Http\Interfaces\ModelNameable;
 use Illuminate\Database\Eloquent\Model;
 use Stringy\StaticStringy;
 
-class Tag extends Model
+class Tag extends Model implements ModelNameable
 {
+
+    private $name;
 
     protected $table = 'tags';
 
+    protected $guarded = [];
+    
     public $timestamps = false;
 
     public $incrementing = false;
@@ -28,7 +33,7 @@ class Tag extends Model
 
     public function scopeSorted($query)
     {
-        return $query->orderBy('name');
+        return $query->orderBy('name', 'asc');
     }
 
     public function Aliases()
@@ -41,5 +46,34 @@ class Tag extends Model
         return $this->belongsToMany(Anticafe::class);
     }
 
+    public function setModelName()
+    {
+        return $this->name = "Возможности";
+    }
 
+    public static function getModelName()
+    {
+        return (new static)->setModelName();
+    }
+
+    public function syncWithAliases($aliases)
+    {
+        $aliases = $aliases == null ? [] : $this->searchOrCreate($aliases);
+        $this->Aliases()->sync($aliases);
+    }
+
+    private function searchOrCreate($aliases)
+    {
+        $arr = [];
+
+        foreach ($aliases as $alias) {
+            if(empty($alias)) continue;
+            $al = Alias::firstOrNew(['name' => $alias]);
+            $al->id = $alias;
+            $al->checkId()->save();
+            $arr[] = (string) $al->id;
+        }
+
+        return $arr;
+    }
 }

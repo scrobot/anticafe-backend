@@ -8,13 +8,18 @@
 
 namespace Anticafe\Http\Models;
 
+use Anticafe\Http\Interfaces\ModelNameable;
 use Illuminate\Database\Eloquent\Model;
 use Stringy\StaticStringy;
 
-class Alias extends Model
+class Alias extends Model implements ModelNameable
 {
 
+    private $name;
+
     protected $table = 'aliases';
+
+    protected $guarded = [];
 
     public $incrementing = false;
 
@@ -30,5 +35,23 @@ class Alias extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function setModelName()
+    {
+        return $this->name = "Синонимы";
+    }
 
+    public static function getModelName()
+    {
+        return (new static)->setModelName();
+    }
+
+    public function checkId()
+    {
+        $checked = static::find($this->id);
+        if($checked != null && $checked->name == $this->name) {
+            $this->id = $this->id."_".str_random(8);
+        }
+
+        return $this;
+    }
 }
