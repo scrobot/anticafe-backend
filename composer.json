@@ -13,6 +13,7 @@
         "laravelcollective/html": "5.2.*",
         "laravelcollective/annotations": "5.2.*",
         "graham-campbell/exceptions": "5.*",
+        "danielstjules/stringy": "^2.2",
         "intervention/image": "^2.3"
     },
     "require-dev": {
