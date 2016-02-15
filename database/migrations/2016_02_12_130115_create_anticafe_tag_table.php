@@ -15,7 +15,7 @@ class CreateAnticafeTagTable extends Migration
         Schema::create('anticafe_tag', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('anticafe_id');
-            $table->string('tag_id');
+            $table->unsignedInteger('tag_id');
             $table->index('anticafe_id', 'tag_id');
             $table->foreign('anticafe_id')->references('id')->on('anticafes');
             $table->foreign('tag_id')->references('id')->on('tags');

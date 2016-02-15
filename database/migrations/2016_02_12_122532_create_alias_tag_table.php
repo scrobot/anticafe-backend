@@ -14,8 +14,8 @@ class CreateAliasTagTable extends Migration
     {
         Schema::create('alias_tag', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('alias_id');
-            $table->string('tag_id');
+            $table->unsignedInteger('alias_id');
+            $table->unsignedInteger('tag_id');
             $table->index('alias_id', 'tag_id');
             $table->foreign('alias_id')->references('id')->on('aliases');
             $table->foreign('tag_id')->references('id')->on('tags');

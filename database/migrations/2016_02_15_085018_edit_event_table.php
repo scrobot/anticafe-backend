@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAliasesTable extends Migration
+class EditEventTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,8 @@ class CreateAliasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('aliases', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('slug');
-            $table->string('name');
+        Schema::table('events', function (Blueprint $table) {
+            $table->unsignedInteger('type')->default(1);
         });
     }
 
@@ -26,6 +24,8 @@ class CreateAliasesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('aliases');
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 }

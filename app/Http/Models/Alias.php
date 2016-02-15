@@ -21,13 +21,11 @@ class Alias extends Model implements ModelNameable
 
     protected $guarded = [];
 
-    public $incrementing = false;
-
     public $timestamps = false;
 
-    public function setIdAttribute($value)
+    public function setSlugAttribute($value)
     {
-        $this->attributes['id'] = StaticStringy::slugify($value);
+        $this->attributes['slug'] = StaticStringy::slugify($value);
     }
 
     public function Tags()
@@ -45,11 +43,11 @@ class Alias extends Model implements ModelNameable
         return (new static)->setModelName();
     }
 
-    public function checkId()
+    public function checkSlug()
     {
-        $checked = static::find($this->id);
-        if($checked != null && $checked->name == $this->name) {
-            $this->id = $this->id."_".str_random(8);
+        $checked = static::where("slug", $this->slug);
+        if($checked != null && $checked->slug == $this->slug) {
+            $this->slug = $this->slug."_".$this->id;
         }
 
         return $this;

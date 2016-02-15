@@ -24,11 +24,9 @@ class Tag extends Model implements ModelNameable
     
     public $timestamps = false;
 
-    public $incrementing = false;
-
-    public function setIdAttribute($value)
+    public function setSlugAttribute($value)
     {
-        $this->attributes['id'] = StaticStringy::slugify($value);
+        $this->attributes['slug'] = StaticStringy::slugify($value);
     }
 
     public function scopeSorted($query)
@@ -69,9 +67,9 @@ class Tag extends Model implements ModelNameable
         foreach ($aliases as $alias) {
             if(empty($alias)) continue;
             $al = Alias::firstOrNew(['name' => $alias]);
-            $al->id = $alias;
-            $al->checkId()->save();
-            $arr[] = (string) $al->id;
+            $al->slug = $alias;
+            $al->checkSlug()->save();
+            $arr[] = $al->id;
         }
 
         return $arr;
