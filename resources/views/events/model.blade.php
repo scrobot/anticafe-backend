@@ -119,6 +119,11 @@
                             {!! Form::textarea('price', null, ["class" => "form-control"]) !!}
                         </div>
 
+                        <div class="form-group">
+                            {{Form::label('type', "Тип")}}
+                            {!! Form::select('type', config('event_types'), null, ["class" => "form-control"]) !!}
+                        </div>
+
                         <div class="form-inline relative">
                             <div class="form-group">
                                 {{Form::label('start_at', "Дата и время начала")}}

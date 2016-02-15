@@ -42,14 +42,4 @@ class Alias extends Model implements ModelNameable
     {
         return (new static)->setModelName();
     }
-
-    public function checkSlug()
-    {
-        $checked = static::where("slug", $this->slug);
-        if($checked != null && $checked->slug == $this->slug) {
-            $this->slug = $this->slug."_".$this->id;
-        }
-
-        return $this;
-    }
 }

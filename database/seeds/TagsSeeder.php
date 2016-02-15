@@ -23,7 +23,7 @@ class TagsSeeder extends Seeder
 
         foreach ($tags as $tag) {
             Tag::firstOrCreate([
-                "id" => $tag,
+                "slug" => $tag,
                "name" => $tag,
             ]);
         }

@@ -27,6 +27,7 @@
                 <thead>
                 <tr>
                     <th>id</th>
+                    <th>Слуг</th>
                     <th>Наименование</th>
                     <th>Действия</th>
                 </tr>
@@ -35,6 +36,7 @@
                 @forelse($tags as $item)
                     <tr>
                         <td>{{$item->id}}</td>
+                        <td>{{$item->slug}}</td>
                         <td>{{$item->name}}</td>
                         <td>
                             <a href="{{action('TagsController@getEdit', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>

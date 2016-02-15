@@ -68,7 +68,7 @@ class Tag extends Model implements ModelNameable
             if(empty($alias)) continue;
             $al = Alias::firstOrNew(['name' => $alias]);
             $al->slug = $alias;
-            $al->checkSlug()->save();
+            $al->save();
             $arr[] = $al->id;
         }
 

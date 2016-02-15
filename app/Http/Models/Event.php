@@ -22,8 +22,6 @@ class Event extends Model implements ModelNameable
 
     private static $rules = [
         'title' => 'required',
-        'start_at' => 'required',
-        'end_at' => 'required',
     ];
 
     public $timestamps = false;
