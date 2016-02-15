@@ -8,7 +8,6 @@ Route::group(['middleware' => 'web'], function () {
             'users' => "UsersController",
             'anticafes' => "AnticafeController",
             'image-options' => "ImageOptionsController",
-            'events' => "EventsController",
             'tags' => "TagsController",
         ]);
         Route::get('users', [
@@ -19,9 +18,6 @@ Route::group(['middleware' => 'web'], function () {
         ]);
         Route::get('image-options', [
             'as' => 'ioptions', 'uses' => 'ImageOptionsController@getIndex'
-        ]);
-        Route::get('events', [
-            'as' => 'events', 'uses' => 'EventsController@getIndex'
         ]);
         Route::get('tags', [
             'as' => 'tags', 'uses' => 'TagsController@getIndex'

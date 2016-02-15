@@ -40,6 +40,6 @@ class ImageHandlerController extends Controller
 
     public function getThumbnails(Request $request)
     {
-        return $this->image->thumbnails($request->input('_session'));
+        return $this->image->thumbnails($request);
     }
 }

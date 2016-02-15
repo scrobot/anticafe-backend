@@ -26,7 +26,7 @@ class Anticafe extends Model implements ModelNameable
 
     protected $guarded = [];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'start_at', 'end_at'];
 
     private $name;
 
@@ -38,11 +38,6 @@ class Anticafe extends Model implements ModelNameable
         "routine" => "required",
         "phone" => "required",
     ];
-
-    public function events()
-    {
-        return $this->belongsToMany(Event::class);
-    }
 
     public function Tags()
     {
@@ -126,9 +121,24 @@ class Anticafe extends Model implements ModelNameable
         $this->attributes['metro'] = nl2br($value);
     }
 
-    public function setDescriptionAttribute($value)
+    public function setStartAtAttribute($value)
     {
-        $this->attributes['description'] = nl2br($value);
+        $this->attributes['start_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
+    }
+
+    public function setEndAtAttribute($value)
+    {
+        $this->attributes['end_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
+    }
+
+    public function getEndAtAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
+    }
+
+    public function getStartAtAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
     private function attachTags($tags)

@@ -7,6 +7,7 @@ use Anticafe\Http\Models\ImageOption;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\ImageManager;
 use Anticafe\Http\Models\User;
+use Illuminate\Http\Request;
 
 class ImageRepository
 {
@@ -285,12 +286,13 @@ class ImageRepository
     }
 
     /**
-     * @param $session_token
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @internal param $session_token
      */
-    public function thumbnails($session_token)
+    public function thumbnails(Request $request)
     {
-        $images = ImageHandler::where('session_token', $session_token)->get();
+        $images = ImageHandler::where('imageable_id', $request->input('_id'))->where('imageable_type', $request->input('_type'))->get();
         $response = [];
 
         if(count($images)) {

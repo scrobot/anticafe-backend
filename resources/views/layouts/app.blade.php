@@ -95,7 +95,6 @@
                     <h3>Основное</h3>
                     <li><a href="{{route('users')}}">Пользователи</a></li>
                     <li><a href="{{route('anticafes')}}">Антикафе</a></li>
-                    <li><a href="{{route('events')}}">События</a></li>
                     <li><a href="{{route('tags')}}">Возможности</a></li>
                     <h3>Права и роли</h3>
                     <li><a href="#">Права</a></li>
