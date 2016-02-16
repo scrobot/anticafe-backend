@@ -10,6 +10,7 @@ Route::group(['middleware' => 'web'], function () {
             'events' => "EventsController",
             'image-options' => "ImageOptionsController",
             'tags' => "TagsController",
+            'clients' => "ClientsController",
         ]);
         Route::get('users', [
             'as' => 'users', 'uses' => 'UsersController@getIndex'
@@ -25,6 +26,15 @@ Route::group(['middleware' => 'web'], function () {
         ]);
         Route::get('tags', [
             'as' => 'tags', 'uses' => 'TagsController@getIndex'
+        ]);
+        Route::get('clients', [
+            'as' => 'clients', 'uses' => 'ClientsController@getIndex'
+        ]);
+        Route::get('bookings', [
+            'as' => 'bookings', 'uses' => 'BookingsController@getIndex'
+        ]);
+        Route::post('bookings/change-statuses', [
+            'as' => 'bookings.status', 'uses' => 'BookingsController@postChangeStatus'
         ]);
         Route::get('/', 'HomeController@index');
     });

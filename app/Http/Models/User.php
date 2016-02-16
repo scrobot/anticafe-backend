@@ -45,4 +45,9 @@ class User extends Authenticatable implements ModelNameable
     {
         return (new static)->setModelName();
     }
+
+    public function Bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }
