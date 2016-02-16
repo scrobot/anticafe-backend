@@ -51,36 +51,56 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(Tag::class);
     }
 
+    public function Events()
+    {
+        return $this->belongsToMany(static::class, 'anticafe_event', 'anticafe_id', 'event_id');
+    }
+
+    public function Anticafes()
+    {
+        return $this->belongsToMany(static::class, 'anticafe_event', 'event_id', 'anticafe_id');
+    }
+
     public static function validator(Request $request)
     {
         return \Validator::make($request->all(), static::$rules);
     }
 
-    public static function customCreate(Request $request)
+    public static function customCreate(Request $request, $isEvent = false)
     {
         $validator = static::validator($request);
 
         if($validator->fails())
             return $validator;
 
-        $entity = static::create($request->except('logo', 'cover', 'tags'));
+        $entity = static::create($request->except('logo', 'cover', 'tags', 'anticafes'));
 
         $entity->attachImages($request->file('logo'), $request->file('cover'));
-        $entity->attachTags($request->input('tags'));
+
+        if($isEvent) {
+            $entity->attachAnticafes($request->input('anticafes'));
+        } else {
+            $entity->attachTags($request->input('tags'));
+        }
+
         ImageRepository::saveFromSession($entity, $request->input('_session'));
 
         return $entity;
     }
 
-    public function customUpdate(Request $request)
+    public function customUpdate(Request $request, $isEvent = false)
     {
         $validator = static::validator($request);
         if($validator->fails())
             return $validator;
 
-        $this->update($request->except('logo', 'cover', 'tags'));
+        $this->update($request->except('logo', 'cover', 'tags', 'anticafes'));
         $this->attachImages($request->file('logo'), $request->file('cover'));
-        $this->attachTags($request->input('tags'));
+        if($isEvent) {
+            $this->attachAnticafes($request->input('anticafes'));
+        } else {
+            $this->attachTags($request->input('tags'));
+        }
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
@@ -163,5 +183,11 @@ class Anticafe extends Model implements ModelNameable
     {
         $tags = $tags == null ? [] : $tags;
         $this->Tags()->sync($tags);
+    }
+
+    private function attachAnticafes($anticafes)
+    {
+        $anticafes = $anticafes == null ? [] : $anticafes;
+        $this->Anticafes()->sync($anticafes);
     }
 }

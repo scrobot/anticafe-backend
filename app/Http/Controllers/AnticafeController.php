@@ -65,18 +65,14 @@ class AnticafeController extends Controller
         return view('anticafes.model')->withAnticafe($q)->withAction(action('AnticafeController@postUpdate', $q->id))->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
-    public function postUpdate(Request $request, $id, $step = null)
+    public function postUpdate(Request $request, $id)
     {
         $anticafe = Anticafe::find($id);
 
-        $validator = $anticafe->customUpdate($request, $step);
+        $validator = $anticafe->customUpdate($request);
 
         if($validator != true) {
             return back()->withErrors($validator->errors());
-        }
-
-        if($step != null) {
-            return redirect(action('AnticafeController@getUpdate', $anticafe->id))->withMsg('common.msg.create');
         }
 
         return back()->withMsg('common.msg.edit');

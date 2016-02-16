@@ -85,7 +85,7 @@
 @section('breadcrumbs')
     <li><a href="/">Главная</a></li>
     <li><a href="{{route('anticafes')}}">{{$title}}</a></li>
-    <li class="active">Модель</li>
+    <li class="active">Антикафе</li>
 @stop
 
 @section('actions_menu')
@@ -112,7 +112,7 @@
         </div>
         <div class="col-md-12">
         {{ Form::model($anticafe, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
-            {!! Form::hidden('type', config('types.select.0')) !!}
+            {!! Form::hidden('type', 0 !!}
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -271,7 +271,7 @@
 
 
             <div class="col-md-12">
-                <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.edit')}}</button>
+                <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.save')}}</button>
             </div>
         {{ Form::close() }}
         </div>

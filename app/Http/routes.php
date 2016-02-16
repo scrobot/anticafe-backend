@@ -17,6 +17,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('anticafes', [
             'as' => 'anticafes', 'uses' => 'AnticafeController@getIndex'
         ]);
+        Route::get('events', [
+            'as' => 'events', 'uses' => 'EventsController@getIndex'
+        ]);
         Route::get('image-options', [
             'as' => 'ioptions', 'uses' => 'ImageOptionsController@getIndex'
         ]);
