@@ -11,6 +11,7 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Anticafe\Http\Services\ImageProcessor;
+use Carbon\Carbon;
 use Helpers\ImageHandler\ImageableTrait;
 use Helpers\ImageHandler\ImageRepository;
 use Illuminate\Database\Eloquent\Model;
@@ -32,12 +33,18 @@ class Anticafe extends Model implements ModelNameable
 
     private static $rules = [
         "name" => "required",
-        "city" => "required",
-        "metro" => "required",
         "prices" => "required",
-        "routine" => "required",
-        "phone" => "required",
     ];
+
+    public static function getAnticafes()
+    {
+        return static::where('type', 0);
+    }
+
+    public static function getEvents()
+    {
+        return static::where('type', 1);
+    }
 
     public function Tags()
     {
@@ -56,21 +63,22 @@ class Anticafe extends Model implements ModelNameable
         if($validator->fails())
             return $validator;
 
-        $entity = static::create($request->all());
+        $entity = static::create($request->except('logo', 'cover', 'tags'));
+
+        $entity->attachImages($request->file('logo'), $request->file('cover'));
+        $entity->attachTags($request->input('tags'));
+        ImageRepository::saveFromSession($entity, $request->input('_session'));
 
         return $entity;
     }
 
-    public function customUpdate(Request $request, $step = null)
+    public function customUpdate(Request $request)
     {
-        if($step == null) {
-            $validator = static::validator($request);
-            if($validator->fails())
-                return $validator;
+        $validator = static::validator($request);
+        if($validator->fails())
+            return $validator;
 
-            $this->update($request->except('logo', 'cover', 'tags'));
-        }
-
+        $this->update($request->except('logo', 'cover', 'tags'));
         $this->attachImages($request->file('logo'), $request->file('cover'));
         $this->attachTags($request->input('tags'));
 
@@ -123,21 +131,31 @@ class Anticafe extends Model implements ModelNameable
 
     public function setStartAtAttribute($value)
     {
-        $this->attributes['start_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
+        if($value != null)
+            $this->attributes['start_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
     }
 
     public function setEndAtAttribute($value)
     {
-        $this->attributes['end_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
+        if($value != null)
+            $this->attributes['end_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
     }
 
     public function getEndAtAttribute($value)
     {
+        if($value == null) {
+            return $value;
+        }
+
         return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
     public function getStartAtAttribute($value)
     {
+        if($value == null) {
+            return $value;
+        }
+
         return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 

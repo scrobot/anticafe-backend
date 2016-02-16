@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EditAnticafeTable extends Migration
+class AddOneNessesaryColumnInAnticafesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,7 @@ class EditAnticafeTable extends Migration
     public function up()
     {
         Schema::table('anticafes', function (Blueprint $table) {
-            $table->text('excerpt')->after('prices')->nullable();
-            $table->integer('type')->after('phone')->default(0);
-            $table->timestamp('start_at')->nullable();
-            $table->timestamp('end_at')->nullable();
+            $table->text('routine')->nullable();
         });
     }
 
@@ -28,7 +25,7 @@ class EditAnticafeTable extends Migration
     public function down()
     {
         Schema::table('anticafes', function (Blueprint $table) {
-            $table->dropColumn('excerpt','start_at','end_at', 'type');
+            $table->dropColumn('routine');
         });
     }
 }

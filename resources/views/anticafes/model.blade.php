@@ -1,9 +1,83 @@
 @extends('layouts.app')
 
 @section('css')
+
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <style>
+        .relative {
+            position: relative;
+        }
+        .table tr td{
+            vertical-align: middle;
+        }
+
         .grid {
-            min-height: 800px;
+            min-height: 900px;
+        }
+        /* Cначала обозначаем стили для IE8 и более старых версий
+т.е. здесь мы немного облагораживаем стандартный чекбокс. */
+        .checkbox {
+            vertical-align: top;
+            margin: 0 3px 0 0;
+            height: 30px;
+            z-index: 10;
+            width: 200px;
+        }
+        /* Это для всех браузеров, кроме совсем старых, которые не поддерживают
+        селекторы с плюсом. Показываем, что label кликабелен. */
+        .checkbox + label {
+            cursor: pointer;
+        }
+
+        /* Далее идет оформление чекбокса в современных браузерах, а также IE9 и выше.
+        Благодаря тому, что старые браузеры не поддерживают селекторы :not и :checked,
+        в них все нижеследующие стили не сработают. */
+
+        /* Прячем оригинальный чекбокс. */
+        .checkbox:not(checked) {
+            position: absolute;
+            opacity: 0;
+        }
+        .checkbox:not(checked) + label {
+            position: relative; /* будем позиционировать псевдочекбокс относительно label */
+            padding: 0 0 0 60px; /* оставляем слева от label место под псевдочекбокс */
+        }
+        /* Оформление первой части чекбокса в выключенном состоянии (фон). */
+        .checkbox:not(checked) + label:before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 50px;
+            height: 26px;
+            border-radius: 13px;
+            background: #CDD1DA;
+            box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+        }
+        /* Оформление второй части чекбокса в выключенном состоянии (переключатель). */
+        .checkbox:not(checked) + label:after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 10px;
+            background: #FFF;
+            box-shadow: 0 2px 5px rgba(0,0,0,.3);
+            transition: all .2s; /* анимация, чтобы чекбокс переключался плавно */
+        }
+        /* Меняем фон чекбокса, когда он включен. */
+        .checkbox:checked + label:before {
+            background: #9FD468;
+        }
+        /* Сдвигаем переключатель чекбокса, когда он включен. */
+        .checkbox:checked + label:after {
+            left: 26px;
+        }
+        /* Показываем получение фокуса. */
+        .checkbox:focus + label:before {
+            box-shadow: 0 0 0 3px rgba(255,255,0,.5);
         }
     </style>
 @stop
@@ -11,7 +85,7 @@
 @section('breadcrumbs')
     <li><a href="/">Главная</a></li>
     <li><a href="{{route('anticafes')}}">{{$title}}</a></li>
-    <li class="active">редактировать</li>
+    <li class="active">Модель</li>
 @stop
 
 @section('actions_menu')
@@ -19,7 +93,11 @@
 @stop
 
 @section('content')
-    <h1>Редактировать антикафе {{$anticafe->name}}</h1>
+    @if($anticafe != null)
+        <h1>Редактировать антикафе {{$anticafe->name}}</h1>
+    @else
+        <h1>Создать антикафе</h1>
+    @endif
 
     <div class="row">
         <div class="col-md-12">
@@ -33,7 +111,8 @@
             </div>
         </div>
         <div class="col-md-12">
-        {{ Form::model($anticafe, ['action' => ['AnticafeController@postUpdate', $anticafe->id], 'files' => true]) }}
+        {{ Form::model($anticafe, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
+            {!! Form::hidden('type', config('types.select.0')) !!}
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -74,7 +153,6 @@
                             {{Form::label('phone', "Номер телефона")}}
                             {{Form::text('phone', null, ["class" => "form-control"])}}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -85,21 +163,26 @@
                     </div>
                     <div class="panel-body grid">
                         <div class="form-group">
+                            @if($anticafe != null)
                             <div class="col-md-12">
                                 <img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
                             </div>
+                            @endif
                             {{Form::label('logo', "Логотип")}}
                             {{Form::file('logo', ["class" => "form-control"])}}
                         </div>
 
                         <div class="form-group">
+                            @if($anticafe != null)
                             <div class="col-md-12">
                                 <img src="{{$anticafe->cover ? "/images/anticafes/covers/100x100/100x100_".$anticafe->cover : "/images/no-image.png"}}" width="100" height="100">
                             </div>
+                            @endif
                             {{Form::label('cover', "Обложка")}}
                             {{Form::file('cover', ["class" => "form-control"])}}
                         </div>
 
+                        @if($anticafe != null)
                         <div class="col-md-12">
                             <h4>Миниатюры</h4>
                             <h5>Логотип</h5>
@@ -120,6 +203,7 @@
                                 </div>
                             @endforeach
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -127,6 +211,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2>Описание</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{Form::label('excerpt', "Краткое описание")}}
+                            {{Form::textarea('excerpt', null, ["class" => "form-control"])}}
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
@@ -171,7 +261,7 @@
                         @foreach($tags as $tag)
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe->Tags->contains($tag->id)) }} {{$tag->name}}</label>
+                                    <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe == null ? false : $anticafe->Tags->contains($tag->id)) }} {{$tag->name}}</label>
                                 </div>
                             </div>
                         @endforeach
@@ -189,10 +279,48 @@
 @endsection
 
 @section('js')
+    <script type="text/javascript" src="/js/moment.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap/transition.js"></script>
+    <script type="text/javascript" src="/js/bootstrap/collapse.js"></script>
     <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     <script>
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
+        CKEDITOR.replace( 'excerpt' );
         CKEDITOR.replace( 'description' );
+
+        $(document).ready(function(){
+
+            $('#check-all').click(function(){
+                $(this).toggleClass('checked')
+
+                var checked;
+
+                if($(this).hasClass('checked')) {
+                    $(this).text('Cнять все')
+                    checked = true;
+                } else {
+                    $(this).text('Выбрать все')
+                    checked = false
+                }
+
+                $('.checkbox').each(function(){
+                    $(this).prop('checked', checked)
+                })
+
+            })
+
+        })
+
+        $(function () {
+            $('#start_at').datetimepicker({
+                locale: 'ru'
+            });
+            $('#end_at').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                locale: 'ru'
+            });
+        });
     </script>
 @stop

@@ -270,13 +270,12 @@ class ImageRepository
      */
     public static function saveFromSession(Model $model, $session_token)
     {
-
         ImageHandler::where('session_token', $session_token)->update([
             'imageable_id' => $model->id,
             'imageable_type' => get_class($model)
         ]);
 
-        $session_tokens = session('session_tokens');
+        $session_tokens = session('session_tokens') ? session('session_tokens') : [];
 
         if(($key = array_search($session_token, $session_tokens)) !== false) {
             unset($session_tokens[$key]);

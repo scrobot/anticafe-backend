@@ -7,6 +7,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::controllers([
             'users' => "UsersController",
             'anticafes' => "AnticafeController",
+            'events' => "EventsController",
             'image-options' => "ImageOptionsController",
             'tags' => "TagsController",
         ]);

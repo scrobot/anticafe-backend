@@ -30,7 +30,7 @@ class AnticafeController extends Controller
 
     public function getIndex()
     {
-        $query = Anticafe::paginate(15);
+        $query = Anticafe::getAnticafes()->paginate(15);
 
         return view('anticafes.list')->withAnticafes($query)->withTitle($this->title);
 
@@ -45,7 +45,7 @@ class AnticafeController extends Controller
 
     public function getCreate()
     {
-        return view('anticafes.create')->withTitle($this->title);
+        return view('anticafes.model')->withAnticafe(null)->withAction(action('AnticafeController@postCreate'))->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function postCreate(Request $request)
@@ -56,19 +56,13 @@ class AnticafeController extends Controller
             return back()->withErrors($query->errors());
         }
 
-        return redirect(action('AnticafeController@getCreateStepTwo', $query->id))->withMsg('common.msg.create');
-    }
-
-    public function getCreateStepTwo($id)
-    {
-        $q = Anticafe::find($id);
-        return view('anticafes.create-step-2')->withAnticafe($q)->withTags(Tag::sorted()->get())->withTitle($this->title);
+        return redirect(action('AnticafeController@getUpdate', $query->id))->withMsg('common.msg.create');
     }
 
     public function getUpdate($id)
     {
         $q = Anticafe::find($id);
-        return view('anticafes.update')->withAnticafe($q)->withTags(Tag::sorted()->get())->withTitle($this->title);
+        return view('anticafes.model')->withAnticafe($q)->withAction(action('AnticafeController@postUpdate', $q->id))->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function postUpdate(Request $request, $id, $step = null)

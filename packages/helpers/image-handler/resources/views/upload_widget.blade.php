@@ -1,14 +1,18 @@
 <div class="row">
     <div class="col-md-offset-1 col-md-10">
-        <h3>Изображения (<span id="photoCounter">{{count($object->images)}}</span>)</h3>
+        <h3>Изображения
+            @if($object != null)
+            (<span id="photoCounter">{{count($object->images)}}</span>)
+            @endif
+        </h3>
         <br />
 
         <form action="{{action('\Helpers\ImageHandler\ImageHandlerController@postUpload')}}" enctype="multipart/form-data" id="image-dropzone" class="uploadform dropzone no-margin dz-clickable">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <input type="hidden" name="_folder" value="{{$folder}}">
-            <input type="hidden" name="_session" value="{{is_null($object->images) ? str_random(64) : $object->session_token()}}">
-            <input type="hidden" name="_id" value="{{$object->id}}">
-            <input type="hidden" name="_type" value="{{get_class($object)}}">
+            <input type="hidden" name="_session" value="{{$object != null ? $object->session_token() : str_random(64)}}">
+            <input type="hidden" name="_id" value="{{$object != null ? $object->id : $object}}">
+            <input type="hidden" name="_type" value="{{$object != null ? get_class($object) : $object}}">
 
             <div class="dz-message">
 
