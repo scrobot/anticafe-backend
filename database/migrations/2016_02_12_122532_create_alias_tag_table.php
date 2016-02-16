@@ -17,8 +17,8 @@ class CreateAliasTagTable extends Migration
             $table->unsignedInteger('alias_id');
             $table->unsignedInteger('tag_id');
             $table->index('alias_id', 'tag_id');
-            $table->foreign('alias_id')->references('id')->on('aliases');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('alias_id')->references('id')->on('aliases')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 

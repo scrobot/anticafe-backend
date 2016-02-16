@@ -17,8 +17,8 @@ class CreateAnticafeTagTable extends Migration
             $table->unsignedInteger('anticafe_id');
             $table->unsignedInteger('tag_id');
             $table->index('anticafe_id', 'tag_id');
-            $table->foreign('anticafe_id')->references('id')->on('anticafes');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('anticafe_id')->references('id')->on('anticafes')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 

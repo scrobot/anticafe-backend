@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAnticafeEventTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,13 @@ class CreateAnticafeEventTable extends Migration
      */
     public function up()
     {
-        Schema::create('anticafe_event', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('anticafe_id');
-            $table->unsignedInteger('event_id');
-            $table->index('anticafe_id', 'event_id');
+            $table->unsignedInteger('client_id');
+            $table->index('anticafe_id', 'client_id');
             $table->foreign('anticafe_id')->references('id')->on('anticafes')->onDelete('cascade');
-            $table->foreign('event_id')->references('id')->on('anticafes')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 
@@ -29,7 +29,7 @@ class CreateAnticafeEventTable extends Migration
      */
     public function down()
     {
-        \DB::table('anticafe_event')->truncate();
-        Schema::drop('anticafe_event');
+        \DB::table('likes')->truncate();
+        Schema::drop('likes');
     }
 }
