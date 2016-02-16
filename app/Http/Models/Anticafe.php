@@ -36,6 +36,11 @@ class Anticafe extends Model implements ModelNameable
         "prices" => "required",
     ];
 
+    /**
+     * GETing methods
+     * @return mixed
+     */
+
     public static function getAnticafes()
     {
         return static::where('type', 0);
@@ -45,6 +50,14 @@ class Anticafe extends Model implements ModelNameable
     {
         return static::where('type', 1);
     }
+
+    /**
+     * ------------------------- *
+    */
+
+    /**
+     * Relation methods
+     */
 
     public function Tags()
     {
@@ -60,6 +73,20 @@ class Anticafe extends Model implements ModelNameable
     {
         return $this->belongsToMany(static::class, 'anticafe_event', 'event_id', 'anticafe_id');
     }
+
+    public function Liked()
+    {
+        return $this->belongsToMany(Client::class, 'likes', 'client_id', 'anticafe_id');
+    }
+
+    public function Bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * ------------------------- *
+     */
 
     public static function validator(Request $request)
     {
