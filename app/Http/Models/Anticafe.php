@@ -110,6 +110,8 @@ class Anticafe extends Model implements ModelNameable
 
         $entity->attachTags($request->input('tags'));
 
+        $entity->setPromo($request->input('promo'));
+
         ImageRepository::saveFromSession($entity, $request->input('_session'));
 
         return $entity;
@@ -131,6 +133,8 @@ class Anticafe extends Model implements ModelNameable
         }
 
         $this->attachTags($request->input('tags'));
+
+        $this->setPromo($request->input('promo'));
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
@@ -219,5 +223,11 @@ class Anticafe extends Model implements ModelNameable
     {
         $anticafes = $anticafes == null ? [] : $anticafes;
         $this->Anticafes()->sync($anticafes);
+    }
+
+    private function setPromo($is_promo)
+    {
+        $this->promo = $is_promo ? 1 : 0;
+        $this->save();
     }
 }

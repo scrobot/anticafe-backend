@@ -153,6 +153,9 @@
                             {{Form::label('phone', "Номер телефона")}}
                             {{Form::text('phone', null, ["class" => "form-control"])}}
                         </div>
+                        <div class="form-group">
+                            <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                        </div>
                     </div>
                 </div>
             </div>

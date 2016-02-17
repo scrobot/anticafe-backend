@@ -140,6 +140,10 @@
                                 {{Form::text('end_at', null, ["class" => "form-control", "placeholder" => 'Дата и время окончания'])}}
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                        </div>
                     </div>
                 </div>
             </div>
