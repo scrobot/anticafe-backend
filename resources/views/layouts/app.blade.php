@@ -103,6 +103,8 @@
                     <li><a href="#">Роли</a></li>
                     <h3>Опции</h3>
                     <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
+                    <h3>API</h3>
+                    <li><a href="{{route('api.doc')}}">Документация</a></li>
                 </ul>
             </div>
             <div class="col-md-10">

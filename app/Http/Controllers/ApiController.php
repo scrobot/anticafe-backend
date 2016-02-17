@@ -127,7 +127,7 @@ class ApiController extends Controller
 
     public function postLike(Request $request)
     {
-        $client = Client::where('token', $request->input('token'))->first();
+        $client = Client::find($request->input('client_id'));
         $anticafe = Anticafe::find($request->input('anticafe_id'));
         if($client->Likes->contains($anticafe->id)) {
             $client->Likes()->detach($anticafe->id);
@@ -144,5 +144,9 @@ class ApiController extends Controller
         return response($status, 200);
     }
 
+    public function documentation()
+    {
+        return view('api.doc')->withTitle("Документация")->withErrors([]);
+    }
 
 }

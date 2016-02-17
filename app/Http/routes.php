@@ -12,6 +12,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('boooking', 'ApiController@postBooking');
     Route::get('boooking/delete/id}', 'ApiController@getDeleteBooking');
     Route::post('like', 'ApiController@like');
+    Route::get('documentation', [
+        'as' => 'api.doc', 'uses' => 'ApiController@documentation'
+    ]);
 
 });
 
