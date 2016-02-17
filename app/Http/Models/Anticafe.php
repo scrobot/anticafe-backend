@@ -106,9 +106,9 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $entity->attachAnticafes($request->input('anticafes'));
-        } else {
-            $entity->attachTags($request->input('tags'));
         }
+
+        $entity->attachTags($request->input('tags'));
 
         ImageRepository::saveFromSession($entity, $request->input('_session'));
 
@@ -118,16 +118,19 @@ class Anticafe extends Model implements ModelNameable
     public function customUpdate(Request $request, $isEvent = false)
     {
         $validator = static::validator($request);
+
         if($validator->fails())
             return $validator;
 
         $this->update($request->except('logo', 'cover', 'tags', 'anticafes'));
+
         $this->attachImages($request->file('logo'), $request->file('cover'));
+
         if($isEvent) {
             $this->attachAnticafes($request->input('anticafes'));
-        } else {
-            $this->attachTags($request->input('tags'));
         }
+
+        $this->attachTags($request->input('tags'));
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));

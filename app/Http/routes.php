@@ -1,5 +1,20 @@
 <?php
 
+Route::group(['prefix' => 'api'], function() {
+    Route::get('anticafes', 'ApiController@getAnticafes');
+    Route::get('anticafes/{limit}', 'ApiController@getAnticafes');
+    Route::get('events', 'ApiController@getEvents');
+    Route::get('events/{limit}', 'ApiController@getEvents');
+    Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
+    Route::get('client/{id}', 'ApiController@getProfile');
+    Route::post('search', 'ApiController@postSearch');
+    Route::get('boooking/get/{id}', 'ApiController@getClientBooking');
+    Route::post('boooking', 'ApiController@postBooking');
+    Route::get('boooking/delete/id}', 'ApiController@getDeleteBooking');
+    Route::post('like', 'ApiController@like');
+
+});
+
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 

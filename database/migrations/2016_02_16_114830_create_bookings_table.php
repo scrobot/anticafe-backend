@@ -21,7 +21,7 @@ class CreateBookingsTable extends Migration
             $table->timestamp('arrival_at');
             $table->unsignedInteger('anticafe_id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->index('anticafe_id', 'client_id', 'user_id');
             $table->foreign('anticafe_id')->references('id')->on('anticafes')->onDelete('cascade');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

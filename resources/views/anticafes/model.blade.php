@@ -112,7 +112,7 @@
         </div>
         <div class="col-md-12">
         {{ Form::model($anticafe, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
-            {!! Form::hidden('type', 0 !!}
+            {!! Form::hidden('type', 0) !!}
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">

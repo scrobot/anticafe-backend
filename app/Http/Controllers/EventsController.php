@@ -4,6 +4,7 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
@@ -28,7 +29,7 @@ class EventsController extends Controller
 
     public function getCreate()
     {
-        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTitle($this->title);
+        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function postCreate(Request $request)
@@ -45,7 +46,7 @@ class EventsController extends Controller
     public function getEdit($id)
     {
         $q = Anticafe::find($id);
-        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTitle($this->title);
+        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title);
     }
 
     public function postUpdate(Request $request, $id)
