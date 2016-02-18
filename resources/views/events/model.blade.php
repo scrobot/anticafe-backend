@@ -89,23 +89,14 @@
 @stop
 
 @section('actions_menu')
-    @include('events.actions_menu')
+    @include('anticafes.actions_menu')
 @stop
 
 @section('content')
     <h1>Событие {{$event == null ? "создать" : $event->name}}</h1>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h2>Галерея</h2>
-                </div>
-                <div class="panel-body">
-                    {!! image_handler_widget("gallery", $event) !!}
-                </div>
-            </div>
-        </div>
+
         <div class="col-md-12">
         {{ Form::model($event, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
             {!! Form::hidden('type', 1) !!}
@@ -276,6 +267,17 @@
                 <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.save')}}</button>
             </div>
         {{ Form::close() }}
+        </div>
+        <div class="col-md-12">
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Галерея</h2>
+                </div>
+                <div class="panel-body">
+                    {!! image_handler_widget("gallery", $event) !!}
+                </div>
+            </div>
         </div>
     </div>
 @endsection
