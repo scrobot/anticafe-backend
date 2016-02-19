@@ -106,6 +106,7 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $entity->attachAnticafes($request->input('anticafes'));
+            $entity->setBookingAvailable($request->input('booking_available'));
         }
 
         $entity->attachTags($request->input('tags'));
@@ -130,6 +131,7 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $this->attachAnticafes($request->input('anticafes'));
+            $this->setBookingAvailable($request->input('booking_available'));
         }
 
         $this->attachTags($request->input('tags'));
@@ -171,16 +173,6 @@ class Anticafe extends Model implements ModelNameable
         }
 
         $this->save();
-    }
-
-    public function setPricesAttribute($value)
-    {
-        $this->attributes['prices'] = nl2br($value);
-    }
-
-    public function setMetroAttribute($value)
-    {
-        $this->attributes['metro'] = nl2br($value);
     }
 
     public function setStartAtAttribute($value)
@@ -228,6 +220,11 @@ class Anticafe extends Model implements ModelNameable
     private function setPromo($is_promo)
     {
         $this->promo = $is_promo ? 1 : 0;
+        $this->save();
+    }
+
+    private function setBookingAvailable($booking_available) {
+        $this->booking_available = $booking_available ? 1 : 0;
         $this->save();
     }
 }

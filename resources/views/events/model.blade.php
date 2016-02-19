@@ -135,6 +135,11 @@
                         <div class="form-group">
                             <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
                         </div>
+
+                        <div class="form-group">
+                            <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
+                        </div>
+
                     </div>
                 </div>
             </div>

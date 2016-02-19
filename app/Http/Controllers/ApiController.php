@@ -12,6 +12,7 @@ namespace Anticafe\Http\Controllers;
 use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\ImageOption;
 use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -19,31 +20,34 @@ class ApiController extends Controller
 {
 
     private $result = [];
+    private $images = [];
 
     public function getMain()
     {
 
     }
 
-    public function getAnticafes($limit = 15)
+    public function getAnticafes($count = 0)
     {
-        $anticafes = Anticafe::where('type', 0)->take($limit)->get();
+        $anticafes = Anticafe::where('type', 0)->skip($count)->take(15)->get();
 
         foreach ($anticafes as $anticafe) {
             $anticafe->tags = $anticafe->Tags->toArray();
             $anticafe->events = $anticafe->Events->toArray();
+            $anticafe->attachments = $this->setImages($anticafe);
         }
 
         return response()->json($anticafes);
     }
 
-    public function getEvents($limit = 15)
+    public function getEvents($count = 0)
     {
-        $events = Anticafe::where('type', 1)->take($limit)->get();
+        $events = Anticafe::where('type', 1)->skip($count)->take(15)->get();
 
         foreach ($events as $event) {
             $event->tags = $event->Tags->toArray();
             $event->anticafes = $event->Anticafes->toArray();
+            $event->attachments = $this->setImages($event);
         }
 
         return response()->json($events);
@@ -56,6 +60,7 @@ class ApiController extends Controller
         $anticafe->save();
         // TODO: отрефакторить. Возможно засунуть в модель.
         $anticafe->tags = $anticafe->Tags->toArray();
+        $anticafe->attachments = $this->setImages($anticafe);
         if($anticafe->type == 0)
             $anticafe->events = $anticafe->Events->toArray();
         else
@@ -147,6 +152,25 @@ class ApiController extends Controller
     public function documentation()
     {
         return view('api.doc')->withTitle("Документация")->withErrors([]);
+    }
+
+    private function setImages($anticafe)
+    {
+        $images = [
+            'original' => [
+                'logo' => "/images/anticafes/logos/{$anticafe->logo}",
+                'cover' => "/images/anticafes/covers/{$anticafe->cover}"
+            ]
+        ];
+        $images['gallery'] = $anticafe->images;
+        foreach (ImageOption::all() as $item) {
+            $images[$item->name] = [
+                'logo' => "/images/anticafes/logos/{$item->name}/{$item->name}_{$anticafe->logo}",
+                'cover' => "/images/anticafes/covers/{$item->name}/{$item->name}_{$anticafe->cover}"
+            ];
+        }
+
+        return $images;
     }
 
 }

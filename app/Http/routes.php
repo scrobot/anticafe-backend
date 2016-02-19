@@ -2,9 +2,9 @@
 
 Route::group(['prefix' => 'api'], function() {
     Route::get('anticafes', 'ApiController@getAnticafes');
-    Route::get('anticafes/{limit}', 'ApiController@getAnticafes');
+    Route::get('anticafes/{count}', 'ApiController@getAnticafes');
     Route::get('events', 'ApiController@getEvents');
-    Route::get('events/{limit}', 'ApiController@getEvents');
+    Route::get('events/{count}', 'ApiController@getEvents');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
     Route::get('client/{id}', 'ApiController@getProfile');
     Route::post('search', 'ApiController@postSearch');

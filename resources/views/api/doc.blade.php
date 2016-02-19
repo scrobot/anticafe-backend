@@ -51,10 +51,10 @@
                 <p><strong>GET</strong></p>
             </div>
             <div class="col-md-2 type">
-                <a href="/api/anticafes/1"><abbr title="/api/anticafes">/api/anticafes/{limit}</abbr></a>
+                <a href="/api/anticafes/16"><abbr title="/api/anticafes">/api/anticafes/{count}</abbr></a>
             </div>
             <div class="col-md-9 type">
-                <a href="#">getAnticafes</a>(int $limit)
+                <a href="#">getAnticafes</a>(int $count)
                 <p>Make query and take anticafes by specified count</p>
             </div>
         </div>
