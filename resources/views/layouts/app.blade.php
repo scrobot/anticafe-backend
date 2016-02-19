@@ -93,12 +93,13 @@
             <div class="col-md-2">
                 <ul class="nav nav-pills nav-stacked">
                     <h3>Основное</h3>
-                    <li><a href="{{route('users')}}">Пользователи</a></li>
-                    <li><a href="{{route('clients')}}">Клиенты</a></li>
                     <li><a href="{{route('anticafes')}}">Антикафе</a></li>
-                    <li><a href="{{route('tags')}}">Возможности</a></li>
-                    <li><a href="{{route('bookings')}}">Бронирование</a></li>
+                    <li><a href="{{route('events')}}">Cобытия</a></li>
+                    <li><a href="{{route('tags')}}">Теги и Возможности</a></li>
+                    <li><a href="{{route('bookings')}}">Бронирования</a></li>
+                    <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     <h3>Права и роли</h3>
+                    <li><a href="{{route('users')}}">Менеджеры и администраторы</a></li>
                     <li><a href="#">Права</a></li>
                     <li><a href="#">Роли</a></li>
                     <h3>Опции</h3>
@@ -134,7 +135,7 @@
 
         $(function () {
 
-            $('a.btn-danger').on("click", function (e) {
+            $('.btn-danger').on("click", function (e) {
 
                 if (!confirm("Подтвердите действие")) {
                     e.preventDefault();

@@ -220,7 +220,6 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Логотип</th>
                                     <th>Наименование</th>
                                     <th>Привязать</th>
                                 </tr>
@@ -228,7 +227,6 @@
                             <tbody>
                                 @forelse($anticafes as $anticafe)
                                     <tr>
-                                        <td style="width: 100px"><img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100"/></td>
                                         <td>{{$anticafe->name}}</td>
                                         <td class="relative">
                                             @if($event == null)

@@ -11,6 +11,7 @@ class EventsController extends Controller
 {
 
     private $title;
+    private $count;
 
     /**
      * EventsController constructor.
@@ -18,18 +19,31 @@ class EventsController extends Controller
     public function __construct()
     {
         $this->title = "События";
+        $this->count['anticafes'] = Anticafe::anticafesCount();
+        $this->count['events'] = Anticafe::eventsCount();
     }
 
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $query = Anticafe::getEvents()->paginate(15);
+        $query = Anticafe::getEvents();
+        if($request->get('name')) {
+            $query = $query->orderBy('name', $request->get('name'))->paginate(15);
+        } elseif($request->get('total_views')) {
+            $query = $query->orderBy('total_views', $request->get('total_views'))->paginate(15);
+        } elseif($request->get('total_likes')) {
+            $query = $query->orderBy('total_likes', $request->get('total_likes'))->paginate(15);
+        } elseif($request->get('total_bookings')) {
+            $query = $query->orderBy('total_bookings', $request->get('total_bookings'))->paginate(15);
+        } else {
+            $query = $query->paginate(15);
+        }
 
-        return view('events.list')->withEvents($query)->withTitle($this->title);
+        return view('events.list')->withEvents($query)->withTitle($this->title)->withCount($this->count);
     }
 
     public function getCreate()
     {
-        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title);
+        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postCreate(Request $request)
@@ -46,7 +60,7 @@ class EventsController extends Controller
     public function getEdit($id)
     {
         $q = Anticafe::find($id);
-        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title);
+        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postUpdate(Request $request, $id)

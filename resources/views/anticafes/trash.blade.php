@@ -22,13 +22,11 @@
         <thead>
         <tr>
             <th>id</th>
-            <th>Лого</th>
             <th>Наименование</th>
             <th>Город</th>
             <th>Метро</th>
             <th>Адрес</th>
             <th>Телефон</th>
-            <th>Обложка</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -36,13 +34,11 @@
         @forelse($anticafes as $item)
             <tr>
                 <td>{{$item->id}}</td>
-                <td><img src="{{$item->logo ? $item->logo : "/images/no-image.png"}}" width="50" height="50"/></td>
                 <td>{{$item->name}}</td>
                 <td>{{$item->city}}</td>
                 <td>{{$item->metro}}</td>
                 <td>{{$item->address}}</td>
                 <td>{{$item->phone}}</td>
-                <td><img src="{{$item->cover ? $item->cover : "/images/no-image.png"}}" width="50" height="50"/></td>
                 <td>
                     <a href="{{action('AnticafeController@getRestore', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.restore')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-chevron-up"></span></a>
                     <a href="{{action('AnticafeController@getClean', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.clean')}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>

@@ -54,6 +54,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('bookings/change-statuses', [
             'as' => 'bookings.status', 'uses' => 'BookingsController@postChangeStatus'
         ]);
-        Route::get('/', 'HomeController@index');
+        Route::get('/', 'AnticafeController@getIndex');
     });
 });

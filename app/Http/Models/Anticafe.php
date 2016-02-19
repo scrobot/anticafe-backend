@@ -205,6 +205,14 @@ class Anticafe extends Model implements ModelNameable
         return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
+    public static function anticafesCount() {
+        return static::where('type', 0)->count();
+    }
+
+    public static function eventsCount() {
+        return static::where('type', 1)->count();
+    }
+
     private function attachTags($tags)
     {
         $tags = $tags == null ? [] : $tags;
