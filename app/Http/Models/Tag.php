@@ -39,6 +39,11 @@ class Tag extends Model implements ModelNameable
         return $query->where("is_group", 1);
     }
 
+    public function scopeAlones($query)
+    {
+        return $query->where('parent_id', NULL)->where('is_group', 0);
+    }
+
     public function Aliases()
     {
         return $this->belongsToMany(Alias::class);
@@ -56,7 +61,7 @@ class Tag extends Model implements ModelNameable
 
     public function Children()
     {
-        return $this->hasMany(static::class, "id", "parent_id");
+        return $this->hasMany(static::class, "parent_id", "id");
     }
 
     public function setModelName()

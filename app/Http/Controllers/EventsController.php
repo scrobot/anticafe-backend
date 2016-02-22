@@ -43,7 +43,7 @@ class EventsController extends Controller
 
     public function getCreate()
     {
-        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
+        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postCreate(Request $request)
@@ -60,7 +60,7 @@ class EventsController extends Controller
     public function getEdit($id)
     {
         $q = Anticafe::find($id);
-        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
+        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postUpdate(Request $request, $id)

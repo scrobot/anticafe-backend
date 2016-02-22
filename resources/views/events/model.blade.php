@@ -4,6 +4,12 @@
 
     <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <style>
+        .tags ul {
+            list-style: none;
+        }
+        .tags ul ul {
+            padding-left: 20px;
+        }
         .relative {
             position: relative;
         }
@@ -237,14 +243,37 @@
                     <div class="panel-heading">
                         <h2>Возможности</h2>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body tags">
                         @foreach($tags as $tag)
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>{{ Form::checkbox('tags[]', $tag->id, $event == null ? false : $event->Tags->contains($tag->id)) }} {{$tag->name}}</label>
+                                    <ul>
+                                        <li>
+                                            <label>{{ Form::checkbox('tags[]', $tag->id, $event == null ? false : $event->Tags->contains($tag->id), ['class' => 'group_tag']) }} {{$tag->name}}</label>
+                                            <ul>
+                                                @foreach($tag->Children as $child)
+                                                    <li><label>{{ Form::checkbox('tags[]', $child->id, $event == null ? false : $event->Tags->contains($child->id)) }} {{$child->name}}</label></li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         @endforeach
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <ul>
+                                        <li>
+                                            <label><input class="group_tag"type="checkbox">Без категории</label>
+                                            <ul>
+                                                @foreach($alones as $alone)
+                                                    <li><label>{{ Form::checkbox('tags[]', $alone->id, $event == null ? false : $event->Tags->contains($alone->id)) }} {{$alone->name}}</label></li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -299,6 +328,22 @@
                     $(this).prop('checked', checked)
                 })
 
+            })
+
+            $('.group_tag').click(function(){
+                var checked;
+
+                console.log($(this).prop("checked"))
+
+                if($(this).prop("checked")) {
+                    checked = true
+                } else {
+                    checked = false
+                }
+
+                $(this).closest('li').find('ul').find('input[type=checkbox]').each(function(){
+                    $(this).prop("checked", checked)
+                })
             })
 
         })
