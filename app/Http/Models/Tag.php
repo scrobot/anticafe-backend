@@ -34,6 +34,11 @@ class Tag extends Model implements ModelNameable
         return $query->orderBy('name', 'asc');
     }
 
+    public function scopeGroups($query)
+    {
+        return $query->where("is_group", 1);
+    }
+
     public function Aliases()
     {
         return $this->belongsToMany(Alias::class);
@@ -42,6 +47,16 @@ class Tag extends Model implements ModelNameable
     public function Anticafes()
     {
         return $this->belongsToMany(Anticafe::class);
+    }
+
+    public function Group()
+    {
+        return $this->belongsTo(static::class, "parent_id", "id");
+    }
+
+    public function Children()
+    {
+        return $this->hasMany(static::class, "id", "parent_id");
     }
 
     public function setModelName()

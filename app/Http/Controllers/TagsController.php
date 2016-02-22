@@ -28,7 +28,14 @@ class TagsController extends Controller
     public function getIndex()
     {
         $tags = Tag::sorted()->get();
-        return view('tags.list')->withTitle($this->title)->withTags($tags);
+        $groups = [];
+        $groups[null] = "Выберите группу";
+
+        foreach (Tag::groups()->get() as $group) {
+            $groups[$group->id] = $group->name;
+        }
+
+        return view('tags.list')->withTitle($this->title)->withTags($tags)->withGroups($groups);
     }
 
     public function postStore(Request $request)
@@ -37,6 +44,8 @@ class TagsController extends Controller
             [
                 'slug' => $request->input('name'),
                 'name' => $request->input('name'),
+                'parent_id' => $request->input('parent_id') ? $request->input('parent_id') : NULL,
+                'is_group' => $request->input('is_group') ? 1 : 0
             ]
         );
 
@@ -46,7 +55,13 @@ class TagsController extends Controller
     public function getEdit($id)
     {
         $tag = Tag::find($id);
-        return view('tags.edit')->withTitle($this->title)->withTag($tag);
+        $groups = [];
+        $groups[null] = "Выберите группу";
+
+        foreach (Tag::groups()->get() as $group) {
+            $groups[$group->id] = $group->name;
+        }
+        return view('tags.edit')->withTitle($this->title)->withTag($tag)->withGroups($groups);
     }
 
     public function postUpdate(Request $request, $id)
@@ -56,6 +71,8 @@ class TagsController extends Controller
         $tag->update([
             'slug' => $request->input('name'),
             'name' => $request->input('name'),
+            'parent_id' => $request->input('parent_id') ? $request->input('parent_id') : NULL,
+            'is_group' => $request->input('is_group') ? 1 : 0
         ]);
 
         $tag->syncWithAliases($request->input('aliases'));

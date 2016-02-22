@@ -46,6 +46,15 @@
                             {{Form::label('name', "Название")}}
                             {{Form::text('name', null, ["class" => "form-control"])}}
                         </div>
+                        <div class="form-group">
+                            {{ Form::select("parent_id", $groups, null, ['class'=>'form-control',  'id' => 'group']) }}
+                        </div>
+                        <div class="form-group">
+                            <label id="is_group" {{count($tag->Children) ? 'style=display:none' : ""}}>
+                                {{ Form::checkbox("is_group", 1, null) }}
+                                Группа
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,6 +146,13 @@
                     $('.btn-clone').fadeIn()
                 }
             }
+            $('#group').change(function(){
+                if(isNaN(parseInt($(this).val()))) {
+                    $('#is_group').fadeIn()
+                } else {
+                    $('#is_group').fadeOut()
+                }
+            })
         })
     </script>
 @stop

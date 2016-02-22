@@ -16,6 +16,11 @@
         <div class="col-md-12">
             {{ Form::open(['action' => "TagsController@postStore", 'class' => 'form-inline']) }}
             {{ Form::text('name', null, ['class'=>'form-control', 'placeholder' => 'Возможность']) }}
+            {{ Form::select("parent_id", $groups, null, ['class'=>'form-control',  'id' => 'group']) }}
+            <label id="is_group">
+                {{ Form::checkbox("is_group", 1, null, ['class'=>'form-control']) }}
+                Группа
+            </label>
             <button class="btn btn-success" type="submit">Добавить</button>
             {{ Form::close() }}
         </div>
@@ -29,6 +34,8 @@
                     <th>id</th>
                     <th>Слуг</th>
                     <th>Наименование</th>
+                    <th>Группа</th>
+                    <th>Является группой</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -38,6 +45,8 @@
                         <td>{{$item->id}}</td>
                         <td>{{$item->slug}}</td>
                         <td>{{$item->name}}</td>
+                        <td>{{$item->Group ? $item->Group->name : "Без группы"}}</td>
+                        <td>{{$item->is_group ? "Да" : "Нет"}}</td>
                         <td>
                             <a href="{{action('TagsController@getEdit', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
                             <a href="{{action('TagsController@getDelete', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
@@ -52,4 +61,16 @@
             </table>
         </div>
     </div>
-@endsection
+@stop
+
+@section('js')
+    <script type="text/javascript">
+        $('#group').change(function(){
+            if(isNaN(parseInt($(this).val()))) {
+                $('#is_group').fadeIn()
+            } else {
+                $('#is_group').fadeOut()
+            }
+        })
+    </script>
+@stop
