@@ -26,6 +26,8 @@ class EventsController extends Controller
     public function getIndex(Request $request)
     {
         $query = Anticafe::getEvents();
+
+        // TODO: отрефакторить эту говновыборку :D
         if($request->get('name')) {
             $query = $query->orderBy('name', $request->get('name'))->paginate(15);
         } elseif($request->get('total_views')) {

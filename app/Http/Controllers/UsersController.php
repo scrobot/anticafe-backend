@@ -9,6 +9,7 @@
 namespace Anticafe\Http\Controllers;
 
 
+use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class UsersController extends Controller
 
     public function getCreate()
     {
-        return view('users.create')->withTitle(User::getModelName());
+        return view('users.create')->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
     }
 
     public function postCreate(Request $request)
@@ -40,12 +41,15 @@ class UsersController extends Controller
         $user->password = bcrypt($request->input('password'));
         $user->save();
 
+        $user->Roles()->sync($request->input('roles'));
+        $user->Entities()->sync($request->input('anticafes'));
+
         return redirect(route('users'))->withMsg('common.msg.create');
     }
 
     public function getEdit($id)
     {
-        return view('users.edit')->withUser(User::find($id))->withTitle(User::getModelName());
+        return view('users.edit')->withUser(User::find($id))->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
     }
 
     public function postUpdate(Request $request, $id)
@@ -58,7 +62,11 @@ class UsersController extends Controller
             $r = $request->except('password', 'password_confirmation');
         }
 
-        User::find($id)->update($r);
+        $user = User::find($id);
+        $user->update($r);
+
+        $user->Roles()->sync($request->input('roles'));
+        $user->Entities()->sync($request->input('anticafes'));
 
         return back()->withMsg('common.msg.edit');
 

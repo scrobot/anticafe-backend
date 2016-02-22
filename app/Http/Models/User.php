@@ -4,6 +4,7 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Anticafe\Http\Traits\UserValidatorTrait;
+use Helpers\Roles\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -49,5 +50,30 @@ class User extends Authenticatable implements ModelNameable
     public function Bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function Roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function role()
+    {
+        return $this->Roles->first()->name;
+    }
+
+    public function Entities()
+    {
+        return $this->belongsToMany(Anticafe::class);
+    }
+
+    public function Anticafes()
+    {
+        return $this->Entities->where('type', 0)->get();
+    }
+
+    public function Events()
+    {
+        return $this->Entities->where('type', 1)->get();
     }
 }

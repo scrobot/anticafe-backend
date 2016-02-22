@@ -41,6 +41,8 @@ class Anticafe extends Model implements ModelNameable
      * @return mixed
      */
 
+    // TODO: заменить на skope
+
     public static function getAnticafes()
     {
         return static::where('type', 0);
@@ -82,6 +84,11 @@ class Anticafe extends Model implements ModelNameable
     public function Bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function Users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     /**
