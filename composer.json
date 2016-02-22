@@ -29,10 +29,13 @@
         ],
         "psr-4": {
             "Anticafe\\": "app/",
-            "Helpers\\ImageHandler\\": "packages/helpers/image-handler/src"
+            "Helpers\\ImageHandler\\": "packages/helpers/image-handler/src",
+            "Helpers\\Permissions\\": "packages/helpers/permissions/src",
+            "Helpers\\Roles\\": "packages/helpers/roles/src"
         },
         "files": [
-            "packages/helpers/image-handler/src/helpers.php"
+            "packages/helpers/image-handler/src/helpers.php",
+            "packages/helpers/permissions/src/helpers.php"
         ]
     },
     "autoload-dev": {

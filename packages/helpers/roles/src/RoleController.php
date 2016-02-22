@@ -1,10 +1,9 @@
 <?php
 
-namespace Anticafe\Packages\Roles;
+namespace Helpers\Roles;
 
 use Anticafe\Http\Controllers\Controller;
 use Anticafe\Http\Models\User;
-use Anticafe\Packages\Permissions\Permission;
 use Illuminate\Http\Request;
 
 
@@ -42,7 +41,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->update($request->all());
 
-        return redirect(action('\Anticafe\Packages\Roles\RoleController@getIndex'))->withMsg('Редактировать');
+        return redirect(action('\Helpers\RoleController@getIndex'))->withMsg('Редактировать');
     }
 
     public function getDestroy($id)
@@ -64,7 +63,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
 
-        $role->permissions()->sync(is_null($request->input('permissions')) ? [] : $request->input('permissions'));
+        $role->Permissions()->sync(is_null($request->input('permissions')) ? [] : $request->input('permissions'));
 
         return back()->withMsg('Набор правил отредактирован');
     }

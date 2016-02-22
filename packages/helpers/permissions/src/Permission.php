@@ -1,6 +1,6 @@
 <?php
 
-namespace Anticafe\Packages\Permissions;
+namespace Helpers\Permissions;
 
 use Illuminate\Database\Eloquent\Model;
 use Stringy\StaticStringy;

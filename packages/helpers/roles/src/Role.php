@@ -1,9 +1,9 @@
 <?php
 
-namespace Anticafe\Packages\Roles;
+namespace Helpers\Roles;
 
 use Anticafe\Http\Models\User;
-use Anticafe\Packages\Permissions\Permission;
+use Helpers\Permissions\Permission;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
@@ -16,12 +16,12 @@ class Role extends Model {
 
     public $timestamps = false;
 
-    public function users()
+    public function Users()
     {
         return $this->belongsToMany(User::class);
     }
 
-    public function permissions()
+    public function Permissions()
     {
         return $this->belongsToMany(Permission::class);
     }

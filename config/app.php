@@ -151,6 +151,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Helpers\ImageHandler\ImageHandlerServiceProvider::class,
+        \Helpers\Roles\RolesServiceProvider::class,
+        \Helpers\Permissions\PermissionsServiceProvider::class,
 
         /*
          * Application Service Providers...

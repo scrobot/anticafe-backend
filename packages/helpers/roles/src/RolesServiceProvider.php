@@ -1,4 +1,4 @@
-<?php namespace Anticafe\Packages\Roles;
+<?php namespace Helpers\Roles;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Http\Kernel;
@@ -37,11 +37,7 @@ class RolesServiceProvider extends ServiceProvider
             __DIR__.'/../seeds/' => database_path('seeds')
         ], 'seeds');
 
-
-
         require __DIR__ . '/routes.php';
-
-        pusher('sidebar', 'roles::sidebar', [], -3);
 
     }
 }

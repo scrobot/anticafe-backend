@@ -1,5 +1,5 @@
 <?php
-namespace Anticafe\Packages\Permissions;
+namespace Helpers\Permissions;
 
 use Anticafe\Http\Models\User;
 
@@ -129,15 +129,10 @@ class Permiter
 
     protected static function absolutePass($user)
     {
-        if($user->level < 1) {
-            return true;
-        }
-
-        $class = class_basename($user);
         $pass = false;
 
-        if($class == "Staff") {
-            $pass = $user->superadmin ? true : false;
+        if($user->level == 0) {
+            $pass = true;
         }
 
         return $pass;

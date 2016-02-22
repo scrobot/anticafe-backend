@@ -1,6 +1,6 @@
 {
-  "name": "yadeshevlebackend/roles",
-  "description": "Modules template",
+  "name": "helpers/roles",
+  "description": "Anticafe roles module",
   "require-dev": {
     "laravel/framework": "5.*"
   },
@@ -16,10 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Yadeshevle\\Roles\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+      "Helpers\\Roles\\": "src/"
+    }
   }
 }

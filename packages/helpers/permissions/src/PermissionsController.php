@@ -1,6 +1,6 @@
 <?php
 
-namespace Anticafe\Packages\Permissions;
+namespace Helpers\Permissions;
 
 use Anticafe\Http\Controllers\Controller;
 use Stringy\StaticStringy;

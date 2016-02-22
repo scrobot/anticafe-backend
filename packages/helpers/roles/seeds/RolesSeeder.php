@@ -11,7 +11,6 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
-        \Yadeshevle\Roles\Role::firstOrCreate(['name' => 'Исполнитель']);
-        \Yadeshevle\Roles\Role::firstOrCreate(['name' => 'Заказчик']);
+        \Helpers\Roles\Role::firstOrCreate(['name' => 'Менеджер']);
     }
 }

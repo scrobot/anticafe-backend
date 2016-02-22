@@ -1,4 +1,4 @@
-<?php namespace Anticafe\Packages\Permissions;
+<?php namespace Helpers\Permissions;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Http\Kernel;
@@ -41,9 +41,6 @@ class PermissionsServiceProvider extends ServiceProvider
             __DIR__.'/../migrations/' => database_path('migrations')
         ], 'migrations');
 
-        require __DIR__ . '/routes.php';
-
-        require __DIR__ . '/blade.php';
-
+        require __DIR__ . "/routes.php";
     }
 }

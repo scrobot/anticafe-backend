@@ -1,6 +1,6 @@
 {
-  "name": "yadeshevlebackend/permissions",
-  "description": "Modules template",
+  "name": "helpers/permissions",
+  "description": "Anticafe permissions module",
   "require-dev": {
     "laravel/framework": "5.*"
   },
@@ -16,10 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Yadeshevle\\Permissions\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+      "Helpers\\Permissions\\": "src/"
+    }
   }
 }
