@@ -94,9 +94,12 @@
             <div class="col-md-2">
                 <ul class="nav nav-pills nav-stacked">
                     <h3>Основное</h3>
-                    <li><a href="{{route('anticafes')}}">Антикафе</a></li>
-                    <li><a href="{{route('events')}}">Cобытия</a></li>
-
+                    @if(can('anticafe.see.all'))
+                        <li><a href="{{route('anticafes')}}">Антикафе</a></li>
+                    @endif
+                    @if(can('events.see.all'))
+                        <li><a href="{{route('events')}}">Cобытия</a></li>
+                    @endif
                     @if(can('tags.aligned'))
                         <li><a href="{{route('tags')}}">Теги и Возможности</a></li>
                     @endif

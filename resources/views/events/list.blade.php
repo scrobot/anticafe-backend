@@ -43,6 +43,7 @@
         </thead>
         <tbody>
         @forelse($events as $item)
+            @if(can('events.see.own', ['\Anticafe\Http\Models\User@isMyAnticafe', $item->id], null, 'or'))
             <tr>
                 <td>{{$item->id}}</td>
                 <td>
@@ -56,6 +57,7 @@
                 <td>{{$item->total_likes}}</td>
                 <td>{{$item->total_bookings}}</td>
             </tr>
+            @endif
         @empty
             <tr>
                 <td colspan="9">Событий в базе не найдено</td>

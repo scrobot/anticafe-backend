@@ -124,16 +124,20 @@
                         <hr/>
 
                         <div class="row">
-                            <div class="col-md-4 col-md-offset-2">
-                                <div class="form-group">
-                                    <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                            @if(can('edit.promo'))
+                                <div class="col-md-4 col-md-offset-2">
+                                    <div class="form-group">
+                                        <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-md-offset-2">
-                                <div class="form-group">
-                                    <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
+                            @endif
+                            @if(can('edit.booking.available'))
+                                <div class="col-md-4 col-md-offset-2">
+                                    <div class="form-group">
+                                        <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
 
                         <hr/>

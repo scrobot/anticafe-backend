@@ -86,4 +86,10 @@ class User extends Authenticatable implements ModelNameable
 
         return $user->id == $me->id;
     }
+
+    public function isMyAnticafe($anticafe_id)
+    {
+        $me = auth()->user();
+        return $me->Entities->contains($anticafe_id);
+    }
 }
