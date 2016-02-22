@@ -22,6 +22,7 @@ class ImageOptionsController extends Controller
     public function __construct()
     {
         $this->title = ImageOption::getModelName();
+        $this->middleware('options');
     }
 
     public function getIndex()

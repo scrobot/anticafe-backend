@@ -95,15 +95,21 @@
                     <h3>Основное</h3>
                     <li><a href="{{route('anticafes')}}">Антикафе</a></li>
                     <li><a href="{{route('events')}}">Cобытия</a></li>
-                    <li><a href="{{route('tags')}}">Теги и Возможности</a></li>
+
+                    @if(can('tags.aligned'))
+                        <li><a href="{{route('tags')}}">Теги и Возможности</a></li>
+                    @endif
+
                     <li><a href="{{route('bookings')}}">Бронирования</a></li>
                     <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     <h3>Права и роли</h3>
                     <li><a href="{{route('users')}}">Пользователи</a></li>
                     <li><a href="{{route('permissions')}}">Права</a></li>
                     <li><a href="{{route('roles')}}">Роли</a></li>
-                    <h3>Опции</h3>
-                    <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
+                    @if(can('options.aligned'))
+                        <h3>Опции</h3>
+                        <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
+                    @endif
                     <h3>API</h3>
                     <li><a href="{{route('api.doc')}}">Документация</a></li>
                 </ul>

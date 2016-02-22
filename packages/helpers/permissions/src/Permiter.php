@@ -24,9 +24,11 @@ class Permiter
     public static function checkPermission($permissions, $operator = 'and', $throw = false, $user = null, $callback = null)
     {
 
-        $absolutePass = static::absolutePass($user);
+        if($user == null) {
+            $user = auth()->user();
+        }
 
-        if ($absolutePass) {
+        if($user->level == 0) {
             return true;
         }
 
@@ -126,16 +128,4 @@ class Permiter
             return false;
         }
     }
-
-    protected static function absolutePass($user)
-    {
-        $pass = false;
-
-        if($user->level == 0) {
-            $pass = true;
-        }
-
-        return $pass;
-    }
-
 }

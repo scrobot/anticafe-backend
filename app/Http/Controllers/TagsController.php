@@ -16,13 +16,13 @@ class TagsController extends Controller
 {
 
     private $title;
-
     /**
      * AnticafeController constructor.
      */
     public function __construct()
     {
         $this->title = Tag::getModelName();
+        $this->middleware('tags');
     }
 
     public function getIndex()

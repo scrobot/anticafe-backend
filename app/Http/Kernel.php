@@ -48,5 +48,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Anticafe\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'options' => \Anticafe\Http\Middleware\RuleOption::class,
+        'tags' => \Anticafe\Http\Middleware\RuleTags::class,
     ];
 }

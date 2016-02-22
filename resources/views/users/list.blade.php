@@ -38,8 +38,9 @@
                     </td>
                     <td>
                         @unless($user->level < 1)
-                            {{--@if(can(['staff.user.edit', ['staff.user.self_edit', $user, \Auth::user()]], 'or'))--}}
+                            @if(can('users.edit'))
                                 <a href="{{action('UsersController@getEdit', $user->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                            @endif
                         @endunless
                     </td>
                 </tr>
