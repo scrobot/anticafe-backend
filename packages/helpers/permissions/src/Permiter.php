@@ -61,6 +61,8 @@ class Permiter
                 throw new \Exception('Invalid permissions operator: ' . print_r($operator, true));
         }
 
+//        dd($permissions);
+
         foreach ($permissions as $permission) {
 
             /*
@@ -88,8 +90,10 @@ class Permiter
 
                 if(is_array($callback)) {
                     $call = $callback[0];
+//                    dd($call);
                     $params = array_slice($callback, 1, count($callback));
                     $callbackMatch = app()->call($call, $params);
+//                    dd($callbackMatch);
                 } else {
                     $callbackMatch = app()->call($callback);
                 }
@@ -99,6 +103,8 @@ class Permiter
             }
 
             $result = $match && $callbackMatch;
+
+//            dd($operator, $result, $match, $callbackMatch);
 
             if ($operator == 'and' && !$result) {
                 $summary = false;

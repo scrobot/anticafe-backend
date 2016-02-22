@@ -81,12 +81,16 @@
 
 @section('breadcrumbs')
     <li><a href="/">Главная</a></li>
-    <li><a href="{{route('users')}}">{{$title}}</a></li>
+    @if(can('users.see'))
+        <li><a href="{{route('users')}}">{{$title}}</a></li>
+    @endif
     <li class="active">редактировать</li>
 @stop
 
 @section('actions_menu')
-    @include('users.actions_menu')
+    @if(can('users.see'))
+        @include('users.actions_menu')
+    @endif
 @stop
 
 @section('content')
@@ -117,6 +121,7 @@
                     {{Form::password('password_confirmation', ["class" => "form-control"])}}
                 </div>
 
+                @if(can('users.change_role'))
                 <div class="form-group">
                     <label>Роль</label>
                     <select name="roles[]" class="form-control">
@@ -126,52 +131,53 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Антикафе и события</h2>
-                    </div>
-                    <div class="panel-body">
-                        <button id="check-all" class="btn btn-success btn-lg" type="button">Выбрать все</button>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Наименование</th>
-                                <th>Тип</th>
-                                <th>Привязать</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($anticafes as $anticafe)
+                @if(can('users.give_responsobility'))
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2>Антикафе и события</h2>
+                        </div>
+                        <div class="panel-body">
+                            <button id="check-all" class="btn btn-success btn-lg" type="button">Выбрать все</button>
+                            <table class="table">
+                                <thead>
                                 <tr>
-                                    <td>{{$anticafe->name}}</td>
-                                    <td>{{config("types.select.{$anticafe->type}")}}</td>
-                                    <td class="relative">
-                                        <input {{ !$user->Entities->contains($anticafe->id) ?: "checked"}} name="anticafes[]" type="checkbox" value="{{$anticafe->id}}" class="checkbox">
-                                        <label for="checkbox"></label>
-                                    </td>
+                                    <th>Наименование</th>
+                                    <th>Тип</th>
+                                    <th>Привязать</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="3">В базе данных нет антикафе</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @forelse($anticafes as $anticafe)
+                                    <tr>
+                                        <td>{{$anticafe->name}}</td>
+                                        <td>{{config("types.select.{$anticafe->type}")}}</td>
+                                        <td class="relative">
+                                            <input {{ !$user->Entities->contains($anticafe->id) ?: "checked"}} name="anticafes[]" type="checkbox" value="{{$anticafe->id}}" class="checkbox">
+                                            <label for="checkbox"></label>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3">В базе данных нет антикафе</td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.edit')}}</button>
-                {{--@endif @if(can('staff.user.block'))--}}
-                @if($user->blocked)
+                @if(can('users.unblock') && $user->blocked)
                     <a href="{{action('UsersController@getUnblock', $user->id)}}" title="{{trans('common.button.unblock')}}" class="btn btn-lg btn-success"><span class="glyphicon glyphicon glyphicon-off"></span> {{trans('common.button.unblock')}}</a>
-                @else
+                @elseif(can('users.block'))
                     <a href="{{action('UsersController@getBlock', $user->id)}}" title="{{trans('common.button.block')}}" class="btn btn-lg btn-danger"><span class="glyphicon glyphicon glyphicon-off"></span> {{trans('common.button.block')}}</a>
                 @endif
-                {{--@endif
-                @if(can('staff.user.delete') && !$user->isMe($user, \Auth::user()))--}}
-                <a href="{{action('UsersController@getDestroy', $user->id)}}" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> {{trans('common.button.delete')}}</a>
-                {{--@endif--}}
+                @if(can('users.delete'))
+                    <a href="{{action('UsersController@getDestroy', $user->id)}}" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> {{trans('common.button.delete')}}</a>
+                @endif
             </form>
         </div>
     </div>

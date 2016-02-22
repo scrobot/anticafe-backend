@@ -52,8 +52,9 @@ class UsersController extends Controller
 
     public function getEdit($id)
     {
-        check_perm('users.edit');
-        return view('users.edit')->withUser(User::find($id))->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
+        $user = User::find($id);
+        check_perm(['users.edit', 'users.edit.self'], ['Anticafe\Http\Models\User@isMe', $user], null, 'or');
+        return view('users.edit')->withUser($user)->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
     }
 
     public function postUpdate(Request $request, $id)
