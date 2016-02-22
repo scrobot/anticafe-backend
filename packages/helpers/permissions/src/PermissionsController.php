@@ -9,21 +9,16 @@ use Illuminate\Http\Request;
 class PermissionsController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function getIndex()
     {
         $permissions = Permission::all();
 
-        return view('permissions::list')->withPermissions($permissions)->withTitle(config('module.permissions.name'));
+        return view('permissions::list')->withPermissions($permissions)->withTitle("Правила");
     }
 
     public function getCreate()
     {
-        return view('permissions::create')->withTitle(config('module.permissions.name'));
+        return view('permissions::create')->withTitle("Правила");
     }
 
     public function postStore(Request $request)
@@ -31,19 +26,18 @@ class PermissionsController extends Controller
         $permission = new Permission();
         $permission->name = $request->input('name');
         $permission->id = $request->input('slug');
-        $permission->module = config('module.'.$request->input('module'));
-        $permission->for_whom = $request->input('for_whom');
+        $permission->group = $request->input('module');
 
         $permission->save();
 
-        return redirect(action('\Anticafe\Packages\Permissions\PermissionsController@getIndex'))->withMsg('Cоздано');
+        return redirect(action('\Helpers\Permissions\PermissionsController@getIndex'))->withMsg('common.msg.create');
     }
 
     public function getEdit($id)
     {
         $permission = Permission::find($id);
 
-        return view('permissions::edit')->withPermission($permission)->withTitle(config('module.permissions.name'));
+        return view('permissions::edit')->withPermission($permission)->withTitle("Правила");
     }
 
     public function postUpdate(Request $request, $id)
@@ -51,19 +45,18 @@ class PermissionsController extends Controller
         $permission = Permission::find($id);
         $permission->name = $request->input('name');
         $permission->id = $request->input('slug');
-        $permission->module = config('module.'.$request->input('module'));
-        $permission->for_whom = $request->input('for_whom');
+        $permission->group = $request->input('module');
 
         $permission->save();
 
-        return redirect(action('\Anticafe\Packages\Permissions\PermissionsController@getIndex'))->withMsg('Отредактировано');
+        return redirect(action('\Helpers\Permissions\PermissionsController@getIndex'))->withMsg('common.msg.edit');
     }
 
     public function getDestroy($id)
     {
         Permission::destroy($id);
 
-        return back()->withMsg('Удалено');
+        return back()->withMsg('common.msg.delete');
     }
 
 }

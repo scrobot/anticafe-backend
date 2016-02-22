@@ -2,6 +2,7 @@
 
 namespace Helpers\Permissions;
 
+use Helpers\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 use Stringy\StaticStringy;
 
@@ -17,12 +18,8 @@ class Permission extends Model {
     
     protected $table = 'permissions';
 
-    protected $casts = [
-        'module' => 'array',
-    ];
-
     public function roles()
     {
-        return $this->belongsToMany('Anticafe\Packages\Roles\Role');
+        return $this->belongsToMany(Role::class);
     }
 }
