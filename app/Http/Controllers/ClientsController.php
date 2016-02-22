@@ -16,6 +16,7 @@ class ClientsController extends Controller
     public function __construct()
     {
         $this->title = "Клиенты";
+        $this->middleware('clients');
     }
 
     public function getIndex()

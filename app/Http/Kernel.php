@@ -50,5 +50,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'options' => \Anticafe\Http\Middleware\RuleOption::class,
         'tags' => \Anticafe\Http\Middleware\RuleTags::class,
+        'clients' => \Anticafe\Http\Middleware\RuleClients::class,
     ];
 }

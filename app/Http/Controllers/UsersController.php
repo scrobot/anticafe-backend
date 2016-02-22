@@ -18,6 +18,8 @@ class UsersController extends Controller
 
     public function getIndex()
     {
+        check_perm('users.see');
+
         $users = User::paginate(15);
 
         return view('users.list')->withUsers($users)->withTitle(User::getModelName());
@@ -25,6 +27,7 @@ class UsersController extends Controller
 
     public function getCreate()
     {
+        check_perm('users.create');
         return view('users.create')->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
     }
 
@@ -49,6 +52,7 @@ class UsersController extends Controller
 
     public function getEdit($id)
     {
+        check_perm('users.edit');
         return view('users.edit')->withUser(User::find($id))->withTitle(User::getModelName())->withAnticafes(Anticafe::where('id', ">", 0)->orderBy('type', 'asc')->get());
     }
 
@@ -74,12 +78,14 @@ class UsersController extends Controller
 
     public function getDestroy($id)
     {
+        check_perm('users.delete');
         User::find($id)->delete();
         return back()->withMsg('common.msg.delete');
     }
 
     public function getBlock($id)
     {
+        check_perm('users.block');
         $user = User::find($id);
         $user->blocked = 1;
         $user->save();
@@ -88,6 +94,7 @@ class UsersController extends Controller
 
     public function getUnblock($id)
     {
+        check_perm('users.unblock');
         $user = User::find($id);
         $user->blocked = 0;
         $user->save();
