@@ -295,6 +295,11 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            @if($event != null)
+                <a href="{{action('EventsController@getDelete', $event->id)}}" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> {{trans('common.button.delete')}}</a>
+            @endif
+        </div>
     </div>
 @endsection
 

@@ -254,6 +254,11 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            @if($anticafe != null)
+                <a href="{{action('AnticafeController@getDelete', $anticafe->id)}}" title="{{trans('common.button.delete')}}" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> {{trans('common.button.delete')}}</a>
+            @endif
+        </div>
     </div>
 @endsection
 
