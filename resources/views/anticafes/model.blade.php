@@ -11,8 +11,12 @@
             vertical-align: middle;
         }
 
-        .grid {
-            min-height: 900px;
+        .panel-body .form-group {
+            padding: 5px 0;
+        }
+
+        .h74 {
+            height: 74px !important;
         }
         /* Cначала обозначаем стили для IE8 и более старых версий
 т.е. здесь мы немного облагораживаем стандартный чекбокс. */
@@ -103,16 +107,58 @@
         <div class="col-md-12">
         {{ Form::model($anticafe, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
             {!! Form::hidden('type', 0) !!}
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2>Основные данные</h2>
                     </div>
-                    <div class="panel-body grid">
+                    <div class="panel-body">
                         <div class="form-group">
                             {{Form::label('name', "Фирменное Название")}}
                             {{Form::text('name', null, ["class" => "form-control"])}}
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="form-group">
+                                    <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="form-group">
+                                    <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @if($anticafe != null)
+                                        <div class="col-md-12">
+                                            <img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
+                                        </div>
+                                    @endif
+                                    {{Form::label('logo', "Логотип")}}
+                                    {{Form::file('logo', ["class" => "form-control"])}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @if($anticafe != null)
+                                        <div class="col-md-12">
+                                            <img src="{{$anticafe->cover ? "/images/anticafes/covers/100x100/100x100_".$anticafe->cover : "/images/no-image.png"}}" width="100" height="100">
+                                        </div>
+                                    @endif
+                                    {{Form::label('cover', "Обложка")}}
+                                    {{Form::file('cover', ["class" => "form-control"])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
 
                         <div class="form-group">
                             {{Form::label('city', "Город")}}
@@ -126,12 +172,12 @@
 
                         <div class="form-group">
                             {{Form::label('metro', "Ближайшее метро")}}
-                            {{Form::textarea('metro', null, ["class" => "form-control", 'rows' => 4])}}
+                            {{Form::textarea('metro', null, ["class" => "form-control", 'rows' => 3])}}
                         </div>
 
                         <div class="form-group">
                             {{Form::label('prices', "Цены")}}
-                            {{Form::textarea('prices', null, ["class" => "form-control"])}}
+                            {{Form::textarea('prices', null, ["class" => "form-control h74"])}}
                         </div>
 
                         <div class="form-group">
@@ -143,88 +189,20 @@
                             {{Form::label('phone', "Номер телефона")}}
                             {{Form::text('phone', null, ["class" => "form-control"])}}
                         </div>
-                        <div class="form-group">
-                            <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Изображения</h2>
-                    </div>
-                    <div class="panel-body grid">
-                        <div class="form-group">
-                            @if($anticafe != null)
-                            <div class="col-md-12">
-                                <img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
+
+                        <div class="panel-body">
+                            <div class="form-group">
+                                {{Form::label('excerpt', "Краткое описание")}}
+                                {{Form::textarea('excerpt', null, ["class" => "form-control"])}}
                             </div>
-                            @endif
-                            {{Form::label('logo', "Логотип")}}
-                            {{Form::file('logo', ["class" => "form-control"])}}
                         </div>
-
-                        <div class="form-group">
-                            @if($anticafe != null)
-                            <div class="col-md-12">
-                                <img src="{{$anticafe->cover ? "/images/anticafes/covers/100x100/100x100_".$anticafe->cover : "/images/no-image.png"}}" width="100" height="100">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                {{Form::label('description', "Описание")}}
+                                {{Form::textarea('description', null, ["class" => "form-control"])}}
                             </div>
-                            @endif
-                            {{Form::label('cover', "Обложка")}}
-                            {{Form::file('cover', ["class" => "form-control"])}}
                         </div>
 
-                        @if($anticafe != null)
-                        <div class="col-md-12">
-                            <h4>Миниатюры</h4>
-                            <h5>Логотип</h5>
-                            @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
-                                <div class="col-md-2">
-                                    <img src="{{"/images/anticafes/logos/{$option->name}/{$option->name}_".$anticafe->logo}}" style="width: 100%; height: auto">
-                                    <p>{{$option->name}}</p>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div class="col-md-12">
-                            <h5>Ковер</h5>
-                            @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
-                                <div class="col-md-2">
-                                    <img src="{{"/images/anticafes/covers/{$option->name}/{$option->name}_".$anticafe->cover}}" style="width: 100%; height: auto">
-                                    <p>{{$option->name}}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Описание</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            {{Form::label('excerpt', "Краткое описание")}}
-                            {{Form::textarea('excerpt', null, ["class" => "form-control"])}}
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            {{Form::label('description', "Описание")}}
-                            {{Form::textarea('description', null, ["class" => "form-control"])}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Ссылки на соц.сети</h2>
-                    </div>
-                    <div class="panel-body">
                         <div class="form-group">
                             {{Form::label('vk', "Вконтакте")}}
                             {{Form::text('vk', null, ["class" => "form-control"])}}
@@ -241,7 +219,6 @@
                             {{Form::label('tw', "Twitter")}}
                             {{Form::text('tw', null, ["class" => "form-control"])}}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -261,8 +238,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="col-md-12">
                 <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.save')}}</button>
             </div>

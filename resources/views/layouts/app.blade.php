@@ -99,7 +99,7 @@
                     <li><a href="{{route('bookings')}}">Бронирования</a></li>
                     <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     <h3>Права и роли</h3>
-                    <li><a href="{{route('users')}}">Менеджеры и администраторы</a></li>
+                    <li><a href="{{route('users')}}">Пользователи</a></li>
                     <li><a href="#">Права</a></li>
                     <li><a href="#">Роли</a></li>
                     <h3>Опции</h3>

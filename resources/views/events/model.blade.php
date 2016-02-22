@@ -14,6 +14,10 @@
         .grid {
             min-height: 800px;
         }
+
+        .h74 {
+            height: 74px !important;
+        }
         /* Cначала обозначаем стили для IE8 и более старых версий
 т.е. здесь мы немного облагораживаем стандартный чекбокс. */
         .checkbox {
@@ -100,7 +104,7 @@
         <div class="col-md-12">
         {{ Form::model($event, ['url' => $action, 'files' => true, 'class' => 'image-handler-binded-form']) }}
             {!! Form::hidden('type', 1) !!}
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2>Основные данные</h2>
@@ -111,101 +115,81 @@
                             {{Form::text('name', null, ["class" => "form-control"])}}
                         </div>
 
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="form-group">
+                                    <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="form-group">
+                                    <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @unless($event == null)
+                                        <div class="col-md-12">
+                                            <img src="{{$event->logo ? "/images/anticafes/logos/100x100/100x100_".$event->logo : "/images/no-image.png"}}" width="100" height="100">
+                                        </div>
+                                    @endunless
+                                    {{Form::label('logo', "Фото")}}
+                                    {{Form::file('logo', ["class" => "form-control"])}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @unless($event == null)
+                                        <div class="col-md-12">
+                                            <img src="{{$event->cover ? "/images/anticafes/covers/100x100/100x100_".$event->cover : "/images/no-image.png"}}" width="100" height="100">
+                                        </div>
+                                    @endunless
+                                    {{Form::label('cover', "Обложка")}}
+                                    {{Form::file('cover', ["class" => "form-control"])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{Form::label('start_at', "Начало")}}
+                                    {{Form::text('start_at', null, ["class" => "form-control", "placeholder" => 'Дата и время начала'])}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{Form::label('end_at', "Окончание")}}
+                                    {{Form::text('end_at', null, ["class" => "form-control", "placeholder" => 'Дата и время окончания'])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
                         <div class="form-group">
                             {{Form::label('excerpt', "Краткое описание")}}
-                            {!! Form::textarea('excerpt', null, ["class" => "form-control", 'rows' => 4]) !!}
+                            {!! Form::textarea('excerpt', null, ["class" => "form-control", 'rows' => 3]) !!}
                         </div>
 
                         <div class="form-group">
                             {{Form::label('prices', "Цены")}}
-                            {!! Form::textarea('prices', null, ["class" => "form-control"]) !!}
+                            {!! Form::textarea('prices', null, ["class" => "form-control h74"]) !!}
                         </div>
 
-                        <div class="form-inline relative">
-                            <div class="form-group">
-                                {{Form::label('start_at', "Дата и время начала")}}
-                                {{Form::text('start_at', null, ["class" => "form-control", "placeholder" => 'Дата и время начала'])}}
-                            </div>
-                            <div class="form-group">
-                                {{Form::label('end_at', "Дата и время окончания")}}
-                                {{Form::text('end_at', null, ["class" => "form-control", "placeholder" => 'Дата и время окончания'])}}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>{{Form::checkbox('promo', 1, null)}} Промо</label>
-                        </div>
-
-                        <div class="form-group">
-                            <label>{{Form::checkbox('booking_available', 1, null)}} Доступная бронь</label>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Изображения</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            @unless($event == null)
-                                <div class="col-md-12">
-                                    <img src="{{$event->logo ? "/images/anticafes/logos/100x100/100x100_".$event->logo : "/images/no-image.png"}}" width="100" height="100">
-                                </div>
-                            @endunless
-                            {{Form::label('logo', "Фото")}}
-                            {{Form::file('logo', ["class" => "form-control"])}}
-                        </div>
-
-                        <div class="form-group">
-                            @unless($event == null)
-                                <div class="col-md-12">
-                                    <img src="{{$event->cover ? "/images/anticafes/covers/100x100/100x100_".$event->cover : "/images/no-image.png"}}" width="100" height="100">
-                                </div>
-                            @endunless
-                            {{Form::label('cover', "Обложка")}}
-                            {{Form::file('cover', ["class" => "form-control"])}}
-                        </div>
-
-                        @unless($event == null)
-                            <div class="col-md-12">
-                                <h4>Миниатюры</h4>
-                                <h5>Фото</h5>
-                                @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
-                                    <div class="col-md-2">
-                                        <img src="{{"/images/anticafes/logos/{$option->name}/{$option->name}_".$event->logo}}" style="width: 100%; height: auto">
-                                        <p>{{$option->name}}</p>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <div class="col-md-12">
-                                <h5>Ковер</h5>
-                                @foreach(\Anticafe\Http\Models\ImageOption::all() as $option)
-                                    <div class="col-md-2">
-                                        <img src="{{"/images/anticafes/covers/{$option->name}/{$option->name}_".$event->cover}}" style="width: 100%; height: auto">
-                                        <p>{{$option->name}}</p>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endunless
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-{{$event == null ? "6" : "12"}}">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Описание</h2>
-                    </div>
-                    <div class="panel-body">
                         <div class="form-group">
                             {{Form::textarea('description', null, ["class" => "form-control"])}}
                         </div>
+
                     </div>
                 </div>
             </div>
