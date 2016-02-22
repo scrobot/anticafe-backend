@@ -20,7 +20,15 @@ class BookingsController extends Controller
 
     public function getIndex()
     {
-        return view('bookings.list')->withBookings(Booking::where('id', '>', 0)->orderBy('created_at', 'desc')->paginate(15))->withTitle($this->title);
+        if(can('booking.see.all')) {
+            $booking = Booking::where('id', '>', 0)->orderBy('created_at', 'desc');
+        } elseif(can('booking.see.own')) {
+            $booking = auth()->user()->Bookings;
+        } else {
+            check_perm('booking.see.all');
+        }
+
+        return view('bookings.list')->withBookings($booking)->withTitle($this->title);
     }
 
     public function postChangeStatus(Request $request)
@@ -28,9 +36,11 @@ class BookingsController extends Controller
         $clients = $request->input('clients');
         if($clients != null) {
             foreach ($clients as $id => $status) {
-                Booking::find($id)->update([
+                $booking = Booking::find($id);
+                $booking->update([
                     'status' => $status,
                 ]);
+                $booking->Client->sendEmailNotification($booking, config("statuses.{$status}"));
             }
         }
 

@@ -69,12 +69,12 @@ class User extends Authenticatable implements ModelNameable
 
     public function Anticafes()
     {
-        return $this->Entities->where('type', 0)->get();
+        return $this->Entities->where('type', 0);
     }
 
     public function Events()
     {
-        return $this->Entities->where('type', 1)->get();
+        return $this->Entities->where('type', 1);
     }
 
     public function isMe($user)
@@ -91,5 +91,25 @@ class User extends Authenticatable implements ModelNameable
     {
         $me = auth()->user();
         return $me->Entities->contains($anticafe_id);
+    }
+
+    public function sendEmailNotification(Booking $booking)
+    {
+        $that = $this;
+        $book = [];
+        $book['count_of_customers'] = $booking->count_of_customers;
+        $book['comment'] = $booking->comment;
+        $book['contacts'] = $booking->contacts;
+        $book['arrival_at'] = $booking->arrival_at;
+        $book['client_name'] = $booking->Client->name;
+        $book['phone'] = $booking->Client->phone;
+        $book['type'] = config("types.name.{$booking->Anticafe->type}");
+        $book['ent'] = $booking->Anticafe->name;
+        \Mail::send('emails.manager-notification', ['book' => $book], function($message) use ($that)
+        {
+            $message->from('notifications@anticafe.mi', 'Уведомления о новом бронировании');
+
+            $message->to($that->email);
+        });
     }
 }

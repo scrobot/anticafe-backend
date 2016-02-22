@@ -107,6 +107,16 @@
                 </div>
 
                 <div class="form-group">
+                    {{Form::label('name', "ФИО")}}
+                    {{Form::text('name', $user->name, ["class" => "form-control"])}}
+                </div>
+
+                <div class="form-group">
+                    {{Form::label('phone', "Телефон")}}
+                    {{Form::text('phone', $user->phone, ["class" => "form-control"])}}
+                </div>
+
+                <div class="form-group">
                     {{Form::label('email', "E-mail")}}
                     {{Form::email('email', $user->email, ["class" => "form-control"])}}
                 </div>

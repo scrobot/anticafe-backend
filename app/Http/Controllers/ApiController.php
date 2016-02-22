@@ -109,16 +109,20 @@ class ApiController extends Controller
 
     public function postBooking(Request $request)
     {
+        $anticafe = Anticafe::find($request->input('anticafe_id'));
+
         $booking = new Booking();
         $booking->count_of_customers = $request->input('count_of_customers');
         $booking->comment = $request->input('comment');
         $booking->contacts = $request->input('contacts');
         $booking->status = $request->input('status');
         $booking->arrival_at = $request->input('arrival_at');
-        $booking->anticafe_id = $request->input('anticafe_id');
+        $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $request->input('client_id');
-        $booking->user_id = 1;
+        $booking->user_id = $anticafe->Manager()->id;
         $booking->save();
+
+        $anticafe->Manager()->sendEmailNotification($booking);
 
         return response('OK', 200);
     }

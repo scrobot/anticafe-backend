@@ -91,6 +91,11 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(User::class);
     }
 
+    public function Manager()
+    {
+        return $this->Users->first();
+    }
+
     /**
      * ------------------------- *
      */

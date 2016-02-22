@@ -21,4 +21,22 @@ class Client extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function sendEmailNotification(Booking $booking, $status)
+    {
+        $that = $this;
+        $book = [];
+        $book['id'] = $booking->id;
+        $book['count_of_customers'] = $booking->count_of_customers;
+        $book['comment'] = $booking->comment;
+        $book['contacts'] = $booking->contacts;
+        $book['arrival_at'] = $booking->arrival_at;
+        $book['status'] = $status;
+        \Mail::send('emails.client-notification', ['book' => $book], function($message) use ($that)
+        {
+            $message->from('noreply@anticafe.mi', 'Уведомления о изменении статуса заказа');
+
+            $message->to($that->email);
+        });
+    }
+
 }

@@ -8,7 +8,9 @@
 @section('content')
     <h1>{{$title}}</h1>
     {{ Form::open(['route' => 'bookings.status']) }}
+    @if(can('booking.status.change'))
     <button type="submit" class="btn btn-success right" style="margin-bottom: 20px">Сохранить</button>
+    @endif
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -34,7 +36,13 @@
                 <td>{{$item->count_of_customers}}</td>
                 <td>{{$item->comment}}</td>
                 <td>{{$item->contacts}}</td>
-                <td>{{ Form::select("clients[{$item->id}]", config('statuses'), $item->status, ['class' => 'form-control'])}}</td>
+                <td>
+                    @if(can('booking.status.change'))
+                        {{ Form::select("clients[{$item->id}]", config('statuses'), $item->status, ['class' => 'form-control'])}}
+                    @else
+                        {{$item->status}}
+                    @endif
+                </td>
             </tr>
         @empty
             <tr>

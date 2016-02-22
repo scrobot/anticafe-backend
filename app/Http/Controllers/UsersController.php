@@ -40,6 +40,8 @@ class UsersController extends Controller
         }
 
         $user->username = $request->input('username');
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         $user->save();
