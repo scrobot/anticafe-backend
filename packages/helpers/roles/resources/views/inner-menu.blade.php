@@ -1,11 +1,9 @@
-<div class="btn-group">
-    <span @lightAction('\Yadeshevle\Roles\RoleController@getIndex')>
-        <a href="{{action('\Yadeshevle\Roles\RoleController@getIndex')}}" class="btn bg-slate-700">Посмотреть все</a>
-    </span>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-pills">
+            <li @lightAction('\Helpers\Roles\RoleController@getIndex')><a href="{{action('\Helpers\Roles\RoleController@getIndex')}}">Посмотреть все</a></li>
+            <li @lightAction('\Helpers\Roles\RoleController@getCreate')><a href="{{action('\Helpers\Roles\RoleController@getCreate')}}">Создать</a></li>
+        </ul>
+    </div>
 </div>
 
-<div class="btn-group">
-    <span @lightAction('\Yadeshevle\Roles\RoleController@getCreate')>
-        <a href="{{action('\Yadeshevle\Roles\RoleController@getCreate')}}" class="btn bg-slate-700">Создать</a>
-    </span>
-</div>

@@ -150,7 +150,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Helpers\ImageHandler\ImageHandlerServiceProvider::class,
+        \Helpers\Lighter\LighterServiceProvider::class,
+        \Helpers\ImageHandler\ImageHandlerServiceProvider::class,
         \Helpers\Roles\RolesServiceProvider::class,
         \Helpers\Permissions\PermissionsServiceProvider::class,
 

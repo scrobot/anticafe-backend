@@ -1,36 +1,25 @@
-@extends('backend::admin_master')
+@extends('layouts.app')
 
 @section('breadcrumbs')
-    <li>
-        <a href="{{action('\Yadeshevle\Roles\RoleController@getIndex')}}">{{$title}}</a>
-    </li>
-    <li>
-        <a href="{{action('\Yadeshevle\Roles\RoleController@getCreate')}}">Создать</a>
+    <li><a href="/">Главная</a></li>
+    <li><a href="{{route('roles')}}">{{$title}}</a></li>
+    <li class="active">
+        <a href="{{action('\Helpers\Roles\RoleController@getCreate')}}">Создать роль</a>
     </li>
 @stop
 
-@section('inner-menu')
+@section('actions_menu')
     @include('roles::inner-menu')
 @stop
 
 @section('content')
-    <div class="panel panel-flat">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-9 col-lg-8">
-                    <form action="{{action('\Yadeshevle\Roles\RoleController@postStore')}}" method="post">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-group">
-                            <label for="name">Имя роли*</label>
-                            <input type="text" id="name" name="name" class="form-control" required>
-                        </div>
-                        <button class="btn btn-success btn-lg">Создать</button>
-                    </form>
-                </div>
-            </div>
+    <h1>Создать роль</h1>
+    <form action="{{action('\Helpers\Roles\RoleController@postStore')}}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="name">Имя роли*</label>
+            <input type="text" id="name" name="name" class="form-control" required>
         </div>
-    </div>
-
-
-
-@stop
+        <button class="btn btn-success btn-lg">Создать</button>
+    </form>
+@endsection

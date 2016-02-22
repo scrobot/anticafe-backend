@@ -100,8 +100,8 @@
                     <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     <h3>Права и роли</h3>
                     <li><a href="{{route('users')}}">Пользователи</a></li>
-                    <li><a href="#">Права</a></li>
-                    <li><a href="#">Роли</a></li>
+                    <li><a href="{{route('permissions')}}">Права</a></li>
+                    <li><a href="{{route('roles')}}">Роли</a></li>
                     <h3>Опции</h3>
                     <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
                     <h3>API</h3>
