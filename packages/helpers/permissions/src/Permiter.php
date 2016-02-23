@@ -23,12 +23,9 @@ class Permiter
 
     public static function checkPermission($permissions, $operator = 'and', $throw = false, $user = null, $callback = null)
     {
-
-        if($user == null) {
-            $user = auth()->user();
-        }
-
-        if($user->level == 0) {
+		$user = \Auth::check() ? auth()->user() : null;
+	
+        if($user == null || $user->level == 0) {
             return true;
         }
 

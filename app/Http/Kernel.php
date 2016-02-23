@@ -51,5 +51,7 @@ class Kernel extends HttpKernel
         'options' => \Anticafe\Http\Middleware\RuleOption::class,
         'tags' => \Anticafe\Http\Middleware\RuleTags::class,
         'clients' => \Anticafe\Http\Middleware\RuleClients::class,
+        'perms' => \Anticafe\Http\Middleware\RulePerms::class,
+        'roles' => \Anticafe\Http\Middleware\RuleRoles::class,
     ];
 }

@@ -59,7 +59,7 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Войти</a></li>
-                        <li><a href="{{ url('/register') }}">Зарегистрироваться</a></li>
+                        <!--<li><a href="{{ url('/register') }}">Зарегистрироваться</a></li>-->
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -91,7 +91,8 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2">
+            <div class="{{auth()->check() ? "col-md-2" : ""}}">
+				@if(auth()->check())
                 <ul class="nav nav-pills nav-stacked">
                     <h3>Основное</h3>
                     @if(can('anticafe.see.all'))
@@ -110,23 +111,32 @@
                         <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     @endif
 
-                    <h3>Права и роли</h3>
+					@if(can(['permissions.all','roles.all'], null, null, 'or')
+						<h3>Права и роли</h3>
 
-                    @if(can('users.see'))
-                        <li><a href="{{route('users')}}">Пользователи</a></li>
-                    @endif
-
-                    <li><a href="{{route('permissions')}}">Права</a></li>
-                    <li><a href="{{route('roles')}}">Роли</a></li>
-                    @if(can('options.aligned'))
-                        <h3>Опции</h3>
-                        <li><a href="{{route('ioptions')}}">Опции изображений</a></li>
-                    @endif
+						@if(can('users.see'))
+							<li><a href="{{route('users')}}">Пользователи</a></li>
+						@endif
+						
+						@if(can('permissions.all'))
+							<li><a href="{{route('permissions')}}">Права</a></li>
+						@endif
+						
+						@if(can('roles.all'))
+							<li><a href="{{route('roles')}}">Роли</a></li>
+						@endif
+						
+						@if(can('options.aligned'))
+							<h3>Опции</h3>
+							<li><a href="{{route('ioptions')}}">Опции изображений</a></li>
+						@endif
+					@endif
                     <h3>API</h3>
                     <li><a href="{{route('api.doc')}}">Документация</a></li>
                 </ul>
+				@endif
             </div>
-            <div class="col-md-10">
+            <div class="{{auth()->check() ? "col-md-10" : "col-md-12"}}">
                 {{-- breadcrumbs --}}
                 <ul class="breadcrumb">
                     @yield('breadcrumbs')

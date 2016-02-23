@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class PermissionsController extends Controller
 {
 
+	public function __construct()
+	{
+		$this->middleware('perms');
+	}
+
     public function getIndex()
     {
         $permissions = Permission::all();

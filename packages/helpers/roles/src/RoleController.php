@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
 
+	public function __construct()
+	{
+		$this->middleware('roles');
+	}
+
     public function getIndex()
     {
         $roles = Role::all();
