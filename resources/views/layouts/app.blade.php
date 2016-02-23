@@ -111,7 +111,7 @@
                         <li><a href="{{route('clients')}}">Клиенты приложения</a></li>
                     @endif
 
-					@if(can(['permissions.all','roles.all'], null, null, 'or')
+					@if(can(['permissions.all','roles.all'], null, null, 'or'))
 						<h3>Права и роли</h3>
 
 						@if(can('users.see'))
