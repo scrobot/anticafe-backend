@@ -226,19 +226,38 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2>Возможности</h2>
-                    </div>
-                    <div class="panel-body">
-                        @foreach($tags as $tag)
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe == null ? false : $anticafe->Tags->contains($tag->id)) }} {{$tag->name}}</label>
-                                </div>
+                <div class="panel-body tags">
+                    @foreach($tags as $tag)
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <ul>
+                                    <li>
+                                        <label>{{ Form::checkbox('tags[]', $tag->id, $event == null ? false : $event->Tags->contains($tag->id), ['class' => 'group_tag']) }} {{$tag->name}}</label>
+                                        <ul>
+                                            @foreach($tag->Children as $child)
+                                                <li><label>{{ Form::checkbox('tags[]', $child->id, $event == null ? false : $event->Tags->contains($child->id)) }} {{$child->name}}</label></li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <ul>
+                                <li>
+                                    <label><input class="group_tag"type="checkbox">Без категории</label>
+                                    <ul>
+                                        @foreach($alones as $alone)
+                                            <li><label>{{ Form::checkbox('tags[]', $alone->id, $event == null ? false : $event->Tags->contains($alone->id)) }} {{$alone->name}}</label></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

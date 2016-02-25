@@ -59,7 +59,7 @@ class AnticafeController extends Controller
 
     public function getCreate()
     {
-        return view('anticafes.model')->withAnticafe(null)->withAction(action('AnticafeController@postCreate'))->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
+        return view('anticafes.model')->withAnticafe(null)->withAction(action('AnticafeController@postCreate'))->withTags(Tag::sorted()->groups()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postCreate(Request $request)

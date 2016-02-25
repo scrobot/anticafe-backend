@@ -249,7 +249,7 @@
                     </div>
                     <div class="panel-body tags">
                         @foreach($tags as $tag)
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <ul>
                                         <li>
