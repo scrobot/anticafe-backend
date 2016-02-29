@@ -59,7 +59,7 @@ class AnticafeController extends Controller
 
     public function getCreate()
     {
-        return view('anticafes.model')->withAnticafe(null)->withAction(action('AnticafeController@postCreate'))->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
+        return view('anticafes.model')->withAnticafe(null)->withAction(action('AnticafeController@postCreate'))->withTags(Tag::sorted()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postCreate(Request $request)
@@ -76,7 +76,7 @@ class AnticafeController extends Controller
     public function getUpdate($id)
     {
         $q = Anticafe::find($id);
-        return view('anticafes.model')->withAnticafe($q)->withAction(action('AnticafeController@postUpdate', $q->id))->withTags(Tag::sorted()->get())->withTitle($this->title)->withCount($this->count);
+        return view('anticafes.model')->withAnticafe($q)->withAction(action('AnticafeController@postUpdate', $q->id))->withTags(Tag::sorted()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postUpdate(Request $request, $id)

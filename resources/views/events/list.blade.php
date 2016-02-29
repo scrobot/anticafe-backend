@@ -65,4 +65,6 @@
         @endforelse
         </tbody>
     </table>
+
+    {!! $events->render() !!}
 @endsection

@@ -69,4 +69,6 @@
         @endforelse
         </tbody>
     </table>
+
+    {!! $anticafes->render() !!}
 @endsection

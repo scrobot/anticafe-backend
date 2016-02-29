@@ -231,14 +231,37 @@
                     <div class="panel-heading">
                         <h2>Возможности</h2>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body tags">
                         @foreach($tags as $tag)
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe == null ? false : $anticafe->Tags->contains($tag->id)) }} {{$tag->name}}</label>
+                                    <ul>
+                                        <li>
+                                            <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe == null ? false : $anticafe->Tags->contains($tag->id), ['class' => 'group_tag']) }} {{$tag->name}}</label>
+                                            <ul>
+                                                @foreach($tag->Children as $child)
+                                                    <li><label>{{ Form::checkbox('tags[]', $child->id, $event == null ? false : $anticafe->Tags->contains($child->id)) }} {{$child->name}}</label></li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         @endforeach
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <ul>
+                                    <li>
+                                        <label><input class="group_tag"type="checkbox">Без категории</label>
+                                        <ul>
+                                            @foreach($alones as $alone)
+                                                <li><label>{{ Form::checkbox('tags[]', $alone->id, $anticafe == null ? false : $anticafe->Tags->contains($alone->id)) }} {{$alone->name}}</label></li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
