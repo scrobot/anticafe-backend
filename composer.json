@@ -32,7 +32,7 @@
             "Helpers\\ImageHandler\\": "packages/helpers/image-handler/src",
             "Helpers\\Permissions\\": "packages/helpers/permissions/src",
             "Helpers\\Roles\\": "packages/helpers/roles/src",
-            "Helpers\\Lighter\\": "packages/helpers/lighter/src"
+            "Helpers\\Lighter\\": "packages/helpers/lighter-helper/src"
         },
         "files": [
             "packages/helpers/image-handler/src/helpers.php",
