@@ -37,7 +37,7 @@
         "files": [
             "packages/helpers/image-handler/src/helpers.php",
             "packages/helpers/permissions/src/helpers.php",
-            "packages/helpers/lighter/src/helpers.php"
+            "packages/helpers/lighter-helper/src/helpers.php"
         ]
     },
     "autoload-dev": {
