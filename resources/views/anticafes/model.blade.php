@@ -4,6 +4,12 @@
 
     <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <style>
+        .tags ul {
+            list-style: none;
+        }
+        .tags ul ul {
+            padding-left: 20px;
+        }
         .relative {
             position: relative;
         }
