@@ -234,10 +234,10 @@
                             <div class="form-group">
                                 <ul>
                                     <li>
-                                        <label>{{ Form::checkbox('tags[]', $tag->id, $event == null ? false : $event->Tags->contains($tag->id), ['class' => 'group_tag']) }} {{$tag->name}}</label>
+                                        <label>{{ Form::checkbox('tags[]', $tag->id, $anticafe == null ? false : $anticafe->Tags->contains($tag->id), ['class' => 'group_tag']) }} {{$tag->name}}</label>
                                         <ul>
                                             @foreach($tag->Children as $child)
-                                                <li><label>{{ Form::checkbox('tags[]', $child->id, $event == null ? false : $event->Tags->contains($child->id)) }} {{$child->name}}</label></li>
+                                                <li><label>{{ Form::checkbox('tags[]', $child->id, $anticafe == null ? false : $anticafe->Tags->contains($child->id)) }} {{$child->name}}</label></li>
                                             @endforeach
                                         </ul>
                                     </li>
@@ -252,7 +252,7 @@
                                     <label><input class="group_tag"type="checkbox">Без категории</label>
                                     <ul>
                                         @foreach($alones as $alone)
-                                            <li><label>{{ Form::checkbox('tags[]', $alone->id, $event == null ? false : $event->Tags->contains($alone->id)) }} {{$alone->name}}</label></li>
+                                            <li><label>{{ Form::checkbox('tags[]', $alone->id, $anticafe == null ? false : $anticafe->Tags->contains($alone->id)) }} {{$alone->name}}</label></li>
                                         @endforeach
                                     </ul>
                                 </li>
