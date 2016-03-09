@@ -22,6 +22,7 @@ class API
             $anticafe->tags = $anticafe->Tags->toArray();
             $anticafe->events = $anticafe->Events->toArray();
             $anticafe->attachments = $this->setImages($anticafe);
+            unset($anticafe->images);
         }
 
         return $anticafes;
@@ -66,7 +67,7 @@ class API
             $anticafe->events = $anticafe->Events->toArray();
         else
             $anticafe->anticafes = $anticafe->Anticafes->toArray();
-
+        unset($anticafe->images);
         return $anticafe;
 
     }
@@ -83,18 +84,15 @@ class API
     private function setImages($anticafe)
     {
         $images = [
-            'original' => [
-                'logo' => "/images/anticafes/logos/{$anticafe->logo}",
-                'cover' => "/images/anticafes/covers/{$anticafe->cover}"
-            ]
+            'logo' => "http://backend.anticafe.im/images/anticafes/logos/{$anticafe->logo}",
+            'cover' => "http://backend.anticafe.im/images/anticafes/covers/{$anticafe->cover}"
         ];
-        $images['gallery'] = $anticafe->images;
-        foreach (ImageOption::all() as $item) {
-            $images[$item->name] = [
-                'logo' => "/images/anticafes/logos/{$item->name}/{$item->name}_{$anticafe->logo}",
-                'cover' => "/images/anticafes/covers/{$item->name}/{$item->name}_{$anticafe->cover}"
-            ];
+        $images['gallery'] = [];
+
+        foreach ($anticafe->images as $gallery) {
+            array_push($images['gallery'], "http://backend.anticafe.im/images/anticafes/gallery/{$gallery->original_name}");
         }
+
 
         return $images;
     }

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: scrobot91
- * Date: 10.02.2016
- * Time: 15:01
- */
-
 namespace Anticafe\Http\Models;
 
 
