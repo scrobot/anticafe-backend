@@ -39,6 +39,18 @@
                 <p><strong>GET</strong></p>
             </div>
             <div class="col-md-2 type">
+                <a href="/api/home"><abbr title="/api/home">/api/home</abbr></a>
+            </div>
+            <div class="col-md-9 type">
+                <a href="#">getMain</a>
+                <p>Return JSON for creating home page in application</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <p><strong>GET</strong></p>
+            </div>
+            <div class="col-md-2 type">
                 <a href="/api/anticafes"><abbr title="/api/anticafes">/api/anticafes</abbr></a>
             </div>
             <div class="col-md-9 type">
@@ -80,6 +92,30 @@
             <div class="col-md-9 type">
                 <a href="#">getEvents</a>(int $limit)
                 <p>Make query and take events by specified count</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <p><strong>GET</strong></p>
+            </div>
+            <div class="col-md-2 type">
+                <a href="/api/tags"><abbr title="/api/tags">/api/tags</abbr></a>
+            </div>
+            <div class="col-md-9 type">
+                <a href="#">getTags</a>
+                <p>Make query and take tags</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <p><strong>GET</strong></p>
+            </div>
+            <div class="col-md-2 type">
+                <a href="/api/abilities"><abbr title="/api/abilities">/api/abilities</abbr></a>
+            </div>
+            <div class="col-md-9 type">
+                <a href="#">getAbilities</a>
+                <p>Make query and take all abilities list</p>
             </div>
         </div>
         <div class="row">
