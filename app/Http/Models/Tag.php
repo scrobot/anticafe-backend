@@ -39,6 +39,11 @@ class Tag extends Model implements ModelNameable
         return $query->where("is_group", 1);
     }
 
+    public function scopeAbilites($query)
+    {
+        return $query->where("is_group", 0)->where("parent_id", ">", 0);
+    }
+
     public function scopeAlones($query)
     {
         return $query->where('parent_id', NULL)->where('is_group', 0);

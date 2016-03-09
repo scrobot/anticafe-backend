@@ -1,10 +1,13 @@
 <?php
 
 Route::group(['prefix' => 'api'], function() {
+    Route::get('home', 'ApiController@getMain');
     Route::get('anticafes', 'ApiController@getAnticafes');
     Route::get('anticafes/{count}', 'ApiController@getAnticafes');
     Route::get('events', 'ApiController@getEvents');
     Route::get('events/{count}', 'ApiController@getEvents');
+    Route::get('tags', 'ApiController@getTags');
+    Route::get('abilities', 'ApiController@getAbilities');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
     Route::get('client/{id}', 'ApiController@getProfile');
     Route::post('search', 'ApiController@postSearch');

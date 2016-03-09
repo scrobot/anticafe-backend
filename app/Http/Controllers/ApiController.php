@@ -10,6 +10,7 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Anticafe\Http\Models\API;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
 use Anticafe\Http\Models\ImageOption;
@@ -19,64 +20,56 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
 
+
+
     private $result = [];
-    private $images = [];
+    private $api;
+
+    /**
+     * ApiController constructor.
+     * @param array $result
+     */
+    public function __construct()
+    {
+        $this->api = new API();
+    }
 
     public function getMain()
     {
-
+        return [
+            "anticafe" => $this->api->getAnticafes(),
+            "tags" => $this->api->getTagGroups()
+        ];
     }
 
     public function getAnticafes($count = 0)
     {
-        $anticafes = Anticafe::where('type', 0)->skip($count)->take(15)->get();
-
-        foreach ($anticafes as $anticafe) {
-            $anticafe->tags = $anticafe->Tags->toArray();
-            $anticafe->events = $anticafe->Events->toArray();
-            $anticafe->attachments = $this->setImages($anticafe);
-        }
-
-        return response()->json($anticafes);
+        return response()->json($this->api->getAnticafes($count));
     }
 
     public function getEvents($count = 0)
     {
-        $events = Anticafe::where('type', 1)->skip($count)->take(15)->get();
-
-        foreach ($events as $event) {
-            $event->tags = $event->Tags->toArray();
-            $event->anticafes = $event->Anticafes->toArray();
-            $event->attachments = $this->setImages($event);
-        }
-
-        return response()->json($events);
+        return response()->json($this->api->getEvents($count));
     }
 
     public function getGetOneAnticafeOrEvent($id)
     {
-        $anticafe = Anticafe::find($id);
-        $anticafe->total_views++;
-        $anticafe->save();
-        // TODO: отрефакторить. Возможно засунуть в модель.
-        $anticafe->tags = $anticafe->Tags->toArray();
-        $anticafe->attachments = $this->setImages($anticafe);
-        if($anticafe->type == 0)
-            $anticafe->events = $anticafe->Events->toArray();
-        else
-            $anticafe->anticafes = $anticafe->Anticafes->toArray();
+        return response()->json($this->api->getGetOneAnticafeOrEvent($id));
+    }
 
-        return response()->json($anticafe);
+    public function getTags()
+    {
+        return $this->api->getTagGroups();
+    }
 
+    public function getAbilities()
+    {
+        return $this->api->getAbilities();
     }
 
     public function getProfile($id)
     {
-        $client = Client::find($id);
-        $client->bookings = $client->Bookings->toArray();
-        $client->likes = $client->Likes->toArray();
-
-        return response()->json($client);
+        return response()->json($this->api->getProfile($id));
     }
 
     public function postSearch(Request $request)
@@ -156,25 +149,6 @@ class ApiController extends Controller
     public function documentation()
     {
         return view('api.doc')->withTitle("Документация")->withErrors([]);
-    }
-
-    private function setImages($anticafe)
-    {
-        $images = [
-            'original' => [
-                'logo' => "/images/anticafes/logos/{$anticafe->logo}",
-                'cover' => "/images/anticafes/covers/{$anticafe->cover}"
-            ]
-        ];
-        $images['gallery'] = $anticafe->images;
-        foreach (ImageOption::all() as $item) {
-            $images[$item->name] = [
-                'logo' => "/images/anticafes/logos/{$item->name}/{$item->name}_{$anticafe->logo}",
-                'cover' => "/images/anticafes/covers/{$item->name}/{$item->name}_{$anticafe->cover}"
-            ];
-        }
-
-        return $images;
     }
 
 }
