@@ -20,26 +20,36 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
 
-
-
     private $result = [];
+    private $client;
     private $api;
+    private $response;
 
     /**
      * ApiController constructor.
-     * @param array $result
+     * @param Request $request
+     * @internal param array $result
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->api = new API();
+        $this->client = Client::where('authToken', $request->header("authToken"))->first();
+        $this->response = [
+            "status" => 200,
+            "error" => false
+        ];
     }
 
     public function getMain()
     {
-        return [
-            "anticafe" => $this->api->getAnticafes(),
-            "tags" => $this->api->getTagGroups()
-        ];
+        $this->response["anticafe"] = $this->api->getAnticafes();
+        $this->response["tags"] = $this->api->getTagGroups();
+
+        if($this->client != null) {
+            $this->response["bookings"] = $this->api->getBookings($this->client);
+        }
+
+        return response()->json($this->response);
     }
 
     public function getAnticafes($count = 0)

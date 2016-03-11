@@ -70,5 +70,5 @@
         </tbody>
     </table>
 
-    {!! $anticafes->render() !!}}
+    {!! $anticafes->render() !!}
 @endsection

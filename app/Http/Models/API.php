@@ -81,6 +81,25 @@ class API
         return $client;
     }
 
+    public function getBookings(Client $client) {
+        $bookings = [];
+
+        foreach ($client->Bookings as $book) {
+            $bookings[] = [
+                "id" => $book->id,
+                "anticafe" => $book->Anticafe->name,
+                "type" => $book->Anticafe->type == 0 ? "Антикафе" : "Событие",
+                "arrivalAt" => $book->arrival_at,
+                "countOfCustomers" => $book->count_of_customers,
+                "comment" => $book->comment,
+                "status" => $book->status,
+            ];
+        }
+
+
+        return $bookings;
+    }
+
     private function setImages($anticafe)
     {
         $images = [
