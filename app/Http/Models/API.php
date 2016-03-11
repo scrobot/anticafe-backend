@@ -78,19 +78,29 @@ class API
         $bookings = [];
 
         foreach ($client->Bookings as $book) {
-            $bookings[] = [
-                "id" => $book->id,
-                "anticafe" => $book->Anticafe->name,
-                "type" => $book->Anticafe->type == 0 ? "Антикафе" : "Событие",
-                "arrivalAt" => $book->arrival_at,
-                "countOfCustomers" => $book->count_of_customers,
-                "comment" => $book->comment,
-                "status" => $book->status,
-            ];
+            $bookings[] = $this->getBooking($book);
         }
 
-
         return $bookings;
+    }
+
+    public function getBooking(Booking $book = null, $id = null)
+    {
+        if($id != null && $book == null) {
+            $book = Booking::find($id);
+            if($book == null) return null;
+        } else {
+            return null;
+        }
+        return [
+            "id" => $book->id,
+            "anticafe" => $book->Anticafe->name,
+            "type" => $book->Anticafe->type == 0 ? "Антикафе" : "Событие",
+            "arrivalAt" => $book->arrival_at,
+            "countOfCustomers" => $book->count_of_customers,
+            "comment" => $book->comment,
+            "status" => $book->status,
+        ];
     }
 
     private function setImages($anticafe)

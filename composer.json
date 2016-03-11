@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
+        "laravel/socialite": "~2.0",
         "barryvdh/laravel-ide-helper": "2.1.*",
         "barryvdh/laravel-debugbar": "2.1.*",
         "doctrine/dbal": "2.*",
@@ -14,7 +15,8 @@
         "laravelcollective/annotations": "5.2.*",
         "graham-campbell/exceptions": "5.*",
         "danielstjules/stringy": "^2.2",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "socialiteproviders/vkontakte": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

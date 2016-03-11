@@ -9,7 +9,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('tags', 'ApiController@getTags');
     Route::get('abilities', 'ApiController@getAbilities');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
-    Route::get('client/{id}', 'ApiController@getProfile');
+    Route::get('client', 'ApiController@getClient');
+    Route::get('profile', 'ApiController@getProfile');
     Route::post('search', 'ApiController@postSearch');
     Route::get('boooking/get/{id}', 'ApiController@getClientBooking');
     Route::post('boooking', 'ApiController@postBooking');

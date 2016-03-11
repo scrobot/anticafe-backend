@@ -33,6 +33,31 @@
 @section('content')
     <h1>{{$title}}</h1>
     <div class="container-fluid underlined">
+        <h2>Common instructions</h2>
+        <p>For getting responses in JSON format, you have to send your requests with header:
+        <pre>Accept: application/json</pre>
+        </p>
+        <h2>Authorization</h2>
+
+        <h2>Authorized HTTP Requests</h2>
+        <p>
+            On sending HTTP request on resources, I'm recommending add to your requests special header
+            <pre>AuthToken: token_string</pre>
+            You can get this token in POST auth request.
+            This authorized request will return special fields available to an authorized user with access to some requests:
+            <ol>
+                <h3>Content</h3>
+                <li>Bookings block on home activity</li>
+                <li>Profile activity</li>
+                <li>Profile page</li>
+                <h3>Requests</h3>
+                <li>GET /api/boooking/get/{id}</li>
+                <li>GET /api/boooking/delete/{id}</li>
+                <li>POST /api/boooking</li>
+                <li>POST /api/like</li>
+            </ol>
+
+        </p>
         <h2>URL's</h2>
         <div class="row">
             <div class="col-md-1">
@@ -87,10 +112,10 @@
                 <p><strong>GET</strong></p>
             </div>
             <div class="col-md-2 type">
-                <a href="/api/events/1"><abbr title="/api/events">/api/events/{limit}</abbr></a>
+                <a href="/api/events/1"><abbr title="/api/events">/api/events/{count}</abbr></a>
             </div>
             <div class="col-md-9 type">
-                <a href="#">getEvents</a>(int $limit)
+                <a href="#">getEvents</a>(int $count)
                 <p>Make query and take events by specified count</p>
             </div>
         </div>
@@ -135,11 +160,23 @@
                 <p><strong>GET</strong></p>
             </div>
             <div class="col-md-2 type">
-                <a href="/api/client/1"><abbr title="/api/client/{id}">/api/client/{id}</abbr></a>
+                <a href="/api/client"><abbr title="/api/client/">/api/client</abbr></a>
             </div>
             <div class="col-md-9 type">
-                <a href="#">getProfile</a>(int $id)
-                <p>Take app profile client entity. Returned with bookings and likes relation fields</p>
+                <a href="#">getClient</a>
+                <p>Returned client profile json. Recommended do this query than application is running and save client model in preferences of your application</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <p><strong>GET</strong></p>
+            </div>
+            <div class="col-md-2 type">
+                <a href="/api/profile"><abbr title="/api/profile/">/api/profile</abbr></a>
+            </div>
+            <div class="col-md-9 type">
+                <a href="#">getProfile</a>
+                <p>Returned json for profile info page - <a href="https://drive.google.com/file/d/0B_SjoeZavdZwU08yT2VxdEVBc2M/view?usp=sharing" target="_blank">link to page</a></p>
             </div>
         </div>
         <div class="row">
@@ -181,8 +218,18 @@
                 <a href="#">postSearch</a>(Illuminate\Http\Request $request)
                 <p>
                     Make post request with required params. This method returned result array with two elemetnts.<br/>
-                    <b>result[anticafes_and_events]</b> - contains anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>
-                    <b>result[finded_by_tags_and_aliases]</b> - contains anticafes and events entities find by <i>Tags name</i> fields OR <i>Aliases name</i> fields
+<pre>{
+    "status": 200,
+    "error": false,
+    "anticafes_and_events": [
+        ...
+    ],
+    "finded_by_tags_and_aliases":
+        ...
+    ]
+}</pre>
+                    <b>anticafes_and_events</b> - contains anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>
+                    <b>finded_by_tags_and_aliases</b> - contains anticafes and events entities find by <i>Tags name</i> fields OR <i>Aliases name</i> fields
                 </p>
             </div>
         </div>
@@ -201,12 +248,21 @@
                 <p>(string) status</p>
                 <p>(timestamp) arrival_at</p>
                 <p>(int) anticafe_id</p>
-                <p>(int) client_id</p>
             </div>
             <div class="col-md-7 type">
                 <a href="#">postBooking</a>(Illuminate\Http\Request $request)
                 <p>
-                    Make post request with required params. This method returned JSON status text "OK" and HTTP code status "200" if booking will be saved successfuly.<br/>
+                    Make post request with required params. This method returned JSON: <br/>
+<pre>{
+    "status": 200,
+    "error": false
+}</pre>
+                    or<br/>
+<pre>{
+    "status": 500,
+    "error": true,
+    "message": "error message"
+}</pre><br/>
                 </p>
             </div>
         </div>
@@ -220,12 +276,17 @@
             <div class="col-md-2">
                 <strong>Params</strong>
                 <p>(int) anticafe_id</p>
-                <p>(int) client_id</p>
             </div>
             <div class="col-md-7 type">
                 <a href="#">postLike</a>(Illuminate\Http\Request $request)
                 <p>
-                    This method serve to like or unlike entity(anticafe or events). If user unlike post - this method will return JSON status "unliked", if user like post - will be returned "liked" status.
+                    This method serve to like or unlike entity(anticafe or events). If user unlike post - this method will return JSON:
+<pre>{
+    "status": 200,
+    "error": false,
+    "likeStatus": "unliked\liked" // <span style="color: red">In dependence of like or unlike action</span>
+    "totalLikes": 123
+}</pre>
                 </p>
             </div>
         </div>

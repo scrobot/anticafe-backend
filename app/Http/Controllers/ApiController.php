@@ -33,7 +33,9 @@ class ApiController extends Controller
         $this->client = Client::where('authToken', $request->header("authToken"))->first();
         $this->response = [
             "status" => 200,
-            "error" => false
+            "error" => false,
+            "needAuth" => false,
+            "message" => "",
         ];
     }
 
@@ -112,13 +114,27 @@ class ApiController extends Controller
 
     public function getClientBooking($id)
     {
-        $booking = Booking::find($id);
-        $booking->anticafe = $booking->Anticafe->toArray();
-        return response()->json($booking);
+        if($this->client == null) {
+            $this->response['status'] = 403;
+            $this->response['error'] = true;
+            $this->response['needAuth'] = true;
+            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+        } else {
+            $this->response["booking"] = $this->api->getBooking($id);
+        }
+        return response()->json($this->response);
     }
 
     public function postBooking(Request $request)
     {
+        if($this->client == null) {
+            $this->response['status'] = 403;
+            $this->response['error'] = true;
+            $this->response['needAuth'] = true;
+            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+            return response()->json($this->response);
+        }
+
         $anticafe = Anticafe::find($request->input('anticafe_id'));
 
         $booking = new Booking();
@@ -128,38 +144,54 @@ class ApiController extends Controller
         $booking->status = $request->input('status');
         $booking->arrival_at = $request->input('arrival_at');
         $booking->anticafe_id = $anticafe->id;
-        $booking->client_id = $request->input('client_id');
+        $booking->client_id = $this->client->id;
         $booking->user_id = $anticafe->Manager()->id;
         $booking->save();
 
         $anticafe->Manager()->sendEmailNotification($booking);
 
-        return response('OK', 200);
+        return response($this->response);
     }
 
     public function getDeleteBooking($id)
     {
-        Booking::destroy($id);
-
-        return response('OK', 200);
+        if($this->client == null) {
+            $this->response['status'] = 403;
+            $this->response['error'] = true;
+            $this->response['needAuth'] = true;
+            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+        } else {
+            Booking::destroy($id);
+            $this->response['deleted'] = true;
+        }
+        return response($this->response);
     }
 
     public function postLike(Request $request)
     {
+        if($this->client == null) {
+            $this->response['status'] = 403;
+            $this->response['error'] = true;
+            $this->response['needAuth'] = true;
+            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+            return response($this->response);
+        }
+
         $anticafe = Anticafe::find($request->input('anticafe_id'));
         if($this->client->Likes->contains($anticafe->id)) {
             $this->client->Likes()->detach($anticafe->id);
             $anticafe->total_likes--;
-            $status = "unliked";
+            $this->response['likeStatus'] = "unliked";
         } else {
             $this->client->Likes()->attach($anticafe->id);
             $anticafe->total_likes++;
-            $status = "liked";
+            $this->response['likeStatus'] = "liked";
         }
 
         $anticafe->save();
+        $this->response["totalLikes"] = $anticafe->total_likes;
 
-        return response($status, 200);
+        return response($this->response);
     }
 
     public function documentation()
