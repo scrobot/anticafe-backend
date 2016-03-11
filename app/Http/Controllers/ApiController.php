@@ -39,6 +39,16 @@ class ApiController extends Controller
         ];
     }
 
+    public function getVkAuth()
+    {
+        return \Socialite::with('vkontakte')->redirect();
+    }
+
+    public function getVkVerify(Request $request)
+    {
+        dd($request);
+    }
+
     public function getMain()
     {
         $this->response["anticafe"] = $this->api->getAnticafes();
