@@ -9,6 +9,8 @@
 namespace Anticafe\Http\Models;
 
 
+use Symfony\Component\HttpKernel\Client;
+
 class API
 {
 
@@ -70,15 +72,6 @@ class API
         unset($anticafe->images);
         return $anticafe;
 
-    }
-
-    public function getProfile($id)
-    {
-        $client = Client::find($id);
-        $client->bookings = $client->Bookings->toArray();
-        $client->likes = $client->Likes->toArray();
-
-        return $client;
     }
 
     public function getBookings(Client $client) {

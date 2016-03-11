@@ -13,14 +13,11 @@ use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\API;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
-use Anticafe\Http\Models\ImageOption;
-use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
 
-    private $result = [];
     private $client;
     private $api;
     private $response;
@@ -77,20 +74,30 @@ class ApiController extends Controller
         return $this->api->getAbilities();
     }
 
-    public function getProfile($id)
+    public function getClient() {
+        if($this->client != null) {
+            $this->response['client'] = $this->client;
+        }
+        return response()->json($this->response);
+    }
+
+    public function getProfile()
     {
-        return response()->json($this->api->getProfile($id));
+        if($this->client != null) {
+            $this->response['bookings'] = $this->api->getBookings($this->client);
+        }
+        return response()->json($this->response);
     }
 
     public function postSearch(Request $request)
     {
         $searchable = $request->input('search_text');
-        $this->result['anticafes_and_events'] = Anticafe::where("name", "LIKE", "%{$searchable}%")
+        $this->response['anticafes_and_events'] = Anticafe::where("name", "LIKE", "%{$searchable}%")
                                                         ->orWhere("address", "LIKE", "%{$searchable}%")
                                                         ->orWhere("excerpt", "LIKE", "%{$searchable}%")
                                                         ->orWhere("description", "LIKE", "%{$searchable}%")
                                                         ->get();
-        $this->result['finded_by_tags_and_aliases'] = Anticafe::whereHas('Tags', function($q) use ($searchable)
+        $this->response['finded_by_tags_and_aliases'] = Anticafe::whereHas('Tags', function($q) use ($searchable)
         {
             $q->where('name', 'like', "%{$searchable}%");
 
@@ -100,7 +107,7 @@ class ApiController extends Controller
 
         })->get();
 
-        return response()->json($this->result);
+        return response()->json($this->response);
     }
 
     public function getClientBooking($id)
@@ -139,14 +146,13 @@ class ApiController extends Controller
 
     public function postLike(Request $request)
     {
-        $client = Client::find($request->input('client_id'));
         $anticafe = Anticafe::find($request->input('anticafe_id'));
-        if($client->Likes->contains($anticafe->id)) {
-            $client->Likes()->detach($anticafe->id);
+        if($this->client->Likes->contains($anticafe->id)) {
+            $this->client->Likes()->detach($anticafe->id);
             $anticafe->total_likes--;
             $status = "unliked";
         } else {
-            $client->Likes()->attach($anticafe->id);
+            $this->client->Likes()->attach($anticafe->id);
             $anticafe->total_likes++;
             $status = "liked";
         }
