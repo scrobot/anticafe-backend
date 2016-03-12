@@ -9,7 +9,7 @@
 namespace Anticafe\Http\Models;
 
 
-use Symfony\Component\HttpKernel\Client;
+use Anticafe\Http\Models\Client;
 
 class API
 {
