@@ -68,11 +68,9 @@ class ApiController extends Controller
             $client->vk_token = $request->input('access_token');
             $client->authToken = str_random(32);
             $client->save();
-
-            $this->client = $client;
         }
 
-        $this->response['client'] = $this->client;
+        $this->response['client'] = $client;
         return response()->json($this->response);
     }
 
