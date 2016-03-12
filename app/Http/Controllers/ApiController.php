@@ -55,20 +55,22 @@ class ApiController extends Controller
 
         $client = Client::where('vk_uid', $uid)->first();
 
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
+        $response = json_decode($response->getBody()->getContents());
+
         if($client == null) {
-            $guzzle = new \GuzzleHttp\Client();
-            $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
-            $response = json_decode($response->getBody()->getContents());
             $client = new Client();
-            $client->first_name = $response->response[0]->first_name;
-            $client->last_name = $response->response[0]->last_name;
-            $client->avatar = $response->response[0]->photo_50;
-            $client->vkontakte = true;
-            $client->vk_uid = $response->response[0]->uid;
-            $client->vk_token = $request->input('access_token');
             $client->authToken = str_random(32);
-            $client->save();
         }
+
+        $client->first_name = $response->response[0]->first_name;
+        $client->last_name = $response->response[0]->last_name;
+        $client->avatar = $response->response[0]->photo_50;
+        $client->vkontakte = true;
+        $client->vk_uid = $response->response[0]->uid;
+        $client->vk_token = $request->input('access_token');
+        $client->save();
 
         $this->response['client'] = $client;
         return response()->json($this->response);
@@ -76,7 +78,66 @@ class ApiController extends Controller
 
     public function postFb(Request $request)
     {
+        $uid = $request->input('uid');
+        $access_token = $request->input('access_token');
 
+        $client = Client::where('vk_uid', $uid)->first();
+
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->request("GET", "https://graph.facebook.com//v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
+        $response = json_decode($response->getBody()->getContents());
+
+        $client->vkontakte = true;
+        $client->vk_uid = $response->response[0]->uid;
+        $client->vk_token = $access_token;
+        $client->save();
+
+        $this->response['client'] = $client;
+        return response()->json($this->response);
+    }
+
+    public function postAddVkProfileToUser(Request $request)
+    {
+        $client = Client::find($request->input('id'));
+
+        $uid = $request->input('uid');
+        $access_token = $request->input('access_token');
+
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
+        $response = json_decode($response->getBody()->getContents());
+
+        $client->first_name = $response->first_name;
+        $client->last_name = $response->last_name;
+        $client->avatar = $response->picture->data->url;
+        $client->facebook = true;
+        $client->fb_uid = $response->id;
+        $client->fb_token = $access_token;
+        $client->save();
+
+        $this->response['client'] = $client;
+        return response()->json($this->response);
+    }
+
+
+    public function postAddFbProfileToUser(Request $request)
+    {
+        $client = Client::find($request->input('id'));
+
+        $uid = $request->input('uid');
+        $access_token = $request->input('access_token');
+
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->request("GET", "https://graph.facebook.com//v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
+        $response = json_decode($response->getBody()->getContents());
+
+        $client->facebook = true;
+        $client->fb_uid = $response->id;
+        $client->fb_token = $access_token;
+        $client->save();
+
+        $this->response['client'] = $client;
+        return response()->json($this->response);
     }
 
     public function getMain()

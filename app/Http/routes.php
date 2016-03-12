@@ -4,6 +4,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('home', 'ApiController@getMain');
     Route::post('vk', 'ApiController@postVk');
     Route::post('fb', 'ApiController@postFb');
+    Route::post('vk/update', 'ApiController@postAddVkProfileToUser');
+    Route::post('fb/update', 'ApiController@postAddFbProfileToUser');
     Route::get('anticafes', 'ApiController@getAnticafes');
     Route::get('anticafes/{count}', 'ApiController@getAnticafes');
     Route::get('events', 'ApiController@getEvents');
