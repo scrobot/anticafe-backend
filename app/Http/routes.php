@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('home', 'ApiController@getMain');
+    Route::get('auth', function(){return view('api.webview');});
     Route::get('auth/vk', 'ApiController@getVkAuth');
     Route::get('auth/vk/verify', 'ApiController@getVkVerify');
     Route::get('anticafes', 'ApiController@getAnticafes');
