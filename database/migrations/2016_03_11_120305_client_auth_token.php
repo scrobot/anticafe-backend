@@ -13,7 +13,14 @@ class ClientAuthToken extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
+            $table->dropColumn("uid", 'token');
             $table->string("authToken")->nullable();
+            $table->boolean("facebook");
+            $table->boolean("vkontakte");
+            $table->integer("vk_uid")->nullbale();
+            $table->integer("fb_uid")->nullbale();
+            $table->string("vk_token")->nullbale();
+            $table->string("fb_token")->nullbale();
         });
     }
 
@@ -25,7 +32,9 @@ class ClientAuthToken extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn("authToken");
+            $table->integer("uid")->nullbale();
+            $table->string("token")->nullbale();
+            $table->dropColumn("authToken", 'facebook', 'vkontakte', 'vk_uid', 'fb_uid', 'vk_token', 'fb_token');
         });
     }
 }

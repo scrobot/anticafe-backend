@@ -49,6 +49,38 @@ class ApiController extends Controller
         dd($request);
     }
 
+    public function postVk(Request $request)
+    {
+        $uid = $request->input('uid');
+
+        $client = Client::where('vk_uid', $uid)->first();
+
+        if($client == null) {
+            $guzzle = new \GuzzleHttp\Client();
+            $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
+            $response = json_decode($response->getBody()->getContents());
+            $client = new Client();
+            $client->first_name = $response->response[0]->first_name;
+            $client->last_name = $response->response[0]->last_name;
+            $client->avatar = $response->response[0]->photo_50;
+            $client->vkontakte = true;
+            $client->vk_uid = $response->response[0]->uid;
+            $client->vk_token = $request->input('access_token');
+            $client->authToken = str_random(32);
+            $client->save();
+
+            $this->client = $client;
+        }
+
+        $this->response['client'] = $this->client;
+        return response()->json($this->response);
+    }
+
+    public function postFb(Request $request)
+    {
+
+    }
+
     public function getMain()
     {
         $this->response["anticafe"] = $this->api->getAnticafes();
