@@ -77,6 +77,7 @@ class API
     public function getBookings(Client $client) {
         $bookings = [];
 
+
         foreach ($client->Bookings as $book) {
             $bookings[] = $this->getBooking($book);
         }
@@ -89,12 +90,11 @@ class API
         if($id != null && $book == null) {
             $book = Booking::find($id);
             if($book == null) return null;
-        } else {
-            return null;
         }
         return [
             "id" => $book->id,
             "anticafe" => $book->Anticafe->name,
+            "address" => $book->Anticafe->address,
             "type" => $book->Anticafe->type == 0 ? "Антикафе" : "Событие",
             "arrivalAt" => $book->arrival_at,
             "countOfCustomers" => $book->count_of_customers,
