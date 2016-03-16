@@ -71,15 +71,23 @@ class ApiController extends Controller
         $uid = $request->input('uid');
         $access_token = $request->input('access_token');
 
-        $client = Client::where('vk_uid', $uid)->first();
+        $client = Client::where('fb_uid', $uid)->first();
 
         $guzzle = new \GuzzleHttp\Client();
-        $response = $guzzle->request("GET", "https://graph.facebook.com//v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
+        $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
         $response = json_decode($response->getBody()->getContents());
 
-        $client->vkontakte = true;
-        $client->vk_uid = $response->response[0]->uid;
-        $client->vk_token = $access_token;
+        if($client == null) {
+            $client = new Client();
+            $client->authToken = str_random(32);
+        }
+
+        $client->first_name = $response->first_name;
+        $client->last_name = $response->last_name;
+        $client->avatar = $response->picture->data->url;
+        $client->facebook = true;
+        $client->fb_uid = $response->id;
+        $client->fb_token = $access_token;
         $client->save();
 
         $this->response['client'] = $client;
@@ -97,12 +105,9 @@ class ApiController extends Controller
         $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
         $response = json_decode($response->getBody()->getContents());
 
-        $client->first_name = $response->first_name;
-        $client->last_name = $response->last_name;
-        $client->avatar = $response->picture->data->url;
-        $client->facebook = true;
-        $client->fb_uid = $response->id;
-        $client->fb_token = $access_token;
+        $client->vkontakte = true;
+        $client->vk_uid = $response->response[0]->uid;
+        $client->vk_token = $access_token;
         $client->save();
 
         $this->response['client'] = $client;
@@ -118,7 +123,7 @@ class ApiController extends Controller
         $access_token = $request->input('access_token');
 
         $guzzle = new \GuzzleHttp\Client();
-        $response = $guzzle->request("GET", "https://graph.facebook.com//v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
+        $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
         $response = json_decode($response->getBody()->getContents());
 
         $client->facebook = true;
