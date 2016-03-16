@@ -178,17 +178,12 @@ class ApiController extends Controller
         return $this->api->getAbilities();
     }
 
-    public function getClient() {
-        if($this->client != null) {
-            $this->response['client'] = $this->client;
-        }
-        return response()->json($this->response);
-    }
-
     public function getProfile()
     {
         if($this->client != null) {
-            $this->response['bookings'] = $this->api->getBookings($this->client);
+            $this->response['client'] = $this->client;
+            $this->response['client']["likes"] = $this->api->getLikes($this->client);
+            $this->response['client']["bookings"] = $this->api->getBookings($this->client);
         }
         return response()->json($this->response);
     }

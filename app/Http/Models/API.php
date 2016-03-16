@@ -119,4 +119,20 @@ class API
         return $images;
     }
 
+    public function getLikes(Client $client)
+    {
+        $likes = [];
+
+        foreach ($client->Likes as $anticafe) {
+            $anticafe->tags = $anticafe->Tags->toArray();
+            $anticafe->events = $anticafe->Events->toArray();
+            $anticafe->attachments = $this->setImages($anticafe);
+            unset($anticafe->images);
+            $likes[] = $anticafe;
+        }
+
+        return $likes;
+    }
+
+
 }

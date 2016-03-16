@@ -13,7 +13,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('tags', 'ApiController@getTags');
     Route::get('abilities', 'ApiController@getAbilities');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
-    Route::get('client', 'ApiController@getClient');
     Route::get('profile', 'ApiController@getProfile');
     Route::post('search', 'ApiController@postSearch');
     Route::get('boooking/get/{id}', 'ApiController@getClientBooking');
