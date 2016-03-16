@@ -60,6 +60,9 @@ class ApiController extends Controller
         $client->vkontakte = true;
         $client->vk_uid = $response->response[0]->uid;
         $client->vk_token = $request->input('access_token');
+        $client->facebook = false;
+        $client->fb_uid = null;
+        $client->fb_token = null;
         $client->save();
 
         $this->response['client'] = $client;
@@ -85,6 +88,9 @@ class ApiController extends Controller
         $client->first_name = $response->first_name;
         $client->last_name = $response->last_name;
         $client->avatar = $response->picture->data->url;
+        $client->vkontakte = false;
+        $client->vk_uid = null;
+        $client->vk_token = null;
         $client->facebook = true;
         $client->fb_uid = $response->id;
         $client->fb_token = $access_token;
