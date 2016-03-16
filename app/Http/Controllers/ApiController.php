@@ -141,9 +141,9 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
-    public function getMain()
+    public function getMain($count = 0)
     {
-        $this->response["anticafe"] = $this->api->getAnticafes();
+        $this->response["anticafe"] = $this->api->getAnticafes($count);
         $this->response["tags"] = $this->api->getTagGroups();
 
         if($this->client != null) {

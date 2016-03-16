@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('home', 'ApiController@getMain');
+    Route::get('home/{count}', 'ApiController@getMain');
     Route::post('vk', 'ApiController@postVk');
     Route::post('fb', 'ApiController@postFb');
     Route::post('vk/update', 'ApiController@postAddVkProfileToUser');
