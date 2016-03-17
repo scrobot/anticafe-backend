@@ -78,6 +78,8 @@ class API
         $bookings = [];
 
 
+//        dd($client->Bookings[1]);
+
         foreach ($client->Bookings as $book) {
             $bookings[] = $this->getBooking($book);
         }
