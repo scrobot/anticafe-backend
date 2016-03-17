@@ -143,7 +143,7 @@ class ApiController extends Controller
 
     public function getMain($count = 0)
     {
-        $this->response["anticafe"] = $this->api->getAnticafes($count);
+        $this->response["anticafe"] = $this->api->getBestAnticafes($count, 16);
         $this->response["tags"] = $this->api->getTagGroups();
 
         if($this->client != null) {
