@@ -32,14 +32,14 @@ class Tag extends Model implements ModelNameable
             $image = (new ImageManager())->make($file)->encode("png")->resize(125, 125);
             $name = public_path() . '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
             $image->save($name);
-            return '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
+            return url("/") . DIRECTORY_SEPARATOR . '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
         }
 
         if($tag != null) {
             return $tag->icon;
         }
 
-        return "http://backend.anticafe.im/images/default-icon.png";
+        return url("/") . DIRECTORY_SEPARATOR . "/images/default-icon.png";
     }
 
     public function setSlugAttribute($value)
@@ -59,7 +59,7 @@ class Tag extends Model implements ModelNameable
 
     public function scopeHomeTags($query)
     {
-        return $query->whereIn("slug", ['chay-i-kofe', 'nastolki', 'wi-fi', 'internet', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
+        return $query->whereIn("slug", ['chay-i-kofe', 'nastolki', 'muzyka', 'internet', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
     }
 
     public function scopeAbilites($query)
