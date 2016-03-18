@@ -57,6 +57,11 @@ class Tag extends Model implements ModelNameable
         return $query->where("is_group", 1);
     }
 
+    public function scopeHomeTags($query)
+    {
+        return $query->whereIn("slug", ['chay-i-kofe', 'nastolki', 'wi-fi', 'internet', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
+    }
+
     public function scopeAbilites($query)
     {
         return $query->where("is_group", 0)->where("parent_id", ">", 0);

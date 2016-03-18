@@ -43,7 +43,7 @@ class API
     }
 
     public function getTagGroups() {
-        return Tag::groups()->get();
+        return Tag::homeTags()->get();
     }
 
     public function getAbilities() {
