@@ -181,10 +181,28 @@ class ApiController extends Controller
     public function getProfile()
     {
         if($this->client != null) {
-            $this->response['client'] = $this->client;
+            $this->response['client'] = [
+                "id" => $this->client->id,
+                "first_name" => $this->client->first_name,
+                "last_name" => $this->client->last_name,
+                "phone" => $this->client->phone,
+                "email" => $this->client->email,
+                "avatar" => $this->client->avatar,
+                "get_notifications" => $this->client->get_notifications,
+                "get_news" => $this->client->get_news,
+                "social_profile_link" => $this->client->social_profile_link,
+                "authToken" => $this->client->authToken,
+                "vkontakte" => $this->client->vkontakte,
+                "facebook" => $this->client->facebook,
+                "vk_uid" => $this->client->vk_uid,
+                "fb_uid" => $this->client->fb_uid,
+                "vk_token" => $this->client->vk_token,
+                "fb_token" => $this->client->fb_token
+            ];
             $this->response['client']["likes"] = $this->api->getLikes($this->client);
             $this->response['client']["bookings"] = $this->api->getBookings($this->client);
         }
+
         return response()->json($this->response);
     }
 
