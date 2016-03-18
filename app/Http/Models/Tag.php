@@ -11,7 +11,9 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\ImageManager;
 use Stringy\StaticStringy;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Tag extends Model implements ModelNameable
 {
@@ -21,8 +23,24 @@ class Tag extends Model implements ModelNameable
     protected $table = 'tags';
 
     protected $guarded = [];
-    
+
     public $timestamps = false;
+
+    public static function uploadIcon(File $file, Tag $tag = null)
+    {
+        if($file != null) {
+            $image = (new ImageManager())->make($file)->encode("png")->resize(125, 125);
+            $name = public_path() . '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
+            $image->save($name);
+            return '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
+        }
+
+        if($tag != null) {
+            return $tag->icon;
+        }
+
+        return "http://backend.anticafe.im/images/default-icon.png";
+    }
 
     public function setSlugAttribute($value)
     {

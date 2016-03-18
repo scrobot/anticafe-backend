@@ -16,7 +16,8 @@
         "graham-campbell/exceptions": "5.*",
         "danielstjules/stringy": "^2.2",
         "intervention/image": "^2.3",
-        "socialiteproviders/vkontakte": "^1.1"
+        "socialiteproviders/vkontakte": "^1.1",
+        "cviebrock/image-validator": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

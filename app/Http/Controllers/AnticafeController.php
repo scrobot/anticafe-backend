@@ -143,7 +143,7 @@ class AnticafeController extends Controller
             $anticafe->forceDelete();
         }
 
-        return back()->withMsg('common.msg.trash_cleaned');
+        return redirect(route('anticafes'))->withMsg('common.msg.trash_cleaned');
 
     }
 

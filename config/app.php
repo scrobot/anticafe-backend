@@ -155,6 +155,7 @@ return [
         \Helpers\Roles\RolesServiceProvider::class,
         \Helpers\Permissions\PermissionsServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+        \Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -35,13 +35,18 @@
 
     <div class="row">
         <div class="col-md-12">
-        {{ Form::model($tag, ['action' => ['TagsController@postUpdate', $tag->id]]) }}
+        {{ Form::model($tag, ['action' => ['TagsController@postUpdate', $tag->id], 'files' => true]) }}
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2>Основные данные</h2>
                     </div>
                     <div class="panel-body">
+                        <div class="form-group">
+                            <img src="{{$tag->icon}}"/><br/>
+                            {{Form::label('icon', "Иконка")}}
+                            {{Form::file("icon", ['class'=>'form-control'])}}
+                        </div>
                         <div class="form-group">
                             {{Form::label('name', "Название")}}
                             {{Form::text('name', null, ["class" => "form-control"])}}
