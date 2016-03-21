@@ -57,10 +57,10 @@ class ApiController extends Controller
         $client->first_name = $response->response[0]->first_name;
         $client->last_name = $response->response[0]->last_name;
         $client->avatar = $response->response[0]->photo_50;
-        $client->vkontakte = true;
+        $client->vkontakte = 1;
         $client->vk_uid = $response->response[0]->uid;
         $client->vk_token = $request->input('access_token');
-        $client->facebook = false;
+        $client->facebook = 0;
         $client->fb_uid = null;
         $client->fb_token = null;
         $client->save();
@@ -88,10 +88,10 @@ class ApiController extends Controller
         $client->first_name = $response->first_name;
         $client->last_name = $response->last_name;
         $client->avatar = $response->picture->data->url;
-        $client->vkontakte = false;
+        $client->vkontakte = 0;
         $client->vk_uid = null;
         $client->vk_token = null;
-        $client->facebook = true;
+        $client->facebook = 1;
         $client->fb_uid = $response->id;
         $client->fb_token = $access_token;
         $client->save();
@@ -111,7 +111,7 @@ class ApiController extends Controller
         $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
         $response = json_decode($response->getBody()->getContents());
 
-        $client->vkontakte = true;
+        $client->vkontakte = 1;
         $client->vk_uid = $response->response[0]->uid;
         $client->vk_token = $access_token;
         $client->save();
@@ -132,7 +132,7 @@ class ApiController extends Controller
         $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
         $response = json_decode($response->getBody()->getContents());
 
-        $client->facebook = true;
+        $client->facebook = 1;
         $client->fb_uid = $response->id;
         $client->fb_token = $access_token;
         $client->save();
@@ -192,8 +192,8 @@ class ApiController extends Controller
                 "get_news" => $this->client->get_news,
                 "social_profile_link" => $this->client->social_profile_link,
                 "authToken" => $this->client->authToken,
-                "vkontakte" => $this->client->vkontakte,
-                "facebook" => $this->client->facebook,
+                "vkontakte" => $this->client->vkontakte ? 1 : 0,
+                "facebook" => $this->client->facebook ? 1 : 0,
                 "vk_uid" => $this->client->vk_uid,
                 "fb_uid" => $this->client->fb_uid,
                 "vk_token" => $this->client->vk_token,
