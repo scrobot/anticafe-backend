@@ -206,6 +206,27 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    public function postProfileUpdate(Request $request)
+    {
+        if($this->client == null) {
+            $this->response['status'] = 500;
+            $this->response['error'] = true;
+            $this->response['message'] = "Произошла ошибка при обновлении профиля.";
+            return response()->json($this->response);
+        }
+
+        $cl = Client::find($this->client->id);
+        $cl->first_name = $request->input('first_name');
+        $cl->last_name = $request->input('last_name');
+        $cl->email = $request->input('email');
+        $cl->phone = $request->input('phone');
+        $cl->save();
+
+        $this->response['message'] = "Профиль успешно обновлен";
+
+        return response()->json($this->response);
+    }
+
     public function postSearch(Request $request)
     {
         $searchable = $request->input('search_text');
@@ -292,7 +313,11 @@ class ApiController extends Controller
             return response($this->response);
         }
 
+//        dd($request->input('anticafe_id'));
+
         $anticafe = Anticafe::find($request->input('anticafe_id'));
+//        dd($request->input('anticafe_id'), Anticafe::find(3), $anticafe);
+//        dd($this->client->Likes->contains($anticafe->id));
         if($this->client->Likes->contains($anticafe->id)) {
             $this->client->Likes()->detach($anticafe->id);
             $anticafe->total_likes--;

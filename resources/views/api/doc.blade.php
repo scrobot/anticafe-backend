@@ -402,18 +402,6 @@
                         <p><strong>GET</strong></p>
                     </div>
                     <div class="col-md-2 type">
-                        <a href="/api/client"><abbr title="/api/client/">/api/client</abbr></a>
-                    </div>
-                    <div class="col-md-9 type">
-                        <a href="#">getClient</a>
-                        <p>Returned client profile json. Recommended do this query than application is running and save client model in preferences of your application</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        <p><strong>GET</strong></p>
-                    </div>
-                    <div class="col-md-2 type">
                         <a href="/api/profile"><abbr title="/api/profile/">/api/profile</abbr></a>
                     </div>
                     <div class="col-md-9 type">
@@ -443,6 +431,32 @@
                     <div class="col-md-9 type">
                         <a href="#">getDeleteBooking</a>(int $id)
                         <p>This method returned JSON status text "OK" and HTTP code status "200" if booking will be delete successfuly.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
+                        <a href="/api/profile-update"><abbr title="/api/profile-update">/api/profile-update</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) first_name</p>
+                        <p>(string) last_name</p>
+                        <p>(string) email</p>
+                        <p>(string) phone</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postProfileUpdate</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Make post request with required params. This method returned result array with two elemetnts.<br/>
+<pre>{
+    "status": 500\200,
+    "error": false\true,
+    "message": "Произошла ошибка при обновлении профиля."\"Профиль успешно обновлен" // В зависимости от результата выполнения запроса - провал\успех
+}</pre>
+                        </p>
                     </div>
                 </div>
                 <div class="row">

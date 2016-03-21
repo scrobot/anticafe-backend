@@ -15,11 +15,12 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('abilities', 'ApiController@getAbilities');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
     Route::get('profile', 'ApiController@getProfile');
+    Route::post('profile-update', 'ApiController@getProfileUpdate');
     Route::post('search', 'ApiController@postSearch');
     Route::get('boooking/get/{id}', 'ApiController@getClientBooking');
     Route::post('boooking', 'ApiController@postBooking');
     Route::get('boooking/delete/id}', 'ApiController@getDeleteBooking');
-    Route::post('like', 'ApiController@like');
+    Route::post('like', 'ApiController@postLike');
     Route::get('documentation', [
         'as' => 'api.doc', 'uses' => 'ApiController@documentation'
     ]);
