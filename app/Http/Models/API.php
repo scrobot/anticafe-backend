@@ -75,7 +75,7 @@ class API
         $anticafe->total_views++;
         $anticafe->save();
         // TODO: отрефакторить. Возможно засунуть в модель.
-        $anticafe->tags = $anticafe->Tags->toArray();
+        $anticafe->tags = $anticafe->setTags();
         $anticafe->attachments = $this->setImages($anticafe);
         if($anticafe->type == 0)
             $anticafe->events = $anticafe->Events->toArray();

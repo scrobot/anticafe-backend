@@ -240,4 +240,30 @@ class Anticafe extends Model implements ModelNameable
         $this->booking_available = $booking_available ? 1 : 0;
         $this->save();
     }
+
+    public function setTags() {
+        $tags = [];
+        $counter = 0;
+        foreach($this->Tags as $tag) {
+            $tags[$counter] = [
+                "id" => $tag->id,
+                "slug" => $tag->slug,
+                "name" => $tag->name,
+                "parent_id" => $tag->parent_id,
+                "is_group" => $tag->is_group,
+                "icon" => $tag->icon,
+            ];
+            if($tag->parent_id != null) {
+                $tags[$counter]["group"] = [
+                    "id" => $tag->Group->id,
+                    "slug" => $tag->Group->slug,
+                    "name" => $tag->Group->name,
+                    "parent_id" => $tag->Group->parent_id,
+                    "is_group" => $tag->Group->is_group,
+                    "icon" => $tag->Group->icon,
+                ];
+            }
+            $counter++;
+        }
+    }
 }
