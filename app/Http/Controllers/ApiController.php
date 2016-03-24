@@ -256,13 +256,14 @@ class ApiController extends Controller
             $this->response['needAuth'] = true;
             $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
         } else {
-            $this->response["booking"] = $this->api->getBooking($id);
+            $this->response["booking"] = $this->api->getBooking(null, $id);
         }
         return response()->json($this->response);
     }
 
     public function postBooking(Request $request)
     {
+//        dd($this->client);
         if($this->client == null) {
             $this->response['status'] = 403;
             $this->response['error'] = true;
@@ -277,7 +278,7 @@ class ApiController extends Controller
         $booking->count_of_customers = $request->input('count_of_customers');
         $booking->comment = $request->input('comment');
         $booking->contacts = $request->input('contacts');
-        $booking->status = $request->input('status');
+        $booking->status = $request->input('status')== null ? "process" : $request->input('status');
         $booking->arrival_at = $request->input('arrival_at');
         $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $this->client->id;

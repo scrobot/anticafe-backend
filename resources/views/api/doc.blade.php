@@ -289,9 +289,9 @@
                     <li>Profile activity</li>
                     <li>Profile page</li>
                     <h3>Requests</h3>
-                    <li>GET /api/boooking/get/{id}</li>
-                    <li>GET /api/boooking/delete/{id}</li>
-                    <li>POST /api/boooking</li>
+                    <li>GET /api/booking/get/{id}</li>
+                    <li>GET /api/booking/delete/{id}</li>
+                    <li>POST /api/booking</li>
                     <li>POST /api/like</li>
                 </ol>
 
@@ -414,7 +414,7 @@
                         <p><strong>GET</strong></p>
                     </div>
                     <div class="col-md-2 type">
-                        <a href="/api/boooking/get/1"><abbr title="/api/boooking/get/{id}">/api/boooking/get/{id}</abbr></a>
+                        <a href="/api/booking/get/1"><abbr title="/api/booking/get/{id}">/api/booking/get/{id}</abbr></a>
                     </div>
                     <div class="col-md-9 type">
                         <a href="#">getClientBooking</a>(int $id)
@@ -426,7 +426,7 @@
                         <p><strong>GET</strong></p>
                     </div>
                     <div class="col-md-2 type">
-                        <a href="/api/boooking/delete/1"><abbr title="/api/boooking/get/{id}">/api/boooking/delete/{id}</abbr></a>
+                        <a href="/api/booking/delete/1"><abbr title="/api/booking/get/{id}">/api/booking/delete/{id}</abbr></a>
                     </div>
                     <div class="col-md-9 type">
                         <a href="#">getDeleteBooking</a>(int $id)
@@ -494,14 +494,14 @@
                         <p><strong>POST</strong></p>
                     </div>
                     <div class="col-md-2 type">
-                        <a href="/api/boooking"><abbr title="/api/boooking">/api/boooking</abbr></a>
+                        <a href="/api/booking"><abbr title="/api/booking">/api/booking</abbr></a>
                     </div>
                     <div class="col-md-2">
                         <strong>Params</strong>
                         <p>(int) count_of_customers</p>
                         <p>(string) comment</p>
                         <p>(string) contacts</p>
-                        <p>(string) status</p>
+                        <p>(string) status - not required. Default: process</p>
                         <p>(timestamp) arrival_at</p>
                         <p>(int) anticafe_id</p>
                     </div>

@@ -110,7 +110,7 @@ class API
             "arrivalAt" => $book->arrival_at,
             "countOfCustomers" => $book->count_of_customers,
             "comment" => $book->comment,
-            "status" => $book->status,
+            "status" => config("statuses.{$book->status}"),
         ];
     }
 

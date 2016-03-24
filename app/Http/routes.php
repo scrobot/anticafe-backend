@@ -17,9 +17,9 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('profile', 'ApiController@getProfile');
     Route::post('profile-update', 'ApiController@postProfileUpdate');
     Route::post('search', 'ApiController@postSearch');
-    Route::get('boooking/get/{id}', 'ApiController@getClientBooking');
-    Route::post('boooking', 'ApiController@postBooking');
-    Route::get('boooking/delete/id}', 'ApiController@getDeleteBooking');
+    Route::get('booking/get/{id}', 'ApiController@getClientBooking');
+    Route::post('booking', 'ApiController@postBooking');
+    Route::get('booking/delete/{id}', 'ApiController@getDeleteBooking');
     Route::post('like', 'ApiController@postLike');
     Route::get('documentation', [
         'as' => 'api.doc', 'uses' => 'ApiController@documentation'
