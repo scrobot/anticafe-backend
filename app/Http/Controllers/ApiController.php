@@ -153,14 +153,14 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
-    public function getAnticafes($count = 0)
+    public function getAnticafes($count = 0, $limit = 15)
     {
-        return response()->json($this->api->getAnticafes($count));
+        return response()->json($this->api->getAnticafes($count, $limit));
     }
 
-    public function getEvents($count = 0)
+    public function getEvents($count = 0, $limit = 15)
     {
-        return response()->json($this->api->getEvents($count));
+        return response()->json($this->api->getEvents($count, $limit));
     }
 
     public function getGetOneAnticafeOrEvent($id)

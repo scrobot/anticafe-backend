@@ -18,7 +18,11 @@ class API
 
     public function getAnticafes($count = 0, $limit = 15)
     {
-        $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
+        if($count == 0 && $limit == 0) {
+            $anticafes = Anticafe::where('type', 0)->get();
+        } else {
+            $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
+        }
 
         foreach ($anticafes as $anticafe) {
             $anticafe->tags = $anticafe->Tags->toArray();
@@ -58,7 +62,11 @@ class API
 
     public function getEvents($count = 0, $limit = 15)
     {
-        $events = Anticafe::where('type', 1)->skip($count)->take($limit)->get();
+        if($count == 0 && $limit == 0) {
+            $events = Anticafe::where('type', 1)->get();
+        } else {
+            $events = Anticafe::where('type', 1)->skip($count)->take($limit)->get();
+        }
 
         foreach ($events as $event) {
             $event->tags = $event->Tags->toArray();
