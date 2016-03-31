@@ -36,7 +36,7 @@ class API
 
     public function getBestAnticafes($count, $limit)
     {
-        $anticafes = Anticafe::where('id', ">=", 0)->orderBy("total_views", "desc")->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
+        $anticafes = Anticafe::where('id', ">=", 0)->orderBy("total_likes", "desc")->orderBy("total_views", "desc")->skip($count)->take($limit)->get();
 
         foreach ($anticafes as $anticafe) {
             $anticafe->attachments = $this->setImages($anticafe);
