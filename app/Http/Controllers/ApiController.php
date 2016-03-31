@@ -13,6 +13,7 @@ use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\API;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -36,6 +37,7 @@ class ApiController extends Controller
             "error" => false,
             "needAuth" => false,
             "message" => "",
+            "searchResult" => [],
         ];
     }
 
@@ -234,12 +236,12 @@ class ApiController extends Controller
     public function postSearch(Request $request)
     {
         $searchable = $request->input('search_text');
-        $this->response['anticafes_and_events'] = Anticafe::where("name", "LIKE", "%{$searchable}%")
+        $this->response["searchResult"]['anticafes_and_events'] = Anticafe::where("name", "LIKE", "%{$searchable}%")
                                                         ->orWhere("address", "LIKE", "%{$searchable}%")
                                                         ->orWhere("excerpt", "LIKE", "%{$searchable}%")
                                                         ->orWhere("description", "LIKE", "%{$searchable}%")
                                                         ->get();
-        $this->response['finded_by_tags_and_aliases'] = Anticafe::whereHas('Tags', function($q) use ($searchable)
+        $this->response["searchResult"]['finded_by_tags_and_aliases'] = Anticafe::whereHas('Tags', function($q) use ($searchable)
         {
             $q->where('name', 'like', "%{$searchable}%");
 
@@ -248,6 +250,15 @@ class ApiController extends Controller
             $q->where('name', 'like', "%{$searchable}%")->orWhere('name', $searchable);
 
         })->get();
+
+        return response()->json($this->response);
+    }
+
+    public function postFindByTag(Request $request) {
+        $tag_id = $request->input('tag_id');
+        $tag = Tag::find($tag_id);
+
+        $this->response["searchResult"]["anticafes_and_events"] = $tag->Anticafes;
 
         return response()->json($this->response);
     }

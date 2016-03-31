@@ -464,6 +464,34 @@
                         <p><strong>POST</strong></p>
                     </div>
                     <div class="col-md-2 type">
+                        <a href="/api/search-by-tag"><abbr title="/api/search-by-tag">/api/search-by-tag</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) tag_id</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postFindByTag</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Make post request with required params. This method returned result array with json:<br/>
+<pre>{
+    "status": 200,
+    "error": false,
+    "searchResult": [
+        "anticafes_and_events": [
+            ...
+        ]
+    ]
+}</pre>
+                        <b>anticafes_and_events</b> - contains anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
                         <a href="/api/search"><abbr title="/api/search">/api/search</abbr></a>
                     </div>
                     <div class="col-md-2">
@@ -477,11 +505,13 @@
 <pre>{
     "status": 200,
     "error": false,
-    "anticafes_and_events": [
-        ...
-    ],
-    "finded_by_tags_and_aliases":
-        ...
+    "searchResult": [
+        "anticafes_and_events": [
+            ...
+        ],
+        "finded_by_tags_and_aliases":
+            ...
+        ]
     ]
 }</pre>
                         <b>anticafes_and_events</b> - contains anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>

@@ -19,6 +19,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('profile', 'ApiController@getProfile');
     Route::post('profile-update', 'ApiController@postProfileUpdate');
     Route::post('search', 'ApiController@postSearch');
+    Route::post('search-by-tag', 'ApiController@postFindByTag');
     Route::get('booking/get/{id}', 'ApiController@getClientBooking');
     Route::post('booking', 'ApiController@postBooking');
     Route::get('booking/delete/{id}', 'ApiController@getDeleteBooking');
