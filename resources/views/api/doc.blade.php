@@ -501,21 +501,20 @@
                     <div class="col-md-7 type">
                         <a href="#">postSearch</a>(Illuminate\Http\Request $request)
                         <p>
-                            Make post request with required params. This method returned result array with two elemetnts.<br/>
+                            Make post request with required params. This method returned result array with json.<br/>
 <pre>{
     "status": 200,
     "error": false,
     "searchResult": [
         "anticafes_and_events": [
             ...
-        ],
-        "finded_by_tags_and_aliases":
-            ...
         ]
     ]
 }</pre>
-                        <b>anticafes_and_events</b> - contains anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>
-                        <b>finded_by_tags_and_aliases</b> - contains anticafes and events entities find by <i>Tags name</i> fields OR <i>Aliases name</i> fields
+                        <b>anticafes_and_events:</b><br/>
+                        This result is collecting by 2 operations<br/>
+                        1 itteration - push in collection anticafes and events entities find by <i>name</i>, <i>address</i>, <i>excerpt</i>, <i>description</i> fields<br/>
+                        2 itteration - push in collection anticafes and events entities find by <i>Tags name</i> fields OR <i>Aliases name</i> fields
                         </p>
                     </div>
                 </div>

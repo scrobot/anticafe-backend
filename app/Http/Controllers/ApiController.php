@@ -236,29 +236,16 @@ class ApiController extends Controller
     public function postSearch(Request $request)
     {
         $searchable = $request->input('search_text');
-        $this->response["searchResult"]['anticafes_and_events'] = Anticafe::where("name", "LIKE", "%{$searchable}%")
-                                                        ->orWhere("address", "LIKE", "%{$searchable}%")
-                                                        ->orWhere("excerpt", "LIKE", "%{$searchable}%")
-                                                        ->orWhere("description", "LIKE", "%{$searchable}%")
-                                                        ->get();
-        $this->response["searchResult"]['finded_by_tags_and_aliases'] = Anticafe::whereHas('Tags', function($q) use ($searchable)
-        {
-            $q->where('name', 'like', "%{$searchable}%");
 
-        })->orWhereHas('Tags.Aliases', function($q) use ($searchable)
-        {
-            $q->where('name', 'like', "%{$searchable}%")->orWhere('name', $searchable);
-
-        })->get();
+        $this->response["searchResult"]['anticafes_and_events'] = $this->api->getSearchedAnticafes($searchable);
 
         return response()->json($this->response);
     }
 
     public function postFindByTag(Request $request) {
         $tag_id = $request->input('tag_id');
-        $tag = Tag::find($tag_id);
 
-        $this->response["searchResult"]["anticafes_and_events"] = $tag->Anticafes;
+        $this->response["searchResult"]["anticafes_and_events"] = $this->api->getSearchedAnticafesByTag($tag_id);
 
         return response()->json($this->response);
     }

@@ -153,7 +153,55 @@ class API
         return $likes;
     }
 
+    public function getSearchedAnticafesByTag($tag_id)
+    {
+        $tag = Tag::find($tag_id);
 
+        $result = $tag->Anticafes;
+
+        foreach ($result as $anticafe) {
+            $anticafe->attachments = $this->setImages($anticafe);
+            unset($anticafe->images);
+        }
+
+        return $result;
+    }
+
+    public function getSearchedAnticafes($searchable)
+    {
+        $result = collect();
+        $result->push(Anticafe::where("name", "LIKE", "%{$searchable}%")
+            ->orWhere("address", "LIKE", "%{$searchable}%")
+            ->orWhere("excerpt", "LIKE", "%{$searchable}%")
+            ->orWhere("description", "LIKE", "%{$searchable}%")
+            ->get());
+
+        $q = Anticafe::whereHas('Tags', function($q) use ($searchable)
+        {
+            $q->where('name', 'like', "%{$searchable}%");
+
+        })->orWhereHas('Tags.Aliases', function($q) use ($searchable)
+        {
+            $q->where('name', 'like', "%{$searchable}%")->orWhere('name', $searchable);
+
+        })->get();
+
+        foreach($q as $e) {
+            if($result->contains("id", $e->id)) {
+                continue;
+            }
+            $result->push($e);
+        }
+
+        $result = $result[0];
+
+        foreach ($result as $anticafe) {
+            $anticafe->attachments = $this->setImages($anticafe);
+            unset($anticafe->images);
+        }
+
+        return $result;
+    }
 
 
 }
