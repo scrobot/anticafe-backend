@@ -285,9 +285,9 @@ class ApiController extends Controller
         $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $this->client->id;
         $booking->user_id = $anticafe->Manager()->id;
-        $booking->save();
+//        $booking->save();
 
-//        $anticafe->Manager()->sendEmailNotification($booking);
+        $anticafe->Manager()->sendEmailNotification($booking);
         $booking->Client->sendEmailNotification($booking, $booking->status);
 
         return response($this->response);
