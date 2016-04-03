@@ -10,6 +10,7 @@ namespace Anticafe\Http\Models;
 
 
 use Anticafe\Http\Models\Client;
+use Carbon\Carbon;
 
 class API
 {
@@ -98,7 +99,8 @@ class API
         $bookings = [];
 
         foreach ($client->Bookings as $book) {
-            $bookings[] = $this->getBooking($book);
+            $q = $this->getBooking($book);
+            if($q) $bookings[] = $q;
         }
 
         return $bookings;
@@ -110,6 +112,18 @@ class API
             $book = Booking::find($id);
             if($book == null) return null;
         }
+
+        if($book->status == "declined") {
+            return null;
+        }
+
+        $c = Carbon::createFromFormat('d.m в H:i', $book->arrival_at);
+        $now = Carbon::now();
+
+        if($now->timestamp > $c->timestamp) {
+            return null;
+        }
+
         return [
             "id" => $book->id,
             "anticafe" => $book->Anticafe->name,

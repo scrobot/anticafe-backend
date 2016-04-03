@@ -278,7 +278,7 @@ class ApiController extends Controller
 
         $booking = new Booking();
         $booking->count_of_customers = $request->input('count_of_customers');
-        $booking->comment = $request->input('comment');
+        $booking->comment = $request->input('comment') == null ? "" : $request->input('comment');
         $booking->contacts = $request->input('contacts');
         $booking->status = $request->input('status')== null ? "process" : $request->input('status');
         $booking->arrival_at = $request->input('arrival_at');
@@ -287,7 +287,7 @@ class ApiController extends Controller
         $booking->user_id = $anticafe->Manager()->id;
         $booking->save();
 
-        $anticafe->Manager()->sendEmailNotification($booking);
+//        $anticafe->Manager()->sendEmailNotification($booking);
         $booking->Client->sendEmailNotification($booking, $booking->status);
 
         return response($this->response);

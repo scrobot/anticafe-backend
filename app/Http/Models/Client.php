@@ -33,7 +33,7 @@ class Client extends Model
         $book['status'] = $status;
         \Mail::send('emails.client-notification', ['book' => $book], function($message) use ($that)
         {
-            $message->from('noreply@anticafe.mi', 'Уведомления о изменении статуса заказа');
+            $message->from('booking@anticafe.im', 'Anticafe.im')->subject("Уведомления о изменении статуса заказа");
 
             $message->to($that->email);
         });
