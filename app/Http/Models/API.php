@@ -22,7 +22,7 @@ class API
         if($count == 0 && $limit == 0) {
             $anticafes = Anticafe::where('type', 0)->get();
         } else {
-            $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
+            $anticafes = Anticafe::where('type', 0)->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
         }
 
         foreach ($anticafes as $anticafe) {
