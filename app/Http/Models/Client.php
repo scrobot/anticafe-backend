@@ -13,7 +13,7 @@ class Client extends Model
 
     public function Likes()
     {
-        return $this->belongsToMany(Anticafe::class, 'likes', 'anticafe_id', 'client_id');
+        return $this->belongsToMany(Anticafe::class, 'likes', 'client_id', 'anticafe_id');
     }
 
     public function Bookings()

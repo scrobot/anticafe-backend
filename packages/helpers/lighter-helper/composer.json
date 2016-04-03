@@ -1,0 +1,21 @@
+{
+  "name": "helpers/lighter-helper",
+  "description": "Crossmodule of ligher active menu items",
+  "require-dev": {
+    "laravel/framework": "5.*"
+  },
+  "authors": [
+    {
+      "name": "Malikin Sergey",
+      "email": "malikin.sergey.1988@gmail.com"
+    },
+    {
+      "name": "Alex Scrobot",
+      "email": "scrobot91@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "illuminate/support": "5.*"
+  }
+}

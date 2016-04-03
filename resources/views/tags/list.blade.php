@@ -12,16 +12,25 @@
 
 @section('content')
     <h1>{{$title}}</h1>
+    <div class="alert alert-warning">
+        <p><b>ВНИМАНИЕ!</b> При загрузке иконок следует знать:</p>
+        <ol>
+            <li>Иконки должны быть в формате png с прозрачным фоном.</li>
+            <li>Соотношение сторон должно быть 1:1, т.е. иконки по размеру должны быть квадратные.</li>
+        </ol>
+        <p><b>При несоблюдении данных условий сущность не сохранится.</b></p>
+    </div>
     <div class="row">
         <div class="col-md-12">
-            {{ Form::open(['action' => "TagsController@postStore", 'class' => 'form-inline']) }}
-            {{ Form::text('name', null, ['class'=>'form-control', 'placeholder' => 'Возможность']) }}
-            {{ Form::select("parent_id", $groups, null, ['class'=>'form-control',  'id' => 'group']) }}
-            <label id="is_group">
-                {{ Form::checkbox("is_group", 1, null, ['class'=>'form-control']) }}
-                Группа
-            </label>
-            <button class="btn btn-success" type="submit">Добавить</button>
+            {{ Form::open(['action' => "TagsController@postStore", 'class' => 'form-inline', 'files' => true]) }}
+                {{ Form::text('name', null, ['class'=>'form-control', 'placeholder' => 'Возможность']) }}
+                {{ Form::select("parent_id", $groups, null, ['class'=>'form-control',  'id' => 'group']) }}
+                {{ Form::file("icon", ['class'=>'form-control']) }}
+                <label id="is_group">
+                    {{ Form::checkbox("is_group", 1, null, ['class'=>'form-control']) }}
+                    Группа
+                </label>
+                <button class="btn btn-success" type="submit">Добавить</button>
             {{ Form::close() }}
         </div>
     </div>

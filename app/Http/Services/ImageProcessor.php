@@ -14,7 +14,6 @@ class ImageProcessor
     private $type;
     private $anticafes_dir;
     private $file_original_name;
-    private $extension;
     private $filename;
 
     /**
@@ -23,7 +22,7 @@ class ImageProcessor
      */
     public function __construct(File $file, $type)
     {
-        $this->file = (new ImageManager())->make($file);
+        $this->file = (new ImageManager())->make($file)->encode("jpg");
         $this->anticafes_dir = public_path() . '/images/anticafes/';
         $this->dirs = [
             "covers" => $this->anticafes_dir . 'covers/',
@@ -32,8 +31,7 @@ class ImageProcessor
         ];
         $this->type = $type;
         $this->file_original_name = md5($file->getClientOriginalName());
-        $this->extension = $file->getClientOriginalExtension();
-        $this->filename = $this->file_original_name.'.'.$this->extension;
+        $this->filename = $this->file_original_name.'.jpg';
     }
 
     public function start()

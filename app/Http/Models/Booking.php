@@ -35,7 +35,13 @@ class Booking extends Model
             return $value;
         }
 
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d F Y в H:i');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m в H:i');
+    }
+
+    public function setArrivalAtAttribute($value)
+    {
+        $carbon = Carbon::parse($value);
+        $this->attributes['arrival_at'] = $carbon->format('Y-m-d H:i:s');/*Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d F Y в H:i');;*/
     }
 
 }

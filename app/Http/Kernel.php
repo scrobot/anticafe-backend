@@ -31,6 +31,11 @@ class Kernel extends HttpKernel
             \Anticafe\Http\Middleware\VerifyCsrfToken::class,
         ],
 
+        'app-api' => [
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        ],
+
         'api' => [
             'throttle:60,1',
         ],

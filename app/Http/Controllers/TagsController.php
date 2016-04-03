@@ -10,6 +10,7 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Tag;
+use Anticafe\Http\Requests\TagsRequest;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller
@@ -38,14 +39,15 @@ class TagsController extends Controller
         return view('tags.list')->withTitle($this->title)->withTags($tags)->withGroups($groups);
     }
 
-    public function postStore(Request $request)
+    public function postStore(TagsRequest $request)
     {
         Tag::create(
             [
                 'slug' => $request->input('name'),
                 'name' => $request->input('name'),
                 'parent_id' => $request->input('parent_id') ? $request->input('parent_id') : NULL,
-                'is_group' => $request->input('is_group') ? 1 : 0
+                'is_group' => $request->input('is_group') ? 1 : 0,
+                'icon' => Tag::uploadIcon($request->file('icon')),
             ]
         );
 
@@ -64,7 +66,7 @@ class TagsController extends Controller
         return view('tags.edit')->withTitle($this->title)->withTag($tag)->withGroups($groups);
     }
 
-    public function postUpdate(Request $request, $id)
+    public function postUpdate(TagsRequest $request, $id)
     {
         $tag = Tag::find($id);
 
@@ -72,7 +74,8 @@ class TagsController extends Controller
             'slug' => $request->input('name'),
             'name' => $request->input('name'),
             'parent_id' => $request->input('parent_id') ? $request->input('parent_id') : NULL,
-            'is_group' => $request->input('is_group') ? 1 : 0
+            'is_group' => $request->input('is_group') ? 1 : 0,
+            'icon' => Tag::uploadIcon($request->file('icon'), $tag),
         ]);
 
         $tag->syncWithAliases($request->input('aliases'));

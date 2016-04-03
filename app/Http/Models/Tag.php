@@ -11,7 +11,9 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\ImageManager;
 use Stringy\StaticStringy;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Tag extends Model implements ModelNameable
 {
@@ -21,8 +23,24 @@ class Tag extends Model implements ModelNameable
     protected $table = 'tags';
 
     protected $guarded = [];
-    
+
     public $timestamps = false;
+
+    public static function uploadIcon(File $file, Tag $tag = null)
+    {
+        if($file != null) {
+            $image = (new ImageManager())->make($file)->encode("png")->resize(125, 125);
+            $name = public_path() . '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
+            $image->save($name);
+            return url("/") . DIRECTORY_SEPARATOR . '/images/icons/tags/' . md5($file->getClientOriginalName()) . ".png";
+        }
+
+        if($tag != null) {
+            return $tag->icon;
+        }
+
+        return url("/") . DIRECTORY_SEPARATOR . "/images/default-icon.png";
+    }
 
     public function setSlugAttribute($value)
     {
@@ -37,6 +55,16 @@ class Tag extends Model implements ModelNameable
     public function scopeGroups($query)
     {
         return $query->where("is_group", 1);
+    }
+
+    public function scopeHomeTags($query)
+    {
+        return $query->whereIn("slug", ['chay-i-kofe', 'nastolki', 'muzyka', 'internet', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
+    }
+
+    public function scopeAbilites($query)
+    {
+        return $query->where("is_group", 0)->where("parent_id", ">", 0);
     }
 
     public function scopeAlones($query)
