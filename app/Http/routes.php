@@ -27,6 +27,10 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('documentation', [
         'as' => 'api.doc', 'uses' => 'ApiController@documentation'
     ]);
+    Route::get("test", function() {
+        $booking = \Anticafe\Http\Models\Booking::find(15);
+        \Anticafe\Http\Models\User::find(5)->sendEmailNotification($booking);
+    });
 
 });
 

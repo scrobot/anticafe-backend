@@ -107,7 +107,7 @@ class User extends Authenticatable implements ModelNameable
         $book['ent'] = $booking->Anticafe->name;
         \Mail::send('emails.manager-notification', ['book' => $book], function($message) use ($that)
         {
-            $message->from('notifications@anticafe.mi', 'Уведомления о новом бронировании');
+            $message->from('booking@anticafe.im', "AntiCafe.im")->subject("AntiCafe.im Запрос на бронирование #{$that->id}");
 
             $message->to($that->email);
         });

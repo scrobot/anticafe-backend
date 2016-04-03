@@ -288,6 +288,7 @@ class ApiController extends Controller
         $booking->save();
 
         $anticafe->Manager()->sendEmailNotification($booking);
+        $booking->Client->sendEmailNotification($booking, $booking->status);
 
         return response($this->response);
     }
