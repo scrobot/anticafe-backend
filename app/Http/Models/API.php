@@ -98,7 +98,11 @@ class API
     public function getBookings(Client $client) {
         $bookings = [];
 
-        foreach ($client->Bookings as $book) {
+        $sorted = $client->Bookings->sortBy('arrival_at');
+
+//        dd($sorted);
+
+        foreach ($sorted->values()->all() as $book) {
             $book = $this->getBooking($book);
             if($book != null) {
                 $bookings[] = $book;
@@ -121,9 +125,9 @@ class API
             return null;
         }
 
-        if($book->status == "declined") {
+/*        if($book->status == "declined") {
             return null;
-        }
+        }*/
 
         return [
             "id" => $book->id,
