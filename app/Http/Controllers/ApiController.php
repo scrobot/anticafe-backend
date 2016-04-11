@@ -265,7 +265,6 @@ class ApiController extends Controller
 
     public function postBooking(Request $request)
     {
-//        dd($this->client);
         if($this->client == null) {
             $this->response['status'] = 403;
             $this->response['error'] = true;
