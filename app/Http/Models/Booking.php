@@ -14,6 +14,15 @@ class Booking extends Model
 
     protected $dates = ['arrival_at'];
 
+    public function getRawArrivalDate()
+    {
+        return Carbon::createFromFormat('d.m в H:i', $this->arrival_at);
+    }
+
+    public function getArrivalTimestamp() {
+        return $this->getRawArrivalDate()->timestamp;
+    }
+
     public function Client()
     {
         return $this->belongsTo(Client::class);

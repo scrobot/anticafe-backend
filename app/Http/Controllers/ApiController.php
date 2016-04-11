@@ -79,8 +79,6 @@ class ApiController extends Controller
         $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
         $response = json_decode($response->getBody()->getContents());
 
-        \Log::debug("uid: {$response->id}");
-
         $client = Client::where('fb_uid', $response->id)->first();
 
         if($client == null) {
