@@ -176,10 +176,7 @@ class ApiController extends Controller
     public function postProfileUpdate(Request $request)
     {
         if($this->client == null) {
-            $this->response['status'] = 500;
-            $this->response['error'] = true;
-            $this->response['message'] = "Произошла ошибка при обновлении профиля.";
-            return response()->json($this->response);
+            return $this->error();
         }
 
         $cl = Client::find($this->client->id);
@@ -214,10 +211,7 @@ class ApiController extends Controller
     public function getClientBooking($id)
     {
         if($this->client == null) {
-            $this->response['status'] = 403;
-            $this->response['error'] = true;
-            $this->response['needAuth'] = true;
-            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+            return $this->error();
         } else {
             $this->response["booking"] = $this->api->getBooking(null, $id);
         }
@@ -227,11 +221,7 @@ class ApiController extends Controller
     public function postBooking(Request $request)
     {
         if($this->client == null) {
-            $this->response['status'] = 403;
-            $this->response['error'] = true;
-            $this->response['needAuth'] = true;
-            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
-            return response()->json($this->response);
+            return $this->error();
         }
 
         $anticafe = Anticafe::find($request->input('anticafe_id'));
@@ -245,7 +235,7 @@ class ApiController extends Controller
         $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $this->client->id;
         $booking->user_id = $anticafe->Manager()->id;
-//        $booking->save();
+        $booking->save();
 
         $anticafe->Manager()->sendEmailNotification($booking);
         $booking->Client->sendEmailNotification($booking, $booking->status);
@@ -256,10 +246,7 @@ class ApiController extends Controller
     public function getDeleteBooking($id)
     {
         if($this->client == null) {
-            $this->response['status'] = 403;
-            $this->response['error'] = true;
-            $this->response['needAuth'] = true;
-            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
+            return $this->error();
         } else {
             Booking::destroy($id);
             $this->response['deleted'] = true;
@@ -270,11 +257,7 @@ class ApiController extends Controller
     public function postLike(Request $request)
     {
         if($this->client == null) {
-            $this->response['status'] = 403;
-            $this->response['error'] = true;
-            $this->response['needAuth'] = true;
-            $this->response['message'] = "Вы не авторизованы и не имеете доступа к данному запросу";
-            return response($this->response);
+            return $this->error();
         }
 
 //        dd($request->input('anticafe_id'));
@@ -298,9 +281,46 @@ class ApiController extends Controller
         return response($this->response);
     }
 
+    public function postPrepaid(Request $request)
+    {
+        if($this->client == null) {
+            return $this->error();
+        }
+        
+        $anticafe = Anticafe::findByPincode($request->only("pincode"));
+
+        if($anticafe != null) {
+            $this->client->coupon = null;
+            $this->client->coupon_repaid = 1;
+            $this->client->save();
+            $this->response['needAuth'] = true;
+            $this->response['message'] = "Код успешно погашен";
+
+            return response()->json($this->response);
+        }
+
+        return $this->error(500, "Неверный пинкод");
+    }
+
     public function documentation()
     {
         return view('api.doc')->withTitle("Документация")->withErrors([]);
+    }
+
+    /**
+     * @param int $code
+     * @param string $message
+     * @param bool $needAuth
+     * @return mixed
+     * @internal param string $messsage
+     */
+    private function error($code = 403, $message = "Вы не авторизованы и не имеете доступа к данному запросу", $needAuth = true)
+    {
+        $this->response['status'] = $code;
+        $this->response['error'] = true;
+        $this->response['needAuth'] = $needAuth;
+        $this->response['message'] = $message;
+        return response($this->response);
     }
 
 }

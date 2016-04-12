@@ -24,6 +24,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::post('booking', 'ApiController@postBooking');
     Route::get('booking/delete/{id}', 'ApiController@getDeleteBooking');
     Route::post('like', 'ApiController@postLike');
+    Route::post('prepaid', 'ApiController@postPrepaid');
     Route::get('documentation', [
         'as' => 'api.doc', 'uses' => 'ApiController@documentation'
     ]);
