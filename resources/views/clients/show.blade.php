@@ -31,6 +31,18 @@
                             {{Form::label('email', "E-mail")}}:
                             <p>{{$client->email}}</p>
                         </div>
+
+                        <div class="form-group">
+                            {{Form::label('coupon', "Купон")}}:
+                            <p>{{$client->coupon}}</p>
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('coupon_repaid', "Купон погашен?")}}:
+                            <p>{{$client->coupon_repaid ? "Да" : "Нет"}}</p>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

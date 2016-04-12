@@ -22,7 +22,7 @@ class API
         if($count == 0 && $limit == 0) {
             $anticafes = Anticafe::where('type', 0)->get();
         } else {
-            $anticafes = Anticafe::where('type', 0)->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
+            $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
         }
 
         foreach ($anticafes as $anticafe) {
@@ -98,9 +98,15 @@ class API
     public function getBookings(Client $client) {
         $bookings = [];
 
-        foreach ($client->Bookings as $book) {
-            $q = $this->getBooking($book);
-            if($q) $bookings[] = $q;
+        $sorted = $client->Bookings->sortBy('arrival_at');
+
+//        dd($sorted);
+
+        foreach ($sorted->values()->all() as $book) {
+            $book = $this->getBooking($book);
+            if($book != null) {
+                $bookings[] = $book;
+            }
         }
 
         return $bookings;
@@ -113,16 +119,15 @@ class API
             if($book == null) return null;
         }
 
-        if($book->status == "declined") {
+//        dd(Carbon::now()->timestamp, $book->getArrivalTimestamp(), Carbon::now()->timestamp > $book->getArrivalTimestamp());
+
+        if(Carbon::now()->timestamp > $book->getArrivalTimestamp()) {
             return null;
         }
 
-        $c = Carbon::createFromFormat('d.m в H:i', $book->arrival_at);
-        $now = Carbon::now();
-
-        if($now->timestamp > $c->timestamp) {
+/*        if($book->status == "declined") {
             return null;
-        }
+        }*/
 
         return [
             "id" => $book->id,
@@ -133,6 +138,7 @@ class API
             "countOfCustomers" => $book->count_of_customers,
             "comment" => $book->comment,
             "status" => config("statuses.{$book->status}"),
+            "anticafe_id" => $book->Anticafe->id,
         ];
     }
 

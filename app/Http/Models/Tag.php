@@ -59,7 +59,7 @@ class Tag extends Model implements ModelNameable
 
     public function scopeHomeTags($query)
     {
-        return $query->whereIn("slug", ['chay-i-kofe', 'nastolki', 'muzyka', 'internet', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
+        return $query->whereIn("slug", ['tantsy', 'nastolki', 'muzyka', 'ko-vorking', 'lektsii', 'pristavki', 'obshchenie', 'prochee']);
     }
 
     public function scopeAbilites($query)

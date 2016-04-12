@@ -17,8 +17,8 @@ class ClientAuthToken extends Migration
             $table->string("authToken")->nullable();
             $table->boolean("facebook");
             $table->boolean("vkontakte");
-            $table->integer("vk_uid")->nullbale();
-            $table->integer("fb_uid")->nullbale();
+            $table->bigInteger("vk_uid")->nullbale();
+            $table->bigInteger("fb_uid")->nullbale();
             $table->string("vk_token")->nullbale();
             $table->string("fb_token")->nullbale();
         });

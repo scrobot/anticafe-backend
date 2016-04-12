@@ -54,18 +54,17 @@ class ApiController extends Controller
         if($client == null) {
             $client = new Client();
             $client->authToken = str_random(32);
+            $client->first_name = $response->response[0]->first_name;
+            $client->last_name = $response->response[0]->last_name;
+            $client->avatar = $response->response[0]->photo_50;
+            $client->vkontakte = 1;
+            $client->vk_uid = $response->response[0]->uid;
+            $client->vk_token = $request->input('access_token');
+            $client->facebook = 0;
+            $client->fb_uid = null;
+            $client->fb_token = null;
+            $client->save();
         }
-
-        $client->first_name = $response->response[0]->first_name;
-        $client->last_name = $response->response[0]->last_name;
-        $client->avatar = $response->response[0]->photo_50;
-        $client->vkontakte = 1;
-        $client->vk_uid = $response->response[0]->uid;
-        $client->vk_token = $request->input('access_token');
-        $client->facebook = 0;
-        $client->fb_uid = null;
-        $client->fb_token = null;
-        $client->save();
 
         $this->response['client'] = $client;
         return response()->json($this->response);
@@ -76,68 +75,28 @@ class ApiController extends Controller
         $uid = $request->input('uid');
         $access_token = $request->input('access_token');
 
-        $client = Client::where('fb_uid', $uid)->first();
-
         $guzzle = new \GuzzleHttp\Client();
         $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
         $response = json_decode($response->getBody()->getContents());
+
+        $client = Client::where('fb_uid', $response->id)->first();
 
         if($client == null) {
             $client = new Client();
             $client->authToken = str_random(32);
+            $client->first_name = $response->first_name;
+            $client->last_name = $response->last_name;
+            $client->avatar = $response->picture->data->url;
+            $client->vkontakte = 0;
+            $client->vk_uid = null;
+            $client->vk_token = null;
+            $client->facebook = 1;
+            $client->fb_uid = $response->id;
+            $client->fb_token = $access_token;
+            $client->save();
         }
 
-        $client->first_name = $response->first_name;
-        $client->last_name = $response->last_name;
-        $client->avatar = $response->picture->data->url;
-        $client->vkontakte = 0;
-        $client->vk_uid = null;
-        $client->vk_token = null;
-        $client->facebook = 1;
-        $client->fb_uid = $response->id;
-        $client->fb_token = $access_token;
-        $client->save();
-
-        $this->response['client'] = $client;
-        return response()->json($this->response);
-    }
-
-    public function postAddVkProfileToUser(Request $request)
-    {
-        $client = Client::find($request->input('id'));
-
-        $uid = $request->input('uid');
-        $access_token = $request->input('access_token');
-
-        $guzzle = new \GuzzleHttp\Client();
-        $response = $guzzle->request("GET", "https://api.vk.com/method/users.get?user_id={$uid}&fields=photo_50");
-        $response = json_decode($response->getBody()->getContents());
-
-        $client->vkontakte = 1;
-        $client->vk_uid = $response->response[0]->uid;
-        $client->vk_token = $access_token;
-        $client->save();
-
-        $this->response['client'] = $client;
-        return response()->json($this->response);
-    }
-
-
-    public function postAddFbProfileToUser(Request $request)
-    {
-        $client = Client::find($request->input('id'));
-
-        $uid = $request->input('uid');
-        $access_token = $request->input('access_token');
-
-        $guzzle = new \GuzzleHttp\Client();
-        $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");
-        $response = json_decode($response->getBody()->getContents());
-
-        $client->facebook = 1;
-        $client->fb_uid = $response->id;
-        $client->fb_token = $access_token;
-        $client->save();
+//        dd($client);
 
         $this->response['client'] = $client;
         return response()->json($this->response);
@@ -203,7 +162,9 @@ class ApiController extends Controller
                 "vk_uid" => $this->client->vk_uid,
                 "fb_uid" => $this->client->fb_uid,
                 "vk_token" => $this->client->vk_token,
-                "fb_token" => $this->client->fb_token
+                "fb_token" => $this->client->fb_token,
+                "coupon" => $this->client->coupon,
+                "coupon_repaid" => $this->client->coupon_repaid,
             ];
             $this->response['client']["likes"] = $this->api->getLikes($this->client);
             $this->response['client']["bookings"] = $this->api->getBookings($this->client);
@@ -265,7 +226,6 @@ class ApiController extends Controller
 
     public function postBooking(Request $request)
     {
-//        dd($this->client);
         if($this->client == null) {
             $this->response['status'] = 403;
             $this->response['error'] = true;
