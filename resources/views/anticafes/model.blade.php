@@ -124,6 +124,12 @@
                             {{Form::text('name', null, ["class" => "form-control"])}}
                         </div>
 
+                        <div class="form-group">
+                            {{Form::label('pincode', "Пинкод")}}
+                            {{Form::number('pincode', null, ["class" => "form-control pincode"])}}
+                            {{--{{Form::button("Сгенерировать", ["class" => "btn btn-default pin-gen"])}}--}}
+                        </div>
+
                         <div class="row">
                             @if(can('edit.promo'))
                                 <div class="col-md-4 col-md-offset-2">

@@ -25,6 +25,7 @@ class Anticafe extends Model implements ModelNameable
     private $name;
 
     private static $rules = [
+        "pincode" => "required|numeric",
         "name" => "required",
         "prices" => "required",
     ];
