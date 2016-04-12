@@ -162,7 +162,9 @@ class ApiController extends Controller
                 "vk_uid" => $this->client->vk_uid,
                 "fb_uid" => $this->client->fb_uid,
                 "vk_token" => $this->client->vk_token,
-                "fb_token" => $this->client->fb_token
+                "fb_token" => $this->client->fb_token,
+                "coupon" => $this->client->coupon,
+                "coupon_repaid" => $this->client->coupon_repaid,
             ];
             $this->response['client']["likes"] = $this->api->getLikes($this->client);
             $this->response['client']["bookings"] = $this->api->getBookings($this->client);
