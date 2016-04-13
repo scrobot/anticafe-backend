@@ -481,6 +481,38 @@
                         </p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
+                        <a href="/api/prepaid"><abbr title="/api/prepaid">/api/prepaid</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) pincode</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postLike</a>(Illuminate\Http\Request $request)
+                        <p>
+                            This method execute pincode check. And find anticafe with this pincode and set current user property coupon_prepaid = true;<br/>
+                        <strong>success json:</strong>
+<pre>{
+    "status" => 200,
+    "error" => false,
+    "needAuth" => true,
+    "message" => "Код успешно погашен",
+}</pre>
+
+                        <strong>failed json:</strong>
+<pre>{
+    "status" => 500,
+    "error" => true,
+    "needAuth" => true,
+    "message" => "Неверный пинкод",
+}</pre>                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 

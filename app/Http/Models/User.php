@@ -101,13 +101,14 @@ class User extends Authenticatable implements ModelNameable
         $book['comment'] = $booking->comment;
         $book['contacts'] = $booking->contacts;
         $book['arrival_at'] = $booking->arrival_at;
-        $book['client_name'] = $booking->Client->name;
+        $book['client_name'] = $booking->Client->first_name . " " . $booking->Client->last_name;
         $book['phone'] = $booking->Client->phone;
         $book['type'] = config("types.name.{$booking->Anticafe->type}");
         $book['ent'] = $booking->Anticafe->name;
+        
         \Mail::send('emails.manager-notification', ['book' => $book], function($message) use ($that)
         {
-            $message->from('notifications@anticafe.mi', 'Уведомления о новом бронировании');
+            $message->from('booking@anticafe.im', "AntiCafe.im")->subject("AntiCafe.im Запрос на бронирование #{$that->id}");
 
             $message->to($that->email);
         });

@@ -61,6 +61,11 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(Tag::class);
     }
 
+    public function scopeFindByPincode($query, $pincode)
+    {
+        return $query->where("pincode", $pincode)->first();
+    }
+
     public function Events()
     {
         return $this->belongsToMany(static::class, 'anticafe_event', 'anticafe_id', 'event_id');

@@ -1,9 +1,12 @@
-<h1>Новое уведомление о бронирование места\события</h1>
-<p>Комментарий: {{$book['comment']}}</p>
-<p>Количество человек: {{$book['count_of_customers']}}</p>
-<p>Фамилия Имя клиента: {{$book['client_name']}}</p>
-<p>Телефон клиента: {{$book['phone']}}</p>
-<p>Дата прибытия: {{$book['arrival_at']}}</p>
-<p>Тип брони: {{$book['type']}}</p>
-<p>Место\Событие: {{$book['ent']}}</p>
-<p>Доп. контактные данные: {{$book['contacts']}}</p>
+<h3>В ваше антикафе {{$book['ent']}} поступил запрос на бронирование:</h3>
+<p>{{$book['client_name']}}</p>
+@if($book['contacts'])
+    <p>{{$book['phone']}}</p>
+@else
+    <p>{{$book['contacts']}}</p>
+@endif
+<p>{{$book['count_of_customers']}} человек</p>
+<p>{{$book['arrival_at']}}</p>
+@if($book['comment'])
+    <p>Комментарий: {{$book['comment']}}</p>
+@endif

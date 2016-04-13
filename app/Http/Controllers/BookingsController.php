@@ -21,7 +21,7 @@ class BookingsController extends Controller
     public function getIndex()
     {
         if(can('booking.see.all')) {
-            $booking = Booking::where('id', '>', 0)->orderBy('created_at', 'desc');
+            $booking = Booking::where('id', '>', 0)->orderBy('created_at', 'desc')->get();
         } elseif(can('booking.see.own')) {
             $booking = auth()->user()->Bookings;
         } else {
@@ -37,10 +37,10 @@ class BookingsController extends Controller
         if($clients != null) {
             foreach ($clients as $id => $status) {
                 $booking = Booking::find($id);
-                $booking->update([
-                    'status' => $status,
-                ]);
-                $booking->Client->sendEmailNotification($booking, config("statuses.{$status}"));
+                $oldStatus = $booking->status;
+                $booking->status = $status;
+                $booking->save();
+                if($booking->Client->email != null && $oldStatus != $status) $booking->Client->sendEmailNotification($booking, config("statuses.{$status}"));
             }
         }
 
