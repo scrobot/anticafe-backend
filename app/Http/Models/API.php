@@ -87,9 +87,9 @@ class API
         // TODO: отрефакторить. Возможно засунуть в модель.
         $anticafe->tags = $anticafe->setTags();
         $anticafe->attachments = $this->setImages($anticafe);
-        if($anticafe->type == 0)
+        if($anticafe->type == 0) {
             $anticafe->events = $anticafe->Events->toArray();
-        else {
+        } else {
             $anticafe->anticafes = $anticafe->Anticafes->toArray();
             $anticafe->start = $anticafe->start_at->toDateTimeString();
             $anticafe->end = $anticafe->end_at->toDateTimeString();
