@@ -63,11 +63,12 @@ class API
 
     public function getEvents($count = 0, $limit = 15)
     {
-        if($count == 0 && $limit == 0) {
-            $events = Anticafe::where('type', 1)->get();
-        } else {
-            $events = Anticafe::where('type', 1)->skip($count)->take($limit)->get();
+        $events = Anticafe::where('type', 1);
+        if($count != 0 && $limit != 0) {
+            $events->skip($count)->take($limit);
         }
+
+        $events = Anticafe::activeEvents($events->get());
 
         foreach ($events as $event) {
             $event->tags = $event->Tags->toArray();
@@ -88,8 +89,11 @@ class API
         $anticafe->attachments = $this->setImages($anticafe);
         if($anticafe->type == 0)
             $anticafe->events = $anticafe->Events->toArray();
-        else
+        else {
             $anticafe->anticafes = $anticafe->Anticafes->toArray();
+            $anticafe->start = $anticafe->start_at->toDateTimeString();
+            $anticafe->end = $anticafe->end_at->toDateTimeString();
+        }
         unset($anticafe->images);
         return $anticafe;
 

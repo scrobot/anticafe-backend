@@ -61,9 +61,19 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(Tag::class);
     }
 
+    public static function activeEvents($collection)
+    {
+        $c = collect();
+        foreach($collection as $w) {
+            if($w->start_at > Carbon::now()) $c->push($w);
+        }
+
+        return $c;
+    }
+
     public function scopeFindByPincode($query, $pincode)
     {
-        return $query->where("pincode", $pincode)->first();
+        return $query->where("pincode", $pincode);
     }
 
     public function Events()
@@ -199,24 +209,6 @@ class Anticafe extends Model implements ModelNameable
     {
         if($value != null)
             $this->attributes['end_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
-    }
-
-    public function getEndAtAttribute($value)
-    {
-        if($value == null) {
-            return $value;
-        }
-
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
-    }
-
-    public function getStartAtAttribute($value)
-    {
-        if($value == null) {
-            return $value;
-        }
-
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
     public static function anticafesCount() {
