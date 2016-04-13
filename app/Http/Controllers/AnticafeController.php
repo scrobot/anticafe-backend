@@ -13,6 +13,7 @@ use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Tag;
 use Helpers\ImageHandler\ImageHandler;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class AnticafeController extends Controller
 {
@@ -94,7 +95,7 @@ class AnticafeController extends Controller
 
         $validator = $anticafe->customUpdate($request);
 
-        if($validator != true) {
+        if($validator instanceof Validator && $validator->fails()) {
             return back()->withErrors($validator->errors());
         }
 

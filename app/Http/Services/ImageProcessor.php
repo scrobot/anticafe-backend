@@ -57,7 +57,15 @@ class ImageProcessor
 
     private function createOriginal()
     {
-        $this->file->save($this->dirs[$this->type].$this->filename);
+        $file = $this->file
+            ->encode('jpg', 75);
+        if($this->type == "covers") {
+            $file->resize(null, 400, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
+        $file->save($this->dirs[$this->type].$this->filename);
         return $this->filename;
     }
 
@@ -65,6 +73,7 @@ class ImageProcessor
     {
         foreach (ImageOption::all() as $option) {
             $this->file
+                ->encode('jpg', 75)
                 ->fit($option->width, $option->height, null, $option->anchor)
                 /*->resizeCanvas($option->width, $option->height, $option->anchor, $option->relative ? true : false, $option->bgcolor)*/
                 ->save($this->dirs[$this->type]."/{$option->name}/".$option->name."_".$this->filename);

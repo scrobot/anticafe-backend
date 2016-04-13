@@ -6,6 +6,7 @@ namespace Anticafe\Http\Controllers;
 use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class EventsController extends Controller
 {
@@ -71,7 +72,7 @@ class EventsController extends Controller
 
         $validator = $event->customUpdate($request, true);
 
-        if($validator != true) {
+        if($validator instanceof Validator && $validator->fails()) {
             return back()->withErrors($validator->errors());
         }
 

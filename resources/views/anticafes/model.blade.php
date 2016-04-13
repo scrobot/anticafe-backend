@@ -150,8 +150,18 @@
                         <hr />
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-info" role="alert">
+                                    <p>Картинки автоматически преобразуются в jpeg с качеством 75%</p>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-warning" role="alert">
+                                            <p><strong>Внимание: </strong>Максимальный размер загружаемого логотипа не должно превыщать 300х300 пикселей. В противном случае произойдет ошибка при валидации.<br/></p>
+                                        </div>
+                                    </div>
                                     @if($anticafe != null)
                                         <div class="col-md-12">
                                             <img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100">
@@ -163,6 +173,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-warning" role="alert">
+                                            <p><strong>Внимание: </strong>Размер и соотношение сторон не важно. Данный cover автоматически преобразовывается в jpg высотой равной 400 пикселей и шириной, высчитанной по aspect ratio 1:1. <br/>
+                                            Например: 800х600 -> 600х400</p>
+                                        </div>
+                                    </div>
                                     @if($anticafe != null)
                                         <div class="col-md-12">
                                             <img src="{{$anticafe->cover ? "/images/anticafes/covers/100x100/100x100_".$anticafe->cover : "/images/no-image.png"}}" width="100" height="100">

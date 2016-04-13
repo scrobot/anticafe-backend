@@ -20,9 +20,9 @@ class API
     public function getAnticafes($count = 0, $limit = 15)
     {
         if($count == 0 && $limit == 0) {
-            $anticafes = Anticafe::where('type', 0)->get();
+            $anticafes = Anticafe::where('type', 0)->orderBy("total_likes", "desc")->get();
         } else {
-            $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
+            $anticafes = Anticafe::where('type', 0)->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
         }
 
         foreach ($anticafes as $anticafe) {

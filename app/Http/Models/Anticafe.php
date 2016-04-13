@@ -25,9 +25,10 @@ class Anticafe extends Model implements ModelNameable
     private $name;
 
     private static $rules = [
-        "pincode" => "required|numeric",
+        "pincode" => "sometimes|required|numeric",
         "name" => "required",
         "prices" => "required",
+        'logo' => 'sometimes|required|image|image_size:<=300',
     ];
 
     /**
@@ -147,7 +148,7 @@ class Anticafe extends Model implements ModelNameable
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
 
-        return true;
+        return $this;
     }
 
     public function setModelName()
@@ -177,6 +178,8 @@ class Anticafe extends Model implements ModelNameable
         if($cover != null) {
             $this->cover = $cover;
         }
+
+//        dd($this, $this->images());
 
         $this->save();
     }
