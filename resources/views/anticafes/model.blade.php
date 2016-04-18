@@ -358,4 +358,7 @@
             });
         });
     </script>
+
+    @include("inc.tags_js")
+
 @stop
