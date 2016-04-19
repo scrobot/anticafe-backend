@@ -5,6 +5,7 @@ namespace Anticafe\Http\Controllers;
 
 use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 
@@ -28,25 +29,31 @@ class EventsController extends Controller
     {
         $query = Anticafe::getEvents();
 
-        // TODO: отрефакторить эту говновыборку :D
-        if($request->get('name')) {
-            $query = $query->orderBy('name', $request->get('name'))->paginate(15);
-        } elseif($request->get('total_views')) {
-            $query = $query->orderBy('total_views', $request->get('total_views'))->paginate(15);
-        } elseif($request->get('total_likes')) {
-            $query = $query->orderBy('total_likes', $request->get('total_likes'))->paginate(15);
-        } elseif($request->get('total_bookings')) {
-            $query = $query->orderBy('total_bookings', $request->get('total_bookings'))->paginate(15);
-        } else {
-            $query = $query->paginate(15);
+        $is_builder = is_a($query, Builder::class);
+        if($is_builder) {
+            // TODO: отрефакторить эту говновыборку :D
+            if ($request->get('name')) {
+                $query = $query->orderBy('name', $request->get('name'))->paginate(15);
+            } elseif ($request->get('total_views')) {
+                $query = $query->orderBy('total_views', $request->get('total_views'))->paginate(15);
+            } elseif ($request->get('total_likes')) {
+                $query = $query->orderBy('total_likes', $request->get('total_likes'))->paginate(15);
+            } elseif ($request->get('total_bookings')) {
+                $query = $query->orderBy('total_bookings', $request->get('total_bookings'))->paginate(15);
+            } else {
+                $query = $query->paginate(15);
+            }
         }
-
-        return view('events.list')->withEvents($query)->withTitle($this->title)->withCount($this->count);
+        return view('events.list')->withEvents($query)->withTitle($this->title)->withCount($this->count)->withIsPaginator($is_builder);
     }
 
     public function getCreate()
     {
-        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
+        $anticafes = Anticafe::getAnticafes();
+        if(is_a($anticafes, Builder::class)) {
+            $anticafes = $anticafes->get();
+        }
+        return view('events.model')->withEvent(null)->withAction(action('EventsController@postCreate'))->withAnticafes($anticafes)->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postCreate(Request $request)
@@ -62,8 +69,12 @@ class EventsController extends Controller
 
     public function getEdit($id)
     {
+        $anticafes = Anticafe::getAnticafes();
+        if(is_a($anticafes, Builder::class)) {
+            $anticafes = $anticafes->get();
+        }
         $q = Anticafe::find($id);
-        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes(Anticafe::getAnticafes()->get())->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
+        return view('events.model')->withEvent($q)->withAction(action('EventsController@postUpdate', $q->id))->withAnticafes($anticafes)->withTags(Tag::sorted()->groups()->get())->withAlones(Tag::sorted()->alones()->get())->withTitle($this->title)->withCount($this->count);
     }
 
     public function postUpdate(Request $request, $id)

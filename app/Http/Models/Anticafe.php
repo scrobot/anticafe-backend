@@ -7,6 +7,7 @@ use Anticafe\Http\Services\ImageProcessor;
 use Carbon\Carbon;
 use Helpers\ImageHandler\ImageableTrait;
 use Helpers\ImageHandler\ImageRepository;
+use Helpers\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -40,12 +41,26 @@ class Anticafe extends Model implements ModelNameable
 
     public static function getAnticafes()
     {
-        return static::where('type', 0);
+        if(can('anticafe.see.all')){
+            $anticafe = static::where('type', 0);
+        } elseif(can('anticafe.see.own')){
+            $anticafe = auth()->user()->Anticafes();
+        } else {
+            $anticafe = null;
+        }
+        return $anticafe;
     }
 
     public static function getEvents()
     {
-        return static::where('type', 1);
+        if(can('events.see.all')){
+            $events = static::where('type', 1);
+        } elseif(can('events.see.own')){
+            $events = auth()->user()->Events();
+        } else {
+            $events = null;
+        }
+        return $events;
     }
 
     /**
@@ -106,6 +121,17 @@ class Anticafe extends Model implements ModelNameable
         return $this->Users->first();
     }
 
+    public function Operators()
+    {
+        $users = $this->Users;
+        $c = collect();
+        foreach ($users as $user) {
+            $role = Role::firstOrCreate(['name' => "Оператор заявок"]);
+            $user->hasRole($role->id) ? $c->push($user) : null;
+        }
+        return $c;
+    }
+
     /**
      * ------------------------- *
      */
@@ -128,12 +154,12 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $entity->attachAnticafes($request->input('anticafes'));
-            $entity->setBookingAvailable($request->input('booking_available'));
         }
 
         $entity->attachTags($request->input('tags'));
 
         $entity->setPromo($request->input('promo'));
+        $entity->setBookingAvailable($request->input('booking_available'));
 
         ImageRepository::saveFromSession($entity, $request->input('_session'));
 
@@ -153,12 +179,12 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $this->attachAnticafes($request->input('anticafes'));
-            $this->setBookingAvailable($request->input('booking_available'));
         }
 
         $this->attachTags($request->input('tags'));
 
         $this->setPromo($request->input('promo'));
+        $this->setBookingAvailable($request->input('booking_available'));
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
@@ -266,5 +292,11 @@ class Anticafe extends Model implements ModelNameable
             }
             $counter++;
         }
+    }
+
+    public function incrementBookingCount()
+    {
+        $this->total_bookings += 1;
+        $this->save();
     }
 }

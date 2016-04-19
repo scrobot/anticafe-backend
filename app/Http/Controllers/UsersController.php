@@ -47,7 +47,7 @@ class UsersController extends Controller
         $user->save();
 
         $user->Roles()->sync($request->input('roles'));
-        $user->Entities()->sync($request->input('anticafes'));
+        $user->Entities()->sync($request->input('anticafes') == null ? [] : $request->input('anticafes'));
 
         return redirect(route('users'))->withMsg('common.msg.create');
     }
@@ -73,7 +73,7 @@ class UsersController extends Controller
         $user->update($r);
 
         $user->Roles()->sync($request->input('roles'));
-        $user->Entities()->sync($request->input('anticafes'));
+        $user->Entities()->sync($request->input('anticafes') == null ? [] : $request->input('anticafes'));
 
         return back()->withMsg('common.msg.edit');
 

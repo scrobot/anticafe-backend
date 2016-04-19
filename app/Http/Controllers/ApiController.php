@@ -40,6 +40,10 @@ class ApiController extends Controller
         ];
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postVk(Request $request)
     {
         $uid = $request->input('uid');
@@ -69,6 +73,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postFb(Request $request)
     {
         $uid = $request->input('uid');
@@ -95,12 +103,14 @@ class ApiController extends Controller
             $client->save();
         }
 
-//        dd($client);
-
         $this->response['client'] = $client;
         return response()->json($this->response);
     }
 
+    /**
+     * @param int $count
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getMain($count = 0)
     {
         $this->response["anticafe"] = $this->api->getBestAnticafes($count, 16);
@@ -113,6 +123,11 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param int $count
+     * @param int $limit
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAnticafes($count = 0, $limit = 16)
     {
         $this->response["anticafe"] = $this->api->getAnticafes($count, $limit);
@@ -120,6 +135,11 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param int $count
+     * @param int $limit
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getEvents($count = 0, $limit = 16)
     {
         $this->response["anticafe"] = $this->api->getEvents($count, $limit);
@@ -127,21 +147,34 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getGetOneAnticafeOrEvent($id)
     {
         return response()->json($this->api->getGetOneAnticafeOrEvent($id));
     }
 
+    /**
+     * @return mixed
+     */
     public function getTags()
     {
         return $this->api->getTagGroups();
     }
 
+    /**
+     * @return mixed
+     */
     public function getAbilities()
     {
         return $this->api->getAbilities();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getProfile()
     {
         if($this->client != null) {
@@ -172,6 +205,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function postProfileUpdate(Request $request)
     {
         if($this->client == null) {
@@ -190,6 +227,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postSearch(Request $request)
     {
         $searchable = $request->input('search_text');
@@ -199,6 +240,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postFindByTag(Request $request) {
         $tag_id = $request->input('tag_id');
 
@@ -207,6 +252,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function getClientBooking($id)
     {
         if($this->client == null) {
@@ -217,6 +266,10 @@ class ApiController extends Controller
         return response()->json($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     */
     public function postBooking(Request $request)
     {
         if($this->client == null) {
@@ -233,15 +286,25 @@ class ApiController extends Controller
         $booking->arrival_at = $request->input('arrival_at');
         $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $this->client->id;
-        $booking->user_id = $anticafe->Manager()->id;
+        $booking->user_id = $anticafe->Operators()->first()->id;
         $booking->save();
 
-        $anticafe->Manager()->sendEmailNotification($booking);
+
+        foreach ($anticafe->Operators() as $operator) {
+            $operator->sendEmailNotification($booking);
+        }
+
         $booking->Client->sendEmailNotification($booking, $booking->status);
+
+        $anticafe->incrementBookingCount();
 
         return response($this->response);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     */
     public function getDeleteBooking($id)
     {
         if($this->client == null) {
@@ -253,17 +316,17 @@ class ApiController extends Controller
         return response($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     */
     public function postLike(Request $request)
     {
         if($this->client == null) {
             return $this->error();
         }
 
-//        dd($request->input('anticafe_id'));
-
         $anticafe = Anticafe::find($request->input('anticafe_id'));
-//        dd($request->input('anticafe_id'), Anticafe::find(3), $anticafe);
-//        dd($this->client->Likes->contains($anticafe->id));
         if($this->client->Likes->contains($anticafe->id)) {
             $this->client->Likes()->detach($anticafe->id);
             $anticafe->total_likes--;
@@ -280,6 +343,10 @@ class ApiController extends Controller
         return response($this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function postPrepaid(Request $request)
     {
         if($this->client == null) {
@@ -301,6 +368,9 @@ class ApiController extends Controller
         return $this->error(500, "Неверный пинкод");
     }
 
+    /**
+     * @return mixed
+     */
     public function documentation()
     {
         return view('api.doc')->withTitle("Документация")->withErrors([]);
