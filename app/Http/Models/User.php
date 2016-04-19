@@ -79,6 +79,7 @@ class User extends Authenticatable implements ModelNameable
 
     public function hasRole($id)
     {
+//        dd($this->Roles, $this->Roles->contains($id));
         return $this->Roles->contains($id);
     }
 

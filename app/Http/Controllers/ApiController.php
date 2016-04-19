@@ -278,6 +278,10 @@ class ApiController extends Controller
 
         $anticafe = Anticafe::find($request->input('anticafe_id'));
 
+        if($anticafe->Operators() == null) {
+            abort(500);
+        }
+
         $booking = new Booking();
         $booking->count_of_customers = $request->input('count_of_customers');
         $booking->comment = $request->input('comment') == null ? "" : $request->input('comment');
