@@ -38,4 +38,6 @@
         @endforelse
         </tbody>
     </table>
+
+    {!! $clients->render() !!}
 @endsection
