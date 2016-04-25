@@ -41,8 +41,6 @@
                             {{Form::label('coupon_repaid', "Купон погашен?")}}:
                             <p>{{$client->coupon_repaid ? "Да" : "Нет"}}</p>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -62,8 +60,8 @@
                             <tbody>
                             @forelse($client->Likes as $anticafe)
                                 <tr>
-                                    <td style="width: 100px"><img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100"/></td>
-                                    <td>{{$anticafe->name}}</td>
+                                    <td style="width: 100px"><a href="{{action('\Anticafe\Http\Controllers\AnticafeController@getShow', $anticafe->id)}}"><img src="{{$anticafe->logo ? "/images/anticafes/logos/100x100/100x100_".$anticafe->logo : "/images/no-image.png"}}" width="100" height="100"/></a></td>
+                                    <td><a href="{{action('\Anticafe\Http\Controllers\AnticafeController@getShow', $anticafe->id)}}">{{$anticafe->name}}</a></td>
                                 </tr>
                             @empty
                                 <tr>

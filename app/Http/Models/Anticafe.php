@@ -103,7 +103,7 @@ class Anticafe extends Model implements ModelNameable
 
     public function Liked()
     {
-        return $this->belongsToMany(Client::class, 'likes', 'client_id', 'anticafe_id');
+        return $this->belongsToMany(Client::class, 'likes', 'anticafe_id', 'client_id');
     }
 
     public function Bookings()

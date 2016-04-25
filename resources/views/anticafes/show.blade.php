@@ -37,6 +37,35 @@
                 </div>
             </div>
         </div>
+        @if(count($anticafe->Liked))
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Список лайкнувших</h2>
+                </div>
+                <div class="panel-body">
+                    <div id="likes">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Фамилия Имя</th>
+                                    <th>Профиль</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($anticafe->Liked as $client)
+                                    <tr>
+                                        <td>{{$client->first_name . " " . $client->last_name}}</td>
+                                        <td><a href="{{action('\Anticafe\Http\Controllers\ClientsController@getShow', $client->id)}}" class="btn btn-primary">Просмотреть</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <div class="col-md-12">
             <div class="col-md-6">

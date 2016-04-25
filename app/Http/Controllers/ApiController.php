@@ -272,13 +272,15 @@ class ApiController extends Controller
      */
     public function postBooking(Request $request)
     {
+        $no_problem = false;
+
         if($this->client == null) {
             return $this->error();
         }
 
         $anticafe = Anticafe::find($request->input('anticafe_id'));
 
-        if($anticafe->Operators() == null) {
+        if(!$anticafe->Operators()->count()) {
             abort(500);
         }
 
@@ -291,8 +293,9 @@ class ApiController extends Controller
         $booking->anticafe_id = $anticafe->id;
         $booking->client_id = $this->client->id;
         $booking->user_id = $anticafe->Operators()->first()->id;
-        $booking->save();
-
+        if($booking->save()){
+            $no_problem = true;
+        };
 
         foreach ($anticafe->Operators() as $operator) {
             $operator->sendEmailNotification($booking);
@@ -302,7 +305,13 @@ class ApiController extends Controller
 
         $anticafe->incrementBookingCount();
 
-        return response($this->response);
+        if($no_problem) {
+            return response($this->response);
+        }
+
+        return response($this->response)->withHeaders([
+            "Status Code" => 500,
+        ]);
     }
 
     /**
