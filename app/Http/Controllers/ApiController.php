@@ -37,7 +37,6 @@ class ApiController extends Controller
             "error" => false,
             "needAuth" => false,
             "message" => "",
-            "searchResult" => [],
         ];
     }
 
@@ -287,7 +286,9 @@ class ApiController extends Controller
             return $this->error();
         }
         
-        $anticafe = Anticafe::findByPincode($request->only("pincode"));
+        $anticafe = Anticafe::findByPincode($request->only("pincode"))->first();
+
+//        dd($anticafe->first());
 
         if($anticafe != null) {
             $this->client->coupon = null;

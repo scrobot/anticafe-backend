@@ -25,7 +25,7 @@ class Anticafe extends Model implements ModelNameable
     private $name;
 
     private static $rules = [
-        "pincode" => "required|numeric",
+        "pincode" => "required|numeric|unique:anticafes|min:4",
         "name" => "required",
         "prices" => "required",
     ];
@@ -62,7 +62,7 @@ class Anticafe extends Model implements ModelNameable
 
     public function scopeFindByPincode($query, $pincode)
     {
-        return $query->where("pincode", $pincode)->first();
+        return $query->where("pincode", $pincode);
     }
 
     public function Events()
