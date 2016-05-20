@@ -402,7 +402,7 @@ class ApiController extends Controller
         $this->response['error'] = true;
         $this->response['needAuth'] = $needAuth;
         $this->response['message'] = $message;
-        return response($this->response);
+        return response($this->response, $code);
     }
 
 }

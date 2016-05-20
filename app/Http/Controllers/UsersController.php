@@ -72,8 +72,10 @@ class UsersController extends Controller
         $user = User::find($id);
         $user->update($r);
 
-        $user->Roles()->sync($request->input('roles'));
-        $user->Entities()->sync($request->input('anticafes') == null ? [] : $request->input('anticafes'));
+        if(can("users.edit")) {
+            $user->Roles()->sync($request->input('roles'));
+            $user->Entities()->sync($request->input('anticafes') == null ? [] : $request->input('anticafes'));
+        }
 
         return back()->withMsg('common.msg.edit');
 
