@@ -23,7 +23,11 @@ class BookingsController extends Controller
         if(can('booking.see.all')) {
             $booking = Booking::where('id', '>', 0)->orderBy('created_at', 'desc')->get();
         } elseif(can('booking.see.own')) {
-            $booking = auth()->user()->Bookings;
+            $booking = collect();
+            foreach(auth()->user()->Anticafes() as $a) {
+                $booking->push($a->Bookings);
+            }
+            $booking = $booking->collapse();
         } else {
             check_perm('booking.see.all');
         }

@@ -204,6 +204,7 @@
                 </div>
             </div>
 
+
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -220,6 +221,7 @@
                             </thead>
                             <tbody>
                                 @forelse($anticafes as $anticafe)
+                                    @if(can('events.attach_to_own', ['Anticafe\Http\Models\User@isMyAnticafe', $anticafe->id]))
                                     <tr>
                                         <td>{{$anticafe->name}}</td>
                                         <td class="relative">
@@ -231,6 +233,7 @@
                                             <label for="checkbox"></label>
                                         </td>
                                     </tr>
+                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="3">В базе данных нет антикафе</td>
@@ -367,4 +370,7 @@
             });
         });
     </script>
+
+    @include("inc.tags_js")
+
 @stop

@@ -129,7 +129,6 @@
                 <div class="form-group">
                     <label>Роль</label>
                     <select name="roles[]" class="form-control">
-                        <option>Нет роли</option>
                         @foreach(\Helpers\Roles\Role::all() as $role)
                             <option value="{{$role->id}}">{{$role->name}}</option>
                         @endforeach

@@ -95,10 +95,10 @@
 				@if(auth()->check())
                 <ul class="nav nav-pills nav-stacked">
                     <h3>Основное</h3>
-                    @if(can('anticafe.see.all'))
+                    @if(can(['anticafe.see.all', 'anticafe.see.own'], null, null, "or"))
                         <li><a href="{{route('anticafes')}}">Антикафе</a></li>
                     @endif
-                    @if(can('events.see.all'))
+                    @if(can(['events.see.all', 'events.see.own'], null, null, "or"))
                         <li><a href="{{route('events')}}">Cобытия</a></li>
                     @endif
                     @if(can('tags.aligned'))
@@ -166,6 +166,16 @@
             $('.btn-danger').on("click", function (e) {
 
                 if (!confirm("Подтвердите действие")) {
+                    e.preventDefault();
+                } else {
+                    //
+                }
+
+            });
+
+            $('.btn-change-status').on("click", function (e) {
+
+                if (!confirm("Вы уверены?")) {
                     e.preventDefault();
                 } else {
                     //

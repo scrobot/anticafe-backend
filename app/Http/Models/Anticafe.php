@@ -7,6 +7,7 @@ use Anticafe\Http\Services\ImageProcessor;
 use Carbon\Carbon;
 use Helpers\ImageHandler\ImageableTrait;
 use Helpers\ImageHandler\ImageRepository;
+use Helpers\Roles\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -25,9 +26,10 @@ class Anticafe extends Model implements ModelNameable
     private $name;
 
     private static $rules = [
-        "pincode" => "required|numeric|unique:anticafes|min:4",
+        "pincode" => "sometimes|required|numeric",
         "name" => "required",
         "prices" => "required",
+        'logo' => 'sometimes|required|image|image_size:<=300',
     ];
 
     /**
@@ -39,12 +41,26 @@ class Anticafe extends Model implements ModelNameable
 
     public static function getAnticafes()
     {
-        return static::where('type', 0);
+        if(can('anticafe.see.all')){
+            $anticafe = static::where('type', 0);
+        } elseif(can('anticafe.see.own')){
+            $anticafe = auth()->user()->Anticafes();
+        } else {
+            $anticafe = null;
+        }
+        return $anticafe;
     }
 
     public static function getEvents()
     {
-        return static::where('type', 1);
+        if(can('events.see.all')){
+            $events = static::where('type', 1);
+        } elseif(can('events.see.own')){
+            $events = auth()->user()->Events();
+        } else {
+            $events = null;
+        }
+        return $events;
     }
 
     /**
@@ -58,6 +74,16 @@ class Anticafe extends Model implements ModelNameable
     public function Tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public static function activeEvents($collection)
+    {
+        $c = collect();
+        foreach($collection as $w) {
+            if($w->start_at > Carbon::now()) $c->push($w);
+        }
+
+        return $c;
     }
 
     public function scopeFindByPincode($query, $pincode)
@@ -77,7 +103,7 @@ class Anticafe extends Model implements ModelNameable
 
     public function Liked()
     {
-        return $this->belongsToMany(Client::class, 'likes', 'client_id', 'anticafe_id');
+        return $this->belongsToMany(Client::class, 'likes', 'anticafe_id', 'client_id');
     }
 
     public function Bookings()
@@ -93,6 +119,17 @@ class Anticafe extends Model implements ModelNameable
     public function Manager()
     {
         return $this->Users->first();
+    }
+
+    public function Operators()
+    {
+        $users = $this->Users;
+        $c = collect();
+        foreach ($users as $user) {
+            $role = Role::firstOrCreate(['name' => "Оператор заявок"]);
+            $user->hasRole($role->id) ? $c->push($user) : null;
+        }
+        return $c;
     }
 
     /**
@@ -117,12 +154,12 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $entity->attachAnticafes($request->input('anticafes'));
-            $entity->setBookingAvailable($request->input('booking_available'));
         }
 
         $entity->attachTags($request->input('tags'));
 
         $entity->setPromo($request->input('promo'));
+        $entity->setBookingAvailable($request->input('booking_available'));
 
         ImageRepository::saveFromSession($entity, $request->input('_session'));
 
@@ -142,17 +179,17 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $this->attachAnticafes($request->input('anticafes'));
-            $this->setBookingAvailable($request->input('booking_available'));
         }
 
         $this->attachTags($request->input('tags'));
 
         $this->setPromo($request->input('promo'));
+        $this->setBookingAvailable($request->input('booking_available'));
 
         if($request->input('_session') != null)
             ImageRepository::saveFromSession($this, $request->input('_session'));
 
-        return true;
+        return $this;
     }
 
     public function setModelName()
@@ -183,6 +220,8 @@ class Anticafe extends Model implements ModelNameable
             $this->cover = $cover;
         }
 
+//        dd($this, $this->images());
+
         $this->save();
     }
 
@@ -196,24 +235,6 @@ class Anticafe extends Model implements ModelNameable
     {
         if($value != null)
             $this->attributes['end_at'] = Carbon::createFromFormat('d.m.Y H:i', $value)->toDateTimeString();
-    }
-
-    public function getEndAtAttribute($value)
-    {
-        if($value == null) {
-            return $value;
-        }
-
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
-    }
-
-    public function getStartAtAttribute($value)
-    {
-        if($value == null) {
-            return $value;
-        }
-
-        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y H:i');
     }
 
     public static function anticafesCount() {
@@ -271,5 +292,11 @@ class Anticafe extends Model implements ModelNameable
             }
             $counter++;
         }
+    }
+
+    public function incrementBookingCount()
+    {
+        $this->total_bookings += 1;
+        $this->save();
     }
 }

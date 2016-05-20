@@ -77,6 +77,12 @@ class User extends Authenticatable implements ModelNameable
         return $this->Entities->where('type', 1);
     }
 
+    public function hasRole($id)
+    {
+//        dd($this->Roles, $this->Roles->contains($id));
+        return $this->Roles->contains($id);
+    }
+
     public function isMe($user)
     {
         if($user == null)

@@ -9,7 +9,7 @@
     <h1>{{$title}}</h1>
     {{ Form::open(['route' => 'bookings.status']) }}
     @if(can('booking.status.change'))
-    <button type="submit" class="btn btn-success right" style="margin-bottom: 20px">Сохранить</button>
+    <button type="submit" class="btn btn-success right btn-change-status" style="margin-bottom: 20px">Сохранить</button>
     @endif
     <table class="table table-striped table-bordered">
         <thead>
@@ -29,7 +29,7 @@
         @forelse($bookings as $item)
             <tr>
                 <td>{{$item->Client->first_name . " " . $item->Client->last_name}}</td>
-                <td>{{$item->Client->phone}}</td>
+                <td>{{$item->contacts}}</td>
                 <td>{{$item->arrival_at}}</td>
                 <td>{{$item->Anticafe->type == 0 ? "Антикафе" : "Событие"}}</td>
                 <td>{{$item->Anticafe->name}}</td>

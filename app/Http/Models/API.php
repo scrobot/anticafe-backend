@@ -19,11 +19,12 @@ class API
 
     public function getAnticafes($count = 0, $limit = 15)
     {
-        if($count == 0 && $limit == 0) {
-            $anticafes = Anticafe::where('type', 0)->get();
-        } else {
-            $anticafes = Anticafe::where('type', 0)->skip($count)->take($limit)->get();
+        $anticafes = Anticafe::where('type', 0)->orderBy("promo", "desc")->orderBy("total_likes", "desc");
+        if($count != 0 && $limit != 0) {
+            $anticafes->skip($count)->take($limit);
         }
+
+        $anticafes = $anticafes->get();
 
         foreach ($anticafes as $anticafe) {
             $anticafe->tags = $anticafe->Tags->toArray();
@@ -37,7 +38,7 @@ class API
 
     public function getBestAnticafes($count, $limit)
     {
-        $anticafes = Anticafe::where('id', ">=", 0)->orderBy("total_likes", "desc")->orderBy("total_views", "desc")->skip($count)->take($limit)->get();
+        $anticafes = Anticafe::where('id', ">=", 0)->orderBy("promo", "desc")->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
 
         foreach ($anticafes as $anticafe) {
             $anticafe->attachments = $this->setImages($anticafe);
@@ -63,11 +64,12 @@ class API
 
     public function getEvents($count = 0, $limit = 15)
     {
-        if($count == 0 && $limit == 0) {
-            $events = Anticafe::where('type', 1)->get();
-        } else {
-            $events = Anticafe::where('type', 1)->skip($count)->take($limit)->get();
+        $events = Anticafe::where('type', 1)->orderBy("promo", "desc");
+        if($count != 0 && $limit != 0) {
+            $events->skip($count)->take($limit);
         }
+
+        $events = Anticafe::activeEvents($events->get());
 
         foreach ($events as $event) {
             $event->tags = $event->Tags->toArray();
@@ -86,10 +88,13 @@ class API
         // TODO: отрефакторить. Возможно засунуть в модель.
         $anticafe->tags = $anticafe->setTags();
         $anticafe->attachments = $this->setImages($anticafe);
-        if($anticafe->type == 0)
+        if($anticafe->type == 0) {
             $anticafe->events = $anticafe->Events->toArray();
-        else
+        } else {
             $anticafe->anticafes = $anticafe->Anticafes->toArray();
+            $anticafe->start = $anticafe->start_at->toDateTimeString();
+            $anticafe->end = $anticafe->end_at->toDateTimeString();
+        }
         unset($anticafe->images);
         return $anticafe;
 

@@ -4,6 +4,6 @@ return [
 
     "process" => "В процессе",
     "confirmed" => "Обработано",
-    "declined" => "Откланено",
+    "declined" => "Отклонено",
 
 ];

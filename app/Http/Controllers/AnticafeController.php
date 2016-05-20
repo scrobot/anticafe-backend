@@ -11,8 +11,11 @@ namespace Anticafe\Http\Controllers;
 
 use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Tag;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Helpers\ImageHandler\ImageHandler;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class AnticafeController extends Controller
 {
@@ -34,19 +37,22 @@ class AnticafeController extends Controller
     public function getIndex(Request $request)
     {
         $query = Anticafe::getAnticafes();
-        if($request->get('name')) {
-            $query = $query->orderBy('name', $request->get('name'))->paginate(15);
-        } elseif($request->get('total_views')) {
-            $query = $query->orderBy('total_views', $request->get('total_views'))->paginate(15);
-        } elseif($request->get('total_likes')) {
-            $query = $query->orderBy('total_likes', $request->get('total_likes'))->paginate(15);
-        } elseif($request->get('total_bookings')) {
-            $query = $query->orderBy('total_bookings', $request->get('total_bookings'))->paginate(15);
-        } else {
-            $query = $query->paginate(15);
+        $is_builder = is_a($query, Builder::class);
+        if($is_builder) {
+            if($request->get('name')) {
+                $query = $query->orderBy('name', $request->get('name'))->paginate(15);
+            } elseif($request->get('total_views')) {
+                $query = $query->orderBy('total_views', $request->get('total_views'))->paginate(15);
+            } elseif($request->get('total_likes')) {
+                $query = $query->orderBy('total_likes', $request->get('total_likes'))->paginate(15);
+            } elseif($request->get('total_bookings')) {
+                $query = $query->orderBy('total_bookings', $request->get('total_bookings'))->paginate(15);
+            } else {
+                $query = $query->paginate(15);
+            }
         }
 
-        return view('anticafes.list')->withAnticafes($query)->withTitle($this->title)->withCount($this->count);
+        return view('anticafes.list')->withAnticafes($query)->withTitle($this->title)->withCount($this->count)->withIsPaginator($is_builder);
 
     }
 
@@ -94,7 +100,7 @@ class AnticafeController extends Controller
 
         $validator = $anticafe->customUpdate($request);
 
-        if($validator != true) {
+        if($validator instanceof Validator && $validator->fails()) {
             return back()->withErrors($validator->errors());
         }
 
