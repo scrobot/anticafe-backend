@@ -25,9 +25,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('booking/delete/{id}', 'ApiController@getDeleteBooking');
     Route::post('like', 'ApiController@postLike');
     Route::post('prepaid', 'ApiController@postPrepaid');
-    Route::get('documentation', [
-        'as' => 'api.doc', 'uses' => 'ApiController@documentation'
-    ]);
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -67,5 +64,8 @@ Route::group(['middleware' => 'web'], function () {
             'as' => 'bookings.status', 'uses' => 'BookingsController@postChangeStatus'
         ]);
         Route::get('/', 'AnticafeController@getIndex');
+        Route::get('documentation', [
+            'as' => 'api.doc', 'uses' => 'ApiController@documentation'
+        ]);
     });
 });
