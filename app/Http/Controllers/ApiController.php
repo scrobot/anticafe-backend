@@ -100,7 +100,7 @@ class ApiController extends Controller
             $client->facebook = 1;
             $client->fb_uid = $response->id;
             $client->fb_token = $access_token;
-            $client->save();
+            $client->save(); 
         }
 
         $this->response['client'] = $client;
