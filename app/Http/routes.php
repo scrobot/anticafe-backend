@@ -63,7 +63,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('bookings/change-statuses', [
             'as' => 'bookings.status', 'uses' => 'BookingsController@postChangeStatus'
         ]);
-        Route::get('/', 'AnticafeController@getIndex');
+        Route::get('/', 'StatisticsController@getIndex');
         Route::get('documentation', [
             'as' => 'api.doc', 'uses' => 'ApiController@documentation'
         ]);

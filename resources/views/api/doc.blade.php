@@ -2635,6 +2635,56 @@
 }</pre>                        </p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
+                        <a href="/api/app-installed"><abbr title="/api/app-installed">/api/app-installed</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) type. Receiving values: "ios", "android"</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postAppInstalled</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Statistics Aggregation method. Send request on this URL once on first creating application.
+                        <strong>success json:</strong>
+<pre>{
+    "status" => 200,
+    "error" => false,
+    "needAuth" => true,
+    "message" => "",
+}</pre>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
+                        <a href="/api/button-pressed"><abbr title="/api/button-pressed">/api/button-pressed</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) type. Receiving values: "ios", "android"</p>
+                        <p>(string) button. Receiving values: "search", "anticafe", "events"</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postButtonPressed</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Statistics Aggregation method. Send request on this URL than user click one of the buttons.
+                        <strong>success json:</strong>
+<pre>{
+    "status" => 200,
+    "error" => false,
+    "needAuth" => true,
+    "message" => "",
+}</pre>
+                     </p>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -13,6 +13,8 @@ use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\API;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\Statistics\Button;
+use Anticafe\Http\Models\Statistics\Install;
 use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -379,6 +381,27 @@ class ApiController extends Controller
         }
 
         return $this->error(500, "Неверный пинкод");
+    }
+
+    public function postAppInstalled(Request $request)
+    {
+        Install::create([
+            "client_id" => is_null($this->client) ? null : $this->client->id,
+            "type" => $request->input('type'),
+        ]);
+
+        return response()->json($this->response);
+    }
+
+    public function postButtonPressed(Request $request)
+    {
+        Button::create([
+            "client_id" => is_null($this->client) ? null : $this->client->id,
+            "type" => $request->input('type'),
+            "button" => $request->input('button'),
+        ]);
+
+        return response()->json($this->response);
     }
 
     /**
