@@ -199,6 +199,7 @@ class API
             ->orWhere("address", "LIKE", "%{$searchable}%")
             ->orWhere("excerpt", "LIKE", "%{$searchable}%")
             ->orWhere("description", "LIKE", "%{$searchable}%")
+            ->orderBy("total_likes", "desc")
             ->get());
 
         $q = Anticafe::whereHas('Tags', function($q) use ($searchable)
@@ -209,7 +210,9 @@ class API
         {
             $q->where('name', 'like', "%{$searchable}%")->orWhere('name', $searchable);
 
-        })->get();
+        })
+            ->orderBy("total_likes", "desc")
+            ->get();
 
         foreach($q as $e) {
             if($result->contains("id", $e->id)) {
