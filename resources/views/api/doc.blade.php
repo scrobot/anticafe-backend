@@ -92,6 +92,125 @@
                         <p><strong>POST</strong></p>
                     </div>
                     <div class="col-md-2 type">
+                        <a href="/api/login"><abbr title="/api/vk">/api/login</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p><span style="color: red">(Required)</span>(string) email. {OPTIONAL} Validator mask - (3+)@(2+).(2+)</p>
+                        <p><span style="color: red">(Required)</span>(string) password</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postLogin</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Backend clean authentication method. Send your http request with necessary fields.
+                        <p><strong>success json structure</strong></p>
+<pre>{
+  "status": 200,
+  "error": false,
+  "needAuth": false,
+  "message": "",
+  "client": {
+    "id": 1,
+    "first_name": "Alexey",
+    "last_name": "Skrobot",
+    "phone": null,
+    "email": null,
+    "avatar": "http://cs7001.vk.me/v7001872/114d1/lQjM7nrWVeM.jpg",
+    "get_notifications": null,
+    "get_news": null,
+    "created_at": "2016-03-12 14:24:39",
+    "updated_at": "2016-03-12 15:09:12",
+    "social_profile_link": null,
+    "authToken": "S0fTJRsadsd3oY9oNVRWbxyBeZ0Gelt",
+    "vkontakte": 1,
+    "facebook": 0,
+    "vk_uid": 178685292,
+    "fb_uid": null,
+    "vk_token": "b66aede53902a7bfebe6a3ea48c86aa3d9da24321d4554ff2af1b8ff8be0c3cc474530fc82d47e82dacb9",
+    "fb_token": null
+  }
+}</pre>
+                        <p><strong>fail json structure</strong></p>
+<pre>{
+  "status": 500,
+  "error": true,
+  "needAuth": false,
+  "message": "Ошибка авторизации"
+}</pre>
+
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
+                        <a href="/api/register"><abbr title="/api/vk">/api/register</abbr></a>
+                    </div>
+                    <div class="col-md-2">
+                        <strong>Params</strong>
+                        <p>(string) first_name</p>
+                        <p>(string) last_name</p>
+                        <p>(string) phone</p>
+                        <p><span style="color: red">(Required)</span>(string) email. {OPTIONAL} Validator mask - (3+)@(2+).(2+)</p>
+                        <p><span style="color: red">(Required)</span>(string) password</p>
+                    </div>
+                    <div class="col-md-7 type">
+                        <a href="#">postRegister</a>(Illuminate\Http\Request $request)
+                        <p>
+                            Backend clean registration method. Send your http request with necessary fields.
+                        <p><strong>success json structure</strong></p>
+<pre>{
+  "status": 200,
+  "error": false,
+  "needAuth": false,
+  "message": "",
+  "client": {
+    "id": 1,
+    "first_name": "Alexey",
+    "last_name": "Skrobot",
+    "phone": null,
+    "email": null,
+    "avatar": "http://cs7001.vk.me/v7001872/114d1/lQjM7nrWVeM.jpg",
+    "get_notifications": null,
+    "get_news": null,
+    "created_at": "2016-03-12 14:24:39",
+    "updated_at": "2016-03-12 15:09:12",
+    "social_profile_link": null,
+    "authToken": "S0fTJRsadsd3oY9oNVRWbxyBeZ0Gelt",
+    "vkontakte": 1,
+    "facebook": 0,
+    "vk_uid": 178685292,
+    "fb_uid": null,
+    "vk_token": "b66aede53902a7bfebe6a3ea48c86aa3d9da24321d4554ff2af1b8ff8be0c3cc474530fc82d47e82dacb9",
+    "fb_token": null
+  }
+}</pre>
+                        <p><strong>fail json structure</strong></p>
+<pre>{
+  "status": 500,
+  "error": true,
+  "needAuth": false,
+  "message": [
+    {
+      "field": "email",
+      "message": "The email field is required."
+    },
+    {
+      "field": "password",
+      "message": "The password field is required."
+    }
+  ]
+}</pre>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <p><strong>POST</strong></p>
+                    </div>
+                    <div class="col-md-2 type">
                         <a href="/api/vk"><abbr title="/api/vk">/api/vk</abbr></a>
                     </div>
                     <div class="col-md-2">

@@ -24,6 +24,7 @@ class ApiController extends Controller
     private $client;
     private $api;
     private $response;
+    private $request;
 
     /**
      * ApiController constructor.
@@ -33,6 +34,7 @@ class ApiController extends Controller
     public function __construct(Request $request)
     {
         $this->api = new API();
+        $this->request = $request;
         $this->client = Client::where('authToken', $request->header("authToken"))->first();
         $this->response = [
             "status" => 200,
@@ -42,13 +44,62 @@ class ApiController extends Controller
         ];
     }
 
+    public function postLogin()
+    {
+        $email = $this->request->input("email");
+        $pass = $this->request->input("password");
+
+        $client = Client::where("email", $email)->first();
+
+        if($client != null && \Hash::check($pass, $client->password)) {
+            $this->response['client'] = $client;
+            return response()->json($this->response);
+        }
+
+        $this->response['status'] = 500;
+        $this->response['error'] = true;
+        $this->response['message'] = "Ошибка авторизации";
+        return response()->json($this->response)->setStatusCode(500);
+    }
+
+    public function postRegister()
+    {
+        $data = $this->request->all();
+
+        $validator = \Validator::make($data, Client::$rules['create']);
+
+        if($validator->fails()) {
+            $messages = [];
+            foreach ($validator->errors()->toArray() as $field => $message) {
+                foreach ($message as $item) {
+                    $messages[] = [
+                        "field" => $field,
+                        "message" => $item
+                    ];
+                }
+            }
+
+            $this->response['status'] = 500;
+            $this->response['error'] = true;
+            $this->response['message'] = $messages;
+            return response()->json($this->response)->setStatusCode(500);
+        }
+
+        $data['password'] = bcrypt($data['password']);
+        $data['authToken'] = str_random(32);
+        $data['coupon'] = str_random(3)."-".str_random(3);
+
+        $client = Client::create($data);
+        $this->response['client'] = $client;
+        return response()->json($this->response);
+    }
+
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postVk(Request $request)
+    public function postVk()
     {
-        $uid = $request->input('uid');
+        $uid = $this->request->input('uid');
 
         $client = Client::where('vk_uid', $uid)->first();
 
@@ -64,7 +115,7 @@ class ApiController extends Controller
             $client->avatar = $response->response[0]->photo_50;
             $client->vkontakte = 1;
             $client->vk_uid = $response->response[0]->uid;
-            $client->vk_token = $request->input('access_token');
+            $client->vk_token = $this->request->input('access_token');
             $client->facebook = 0;
             $client->fb_uid = null;
             $client->fb_token = null;
@@ -76,13 +127,12 @@ class ApiController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postFb(Request $request)
+    public function postFb()
     {
-        $uid = $request->input('uid');
-        $access_token = $request->input('access_token');
+        $uid = $this->request->input('uid');
+        $access_token = $this->request->input('access_token');
 
         $guzzle = new \GuzzleHttp\Client();
         $response = $guzzle->request("GET", "https://graph.facebook.com/v2.5/{$uid}?access_token={$access_token}&fields=id,email,first_name,last_name,picture");

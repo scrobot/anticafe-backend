@@ -11,6 +11,17 @@ class Client extends Model
 
     protected $guarded = [];
 
+    public static $rules = [
+        "create" => [
+            "email" => "required|email|unique:clients",
+            "password" => "required"
+        ],
+        "auth" => [
+            "email" => "required|email",
+            "password" => "required"
+        ]
+    ];
+
     public function Likes()
     {
         return $this->belongsToMany(Anticafe::class, 'likes', 'client_id', 'anticafe_id');
