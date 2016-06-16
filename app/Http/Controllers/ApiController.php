@@ -41,6 +41,7 @@ class ApiController extends Controller
             "error" => false,
             "needAuth" => false,
             "message" => "",
+            "validation_messages" => [],
         ];
     }
 
@@ -81,7 +82,7 @@ class ApiController extends Controller
 
             $this->response['status'] = 500;
             $this->response['error'] = true;
-            $this->response['message'] = $messages;
+            $this->response['messages'] = $messages;
             return response()->json($this->response)->setStatusCode(500);
         }
 

@@ -192,7 +192,8 @@
   "status": 500,
   "error": true,
   "needAuth": false,
-  "message": [
+  "message": "",
+  "messages": [
     {
       "field": "email",
       "message": "The email field is required."
