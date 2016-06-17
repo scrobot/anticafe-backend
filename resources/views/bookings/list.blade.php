@@ -27,6 +27,7 @@
         </thead>
         <tbody>
         @forelse($bookings as $item)
+            @if($item->Anticafe)
             <tr>
                 <td>{{$item->Client->first_name . " " . $item->Client->last_name}}</td>
                 <td>{{$item->contacts}}</td>
@@ -44,6 +45,7 @@
                     @endif
                 </td>
             </tr>
+            @endif
         @empty
             <tr>
                 <td colspan="10">Заказов на бронь в базе не найдено</td>
