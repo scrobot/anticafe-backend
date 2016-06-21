@@ -77,7 +77,7 @@ class AnticafeController extends Controller
         $query = Anticafe::customCreate($request);
 
         if(\Validator::class == class_basename($query)) {
-            return back()->withErrors($query->errors());
+            return back()->withErrors($query->errors())->withInput();
         }
 
         return redirect(action('AnticafeController@getUpdate', $query->id))->withMsg('common.msg.create');
@@ -101,7 +101,7 @@ class AnticafeController extends Controller
         $validator = $anticafe->customUpdate($request);
 
         if($validator instanceof Validator && $validator->fails()) {
-            return back()->withErrors($validator->errors());
+            return back()->withErrors($validator->errors())->withInput();
         }
 
         return back()->withMsg('common.msg.edit');

@@ -61,7 +61,7 @@ class EventsController extends Controller
         $query = Anticafe::customCreate($request, true);
 
         if(\Validator::class == class_basename($query)) {
-            return back()->withErrors($query->errors());
+            return back()->withErrors($query->errors())->withInput();
         }
 
         return redirect(action('EventsController@getEdit', $query->id))->withMsg('common.msg.create');
@@ -84,7 +84,7 @@ class EventsController extends Controller
         $validator = $event->customUpdate($request, true);
 
         if($validator instanceof Validator && $validator->fails()) {
-            return back()->withErrors($validator->errors());
+            return back()->withErrors($validator->errors())->withInput();
         }
 
         return back()->withMsg('common.msg.edit');
