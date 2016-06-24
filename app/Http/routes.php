@@ -27,6 +27,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::post('prepaid', 'ApiController@postPrepaid');
     Route::post('login', 'ApiController@postLogin');
     Route::post('register', 'ApiController@postRegister');
+
+    Route::controller('v2', '\Anticafe\Http\Api\ApiController');
 });
 
 Route::group(['middleware' => 'web'], function () {

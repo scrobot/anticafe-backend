@@ -18,6 +18,11 @@ use Anticafe\Http\Models\Statistics\Install;
 use Anticafe\Http\Models\Tag;
 use Illuminate\Http\Request;
 
+/**
+ * Class ApiController
+ * @package Anticafe\Http\Controllers
+ * @deprecated see API v2 \Anticafe\Http\Api\ApiController.php
+ */
 class ApiController extends Controller
 {
 
