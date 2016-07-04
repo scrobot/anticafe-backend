@@ -16,6 +16,9 @@
             @if(can('trash'))
             <li><a href="{{action('AnticafeController@getTrash')}}">Корзина</a></li>
             @endif
+            @if(can('anticafe.likes.view'))
+            <li><a href="{{action('AnticafeController@getLikes')}}">Лайки</a></li>
+            @endif
         </ul>
     </div>
 </div>

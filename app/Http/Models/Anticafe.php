@@ -4,6 +4,7 @@ namespace Anticafe\Http\Models;
 
 use Anticafe\Http\Interfaces\ModelNameable;
 use Anticafe\Http\Services\ImageProcessor;
+use Anticafe\Http\Traits\ListTrait;
 use Carbon\Carbon;
 use Helpers\ImageHandler\ImageableTrait;
 use Helpers\ImageHandler\ImageRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class Anticafe extends Model implements ModelNameable
 {
-    use SoftDeletes, ImageableTrait;
+    use SoftDeletes, ImageableTrait, ListTrait;
 
     protected $table = "anticafes";
 
@@ -23,7 +24,7 @@ class Anticafe extends Model implements ModelNameable
 
     protected $dates = ['deleted_at', 'start_at', 'end_at'];
 
-    private $name;
+    private $modulename;
 
     private static $rules = [
         "pincode" => "sometimes|required|numeric",
@@ -194,7 +195,7 @@ class Anticafe extends Model implements ModelNameable
 
     public function setModelName()
     {
-        return $this->name = "Антикафе";
+        return $this->modulename = "Антикафе";
     }
 
     public static function getModelName()

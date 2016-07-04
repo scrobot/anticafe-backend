@@ -10,6 +10,8 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\Like;
 use Anticafe\Http\Models\Tag;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Helpers\ImageHandler\ImageHandler;
@@ -22,6 +24,7 @@ class AnticafeController extends Controller
 
     private $title;
     private $count;
+    private $selected;
 
     /**
      * AnticafeController constructor.
@@ -31,6 +34,10 @@ class AnticafeController extends Controller
         $this->title = Anticafe::getModelName();
         $this->count['anticafes'] = Anticafe::anticafesCount();
         $this->count['events'] = Anticafe::eventsCount();
+        $this->selected = [
+            "anticafe" => null,
+            "client" => null
+        ];
     }
 
 
@@ -159,5 +166,47 @@ class AnticafeController extends Controller
         $anticafe->forceDelete();
 
         return back()->withMsg('common.msg.cleaned');
+    }
+
+    public function getLikes()
+    {
+        $likes = Like::all();
+
+        $likes->load("Anticafe", "Client");
+
+        return view("anticafes.likes")
+            ->withLikes($likes)
+            ->withTitle($this->title)
+            ->withCount($this->count)
+            ->withAnticafes(Anticafe::getList("name"))
+            ->withClients(Client::getList("email"))
+            ->withSelected($this->selected);
+    }
+
+    public function postLikesFilter(Request $request)
+    {
+        $likes = \DB::table('likes');
+        if($request->input('anticafe') != 0) {
+            $likes = $likes->where('anticafe_id', $request->input('anticafe'));
+            $this->selected['anticafe'] = $request->input('anticafe');
+        }
+
+        if($request->input('client') != 0) {
+            $likes = $likes->where('client_id', $request->input('client'));
+            $this->selected['client'] = $request->input('client');
+        }
+
+        $likes = collect($likes->get())->pluck('id');
+        $likes = Like::whereIn("id", $likes)->get();
+        
+        $likes->load("Anticafe", "Client");
+
+        return view("anticafes.likes")
+            ->withLikes($likes)
+            ->withTitle($this->title)
+            ->withCount($this->count)
+            ->withAnticafes(Anticafe::getList("name"))
+            ->withClients(Client::getList("email"))
+            ->withSelected($this->selected);
     }
 }

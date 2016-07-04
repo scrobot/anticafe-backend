@@ -2,6 +2,7 @@
 
 namespace Anticafe\Http\Models;
 
+use Anticafe\Http\Traits\ListTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
@@ -21,6 +22,8 @@ class Client extends Model
             "password" => "required"
         ]
     ];
+    
+    use ListTrait;
 
     public function Likes()
     {
