@@ -155,6 +155,7 @@ class Anticafe extends Model implements ModelNameable
 
         if($isEvent) {
             $entity->attachAnticafes($request->input('anticafes'));
+            $entity->attachManager();
         }
 
         $entity->attachTags($request->input('tags'));
@@ -256,6 +257,11 @@ class Anticafe extends Model implements ModelNameable
     {
         $anticafes = $anticafes == null ? [] : $anticafes;
         $this->Anticafes()->sync($anticafes);
+    }
+
+    private function attachManager()
+    {
+        $this->Users()->attach(\Auth::id());
     }
 
     private function setPromo($is_promo)
