@@ -194,7 +194,10 @@
 
                         <div class="form-group">
                             {{Form::label('city', "Город")}}
-                            {{Form::text('city', null, ["class" => "form-control"])}}
+                            <div>
+                                <select name="city" id="city" class="selectpicker" data-live-search="true">
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -349,6 +352,44 @@
                     $(this).prop('checked', checked)
                 })
 
+            })
+
+            $.ajax({
+                url: 'https://api.vk.com/method/database.getCities?https=1&lang=0&country_id=1&count=100',
+                type: 'GET',
+                crossDomain: true,
+                dataType: 'jsonp',
+                success: function(response) {
+                    console.log(response)
+                    var html = "";
+                    var cities = response.response;
+                    for(var i = 0; i < cities.length; i++) {
+                        html += "<option data-tokens='" + cities[i].title + "'>" + cities[i].title + "</option>"
+                    }
+
+                    console.log(html)
+
+                    $("#city").html(html)
+                },
+                error: function() { alert('Failed!'); }
+            });
+
+            $('.bs-searchbox .form-control').on("keyup", function () {
+                console.log($(this).val());
+
+                var link = "https://api.vk.com/method/database.getCities?country_id=1&count=100&q=" + $(this).val()
+
+                $.get(link, {}, function (response) {
+                    var html = "";
+                    var cities = response.response;
+                    for(var i = 0; i < cities.length; i++) {
+                        html += "<option data-tokens='" + cities[i].title + "'>" + cities[i].title + "</option>"
+                    }
+
+                    console.log(html)
+
+                    $("#city").html(html)
+                })
             })
 
         })
