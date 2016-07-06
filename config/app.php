@@ -156,6 +156,7 @@ return [
         \Helpers\Permissions\PermissionsServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
         \Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
+        \Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -213,6 +214,7 @@ return [
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'PushNotification' => \Davibennun\LaravelPushNotification\Facades\PushNotification::class,
     ],
 
 ];

@@ -17,7 +17,8 @@
         "danielstjules/stringy": "^2.2",
         "intervention/image": "^2.3",
         "socialiteproviders/vkontakte": "^1.1",
-        "cviebrock/image-validator": "^2.0"
+        "cviebrock/image-validator": "^2.0",
+        "davibennun/laravel-push-notification": "dev-laravel5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
