@@ -44,7 +44,7 @@ class Notification
     private function getDevices($type) {
         $devices_array = [];
 
-        foreach ($this->devices->where('os', $type)->pluck('token') as $item) {
+        foreach ($this->devices->where('os', $type)->pluck('token')->unique() as $item) {
             $devices_array[] = \PushNotification::Device($item, ['badge' => 1]);
         }
 
