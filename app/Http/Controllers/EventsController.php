@@ -4,7 +4,10 @@ namespace Anticafe\Http\Controllers;
 
 
 use Anticafe\Http\Models\Anticafe;
+use Anticafe\Http\Models\Device;
 use Anticafe\Http\Models\Tag;
+use Anticafe\Http\Services\Message;
+use Anticafe\Http\Services\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
@@ -63,6 +66,9 @@ class EventsController extends Controller
         if(\Validator::class == class_basename($query)) {
             return back()->withErrors($query->errors())->withInput();
         }
+
+        $message = new Message("Появилось новое событие", "Посмотреть");
+        (new Notification(\PushNotification::Message($message->text, $message->attrs()), Device::all()))->send();
 
         return redirect(action('EventsController@getEdit', $query->id))->withMsg('common.msg.create');
     }

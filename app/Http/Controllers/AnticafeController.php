@@ -11,8 +11,11 @@ namespace Anticafe\Http\Controllers;
 
 use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\Device;
 use Anticafe\Http\Models\Like;
 use Anticafe\Http\Models\Tag;
+use Anticafe\Http\Services\Message;
+use Anticafe\Http\Services\Notification;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Helpers\ImageHandler\ImageHandler;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,6 +89,9 @@ class AnticafeController extends Controller
         if(\Validator::class == class_basename($query)) {
             return back()->withErrors($query->errors())->withInput();
         }
+        
+        $message = new Message("Создано новое антикафе", "Посмотреть");
+        (new Notification(\PushNotification::Message($message->text, $message->attrs()), Device::all()))->send();
 
         return redirect(action('AnticafeController@getUpdate', $query->id))->withMsg('common.msg.create');
     }

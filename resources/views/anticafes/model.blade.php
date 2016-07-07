@@ -206,6 +206,11 @@
                         </div>
 
                         <div class="form-group">
+                            {{Form::label('booking_discount', "Скидка при бронировании")}}
+                            {{Form::text('booking_discount', null, ["class" => "form-control", 'placeholder' => 10])}}
+                        </div>
+
+                        <div class="form-group">
                             {{Form::label('metro', "Ближайшее метро")}}
                             {{Form::textarea('metro', null, ["class" => "form-control", 'rows' => 3])}}
                         </div>

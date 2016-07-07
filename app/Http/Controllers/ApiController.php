@@ -13,6 +13,7 @@ use Anticafe\Http\Models\Anticafe;
 use Anticafe\Http\Models\API;
 use Anticafe\Http\Models\Booking;
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Models\Device;
 use Anticafe\Http\Models\Statistics\Button;
 use Anticafe\Http\Models\Statistics\Install;
 use Anticafe\Http\Models\Tag;
@@ -48,6 +49,43 @@ class ApiController extends Controller
             "message" => "",
             "validation_messages" => [],
         ];
+    }
+
+    public function postRegisterDevice()
+    {
+        $this->response['needAuth'] = true;
+        if ($this->client) {
+            Device::create([
+                'client_id' => $this->client->id,
+                'os' => $this->request->input('os'),
+                'token' => $this->request->input('token'),
+                'device_id' => $this->request->input('device_id'),
+            ]);
+            $this->response['message'] = "Устройство успешно зарегестрировано";
+            return response()->json($this->response);
+        }
+
+        $this->response['status'] = 500;
+        $this->response['error'] = true;
+        $this->response['message'] = "Ошибка авторизации";
+        return response()->json($this->response)->setStatusCode(500);
+    }
+
+    public function postUnregisterDevice()
+    {
+        $this->response['needAuth'] = true;
+        $device = Device::where('device_id', $this->request->input('device_id'))->first();
+
+        if($device != null) {
+            $device->delete();
+            $this->response['message'] = "Устройство успешно удалено";
+            return response()->json($this->response);
+        }
+
+        $this->response['status'] = 404;
+        $this->response['error'] = true;
+        $this->response['message'] = "Устройство не найдено";
+        return response()->json($this->response)->setStatusCode(404);
     }
 
     public function postLogin()
