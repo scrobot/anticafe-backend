@@ -2,73 +2,137 @@
 
 @section('css')
     <style>
-        .sort {
-            padding-right: 20px !important;
+
+        table tr {
+            height: 50px;
         }
 
-        .desc {
-            background: url("/images/up.jpg") no-repeat right 10px center;
+        table tr td {
+            vertical-align: middle;
         }
 
-        .asc {
-            background: url("/images/sort_down.png") no-repeat right 10px center;
+        /* Cначала обозначаем стили для IE8 и более старых версий
+т.е. здесь мы немного облагораживаем стандартный чекбокс. */
+        .checkbox {
+            vertical-align: top;
+            margin: 0 3px 0 0;
+            height: 30px;
+            z-index: 10;
+            width: 200px;
+        }
+        /* Это для всех браузеров, кроме совсем старых, которые не поддерживают
+        селекторы с плюсом. Показываем, что label кликабелен. */
+        .checkbox + label {
+            cursor: pointer;
         }
 
+        /* Далее идет оформление чекбокса в современных браузерах, а также IE9 и выше.
+        Благодаря тому, что старые браузеры не поддерживают селекторы :not и :checked,
+        в них все нижеследующие стили не сработают. */
+
+        /* Прячем оригинальный чекбокс. */
+        .checkbox:not(checked) {
+            position: absolute;
+            opacity: 0;
+        }
+        .checkbox:not(checked) + label {
+            position: relative; /* будем позиционировать псевдочекбокс относительно label */
+            padding: 0 0 0 60px; /* оставляем слева от label место под псевдочекбокс */
+        }
+        /* Оформление первой части чекбокса в выключенном состоянии (фон). */
+        .checkbox:not(checked) + label:before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 50px;
+            height: 26px;
+            border-radius: 13px;
+            background: #CDD1DA;
+            box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+        }
+        /* Оформление второй части чекбокса в выключенном состоянии (переключатель). */
+        .checkbox:not(checked) + label:after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 10px;
+            background: #FFF;
+            box-shadow: 0 2px 5px rgba(0,0,0,.3);
+            transition: all .2s; /* анимация, чтобы чекбокс переключался плавно */
+        }
+        /* Меняем фон чекбокса, когда он включен. */
+        .checkbox:checked + label:before {
+            background: #9FD468;
+        }
+        /* Сдвигаем переключатель чекбокса, когда он включен. */
+        .checkbox:checked + label:after {
+            left: 26px;
+        }
+        /* Показываем получение фокуса. */
+        .checkbox:focus + label:before {
+            box-shadow: 0 0 0 3px rgba(255,255,0,.5);
+        }
     </style>
 @stop
 
 @section('breadcrumbs')
     <li><a href="/">Главная</a></li>
-    <li class="active">{{$title}}</li>
-@stop
-
-@section('actions_menu')
-    @include('anticafes.actions_menu')
+    <li class="active">Уведомления</li>
 @stop
 
 @section('content')
-    <h1>{{$title}}</h1>
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>Действия</th>
-            <th class="sort {{\Request::get('name') == "desc" ? "asc" : "desc"}}"><a href="?name={{\Request::get('name') == "desc" ? "asc" : "desc"}}">Наименование</a></th>
-            <th>Город</th>
-            <th>Метро</th>
-            <th>Адрес</th>
-            <th>Телефон</th>
-            <th class="sort {{\Request::get('total_views') == "desc" ? "asc" : "desc"}}"><a href="?total_views={{\Request::get('total_views') == "desc" ? "asc" : "desc"}}">Просмотрено</a></th>
-            <th class="sort {{\Request::get('total_likes') == "desc" ? "asc" : "desc"}}"><a href="?total_likes={{\Request::get('total_likes') == "desc" ? "asc" : "desc"}}">Лайкнуто</a></th>
-            <th class="sort {{\Request::get('total_bookings') == "desc" ? "asc" : "desc"}}"><a href="?total_bookings={{\Request::get('total_bookings') == "desc" ? "asc" : "desc"}}">Забронировано</a></th>
-        </tr>
-        </thead>
-        <tbody>
-        @forelse($anticafes as $item)
-            <tr>
-                <td>{{$item->id}}</td>
-                <td>
-                    <a href="{{action('AnticafeController@getShow', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.show')}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    <a href="{{action('AnticafeController@getUpdate', $item->id)}}" data-toggle="tooltip" data-placement="top" title="{{trans('common.button.edit')}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
-                </td>
-                <td><a href="{{action('AnticafeController@getUpdate', $item->id)}}">{{$item->name}}</a><sup><b>{{!$item->promo ? "" : "Promo!"}}</b></sup></td>
-                <td>{{$item->city}}</td>
-                <td>{{$item->metro}}</td>
-                <td>{{$item->address}}</td>
-                <td>{{$item->phone}}</td>
-                <td>{{$item->total_views}}</td>
-                <td>{{$item->total_likes}}</td>
-                <td>{{$item->total_bookings}}</td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="9">Антикафе в базе не найдено</td>
-            </tr>
-        @endforelse
-        </tbody>
-    </table>
+    <h1>Уведомления</h1>
 
-    @if($is_paginator)
-        {!! $anticafes->render() !!}
-    @endif
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" action="{{action('NotificationsController@postNotify')}}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    {{Form::label('title', "Заголовок")}}
+                    {{Form::text('title', null, ["class" => "form-control"])}}
+                </div>
+
+                <div class="form-group">
+                    {{Form::label('content', "Текст")}}
+                    {{Form::textarea('content', null, ["class" => "form-control"])}}
+                </div>
+
+                @include("widgets.anticafes_check", ['anticafes' => $anticafes])
+
+                <button class="btn btn-lg btn-primary" type="submit">{{trans('common.button.send')}}</button>
+            </form>
+        </div>
+    </div>
 @endsection
+
+@section("js")
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('#check-all').click(function(){
+                $(this).toggleClass('checked')
+
+                var checked;
+
+                if($(this).hasClass('checked')) {
+                    $(this).text('Cнять все')
+                    checked = true;
+                } else {
+                    $(this).text('Выбрать все')
+                    checked = false
+                }
+
+                $('.checkbox').each(function(){
+                    $(this).prop('checked', checked)
+                })
+
+            })
+
+        })
+    </script>
+@stop

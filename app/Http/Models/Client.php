@@ -35,6 +35,11 @@ class Client extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function Devices()
+    {
+        return $this->belongsTo(Device::class);
+    }
+
     public function sendEmailNotification(Booking $booking, $status)
     {
         $that = $this;

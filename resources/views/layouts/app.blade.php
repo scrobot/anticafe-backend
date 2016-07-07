@@ -105,6 +105,9 @@
                     @if(can('tags.aligned'))
                         <li><a href="{{route('tags')}}">Теги и Возможности</a></li>
                     @endif
+                    @if(can('notifications.aligned'))
+                        <li><a href="{{route('notifications')}}">Уведомления</a></li>
+                    @endif
 
                     <li><a href="{{route('bookings')}}">Бронирования</a></li>
 

@@ -38,6 +38,11 @@ class Anticafe extends Model implements ModelNameable
      * @return mixed
      */
 
+    public function scopeOrdered($query)
+    {
+        return $query->where('id', ">", 0)->orderBy('type', 'asc');
+    }
+    
     // TODO: заменить на skope
 
     public static function getAnticafes()

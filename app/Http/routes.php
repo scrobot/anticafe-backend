@@ -42,6 +42,7 @@ Route::group(['middleware' => 'web'], function () {
             'image-options' => "ImageOptionsController",
             'tags' => "TagsController",
             'clients' => "ClientsController",
+            'notifications' => 'NotificationsController',
         ]);
         Route::get('users', [
             'as' => 'users', 'uses' => 'UsersController@getIndex'
@@ -63,6 +64,9 @@ Route::group(['middleware' => 'web'], function () {
         ]);
         Route::get('bookings', [
             'as' => 'bookings', 'uses' => 'BookingsController@getIndex'
+        ]);
+        Route::get('notifications', [
+            'as' => 'notifications', 'uses' => 'NotificationsController@getIndex'
         ]);
         Route::post('bookings/change-statuses', [
             'as' => 'bookings.status', 'uses' => 'BookingsController@postChangeStatus'
