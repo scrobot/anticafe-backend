@@ -10,8 +10,8 @@ return array(
     ),
     'anticafe_android' => array(
         'environment' =>'production',
-        'apiKey'      =>'yourAPIKey',
-        'service'     =>'gcm'
+        'apiKey'      =>'AIzaSyCE6LM-OVJoOodcoQTZXK8bbMENirKQG3c',
+        'service'     =>'fcm'
     )
 
 );
