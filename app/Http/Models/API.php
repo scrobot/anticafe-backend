@@ -231,5 +231,20 @@ class API
         return $result;
     }
 
+    public function getCities()
+    {
+        $cites = Anticafe::all()
+            ->pluck('city')
+            ->unique()
+            ->filter(function ($value, $key) {
+                return $value != null;
+            })
+            ->map(function ($value, $key) {
+                return trim(str_replace("г.", "", $value));
+            })
+            ->unique();
+        return $cites;
+    }
+
 
 }

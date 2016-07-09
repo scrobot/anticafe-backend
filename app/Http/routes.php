@@ -17,6 +17,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'app-api'], function() {
     Route::get('abilities', 'ApiController@getAbilities');
     Route::get('entity/get/{id}', 'ApiController@getGetOneAnticafeOrEvent');
     Route::get('profile', 'ApiController@getProfile');
+    Route::get('cities', 'ApiController@cities');
     Route::post('profile-update', 'ApiController@postProfileUpdate');
     Route::post('search', 'ApiController@postSearch');
     Route::post('search-by-tag', 'ApiController@postFindByTag');

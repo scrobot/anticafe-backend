@@ -506,6 +506,11 @@ class ApiController extends Controller
         return view('api.doc')->withTitle("Документация")->withErrors([]);
     }
 
+    public function cities()
+    {
+        return $this->api->getCities();
+    }
+
     /**
      * @param int $code
      * @param string $message
