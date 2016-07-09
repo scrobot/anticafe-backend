@@ -156,7 +156,7 @@ class API
         $images['gallery'] = [];
 
         foreach ($anticafe->images as $gallery) {
-            array_push($images['gallery'], "http://backend.anticafe.im/images/anticafes/gallery/{$gallery->original_name}");
+            array_push($images['gallery'], "http://backend.anticafe.im/images/anticafes/gallery/".strtolower($gallery->original_name));
         }
 
 

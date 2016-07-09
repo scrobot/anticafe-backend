@@ -4,8 +4,8 @@ return array(
 
     'anticafe_ios'     => array(
         'environment' =>'development',
-        'certificate' =>'/path/to/certificate.pem',
-        'passPhrase'  =>'password',
+        'certificate' => storage_path().'/Anticaffee_dev_apns.pem',
+        'passPhrase'  =>'',
         'service'     =>'apns'
     ),
     'anticafe_android' => array(
