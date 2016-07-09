@@ -10,16 +10,31 @@ namespace Anticafe\Http\Models;
 
 
 use Anticafe\Http\Models\Client;
+use Anticafe\Http\Services\Translit;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class API
 {
 
+
+
     private $images = [];
+    private $request;
+
+    /**
+     * API constructor.
+     * @param Request $request
+     * @internal param array $images
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     public function getAnticafes($count = 0, $limit = 15)
     {
-        $anticafes = Anticafe::where('type', 0)->orderBy("promo", "desc")->orderBy("total_likes", "desc");
+        $anticafes = Anticafe::where('type', 0)->where("city", Translit::reverseTraslit($this->request->header('Client-city')))->orderBy("promo", "desc")->orderBy("total_likes", "desc");
         if($count != 0 && $limit != 0) {
             $anticafes->skip($count)->take($limit);
         }
@@ -38,7 +53,7 @@ class API
 
     public function getBestAnticafes($count, $limit)
     {
-        $anticafes = Anticafe::where('id', ">=", 0)->orderBy("promo", "desc")->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
+        $anticafes = Anticafe::where("city", Translit::reverseTraslit($this->request->header('Client-city')))->orderBy("promo", "desc")->orderBy("total_likes", "desc")->skip($count)->take($limit)->get();
 
         foreach ($anticafes as $anticafe) {
             $anticafe->attachments = $this->setImages($anticafe);
@@ -69,8 +84,8 @@ class API
             $events->skip($count)->take($limit);
         }
 
-        $events = Anticafe::activeEvents($events->get());
-
+        $events = Anticafe::activeEvents($events->get(), Translit::reverseTraslit($this->request->header('Client-city')));
+        
         foreach ($events as $event) {
             $event->tags = $event->Tags->toArray();
             $event->anticafes = $event->Anticafes->toArray();
@@ -182,7 +197,7 @@ class API
     {
         $tag = Tag::find($tag_id);
 
-        $result = $tag->Anticafes;
+        $result = $tag->Anticafes->where("city", Translit::reverseTraslit($this->request->header('Client-city')));
 
         foreach ($result as $anticafe) {
             $anticafe->attachments = $this->setImages($anticafe);
@@ -195,7 +210,8 @@ class API
     public function getSearchedAnticafes($searchable)
     {
         $result = collect();
-        $result->push(Anticafe::where("name", "LIKE", "%{$searchable}%")
+        $result->push(Anticafe::where("city", Translit::reverseTraslit($this->request->header('Client-city')))
+            ->where("name", "LIKE", "%{$searchable}%")
             ->orWhere("address", "LIKE", "%{$searchable}%")
             ->orWhere("excerpt", "LIKE", "%{$searchable}%")
             ->orWhere("description", "LIKE", "%{$searchable}%")
@@ -242,8 +258,14 @@ class API
             ->map(function ($value, $key) {
                 return trim(str_replace("г.", "", $value));
             })
-            ->unique();
-        return $cites;
+            ->unique()->all();
+
+        $ar = [];
+        foreach ($cites as $cite) {
+            $ar[] = $cite;
+        }
+
+        return $ar;
     }
 
 

@@ -82,14 +82,24 @@ class Anticafe extends Model implements ModelNameable
         return $this->belongsToMany(Tag::class);
     }
 
-    public static function activeEvents($collection)
+    public static function activeEvents($collection, $city)
     {
         $c = collect();
         foreach($collection as $w) {
-            if($w->start_at > Carbon::now()) $c->push($w);
+            if($w->start_at > Carbon::now() && $w->fromCity($city)) $c->push($w);
         }
 
         return $c;
+    }
+
+    private function fromCity($city) {
+        foreach ($this->Anticafes as $anticafe) {
+            if($anticafe->city == $city) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function scopeFindByPincode($query, $pincode)

@@ -382,7 +382,7 @@
             $('.bs-searchbox .form-control').on("keyup", function () {
                 console.log($(this).val());
 
-                var link = "https://api.vk.com/method/database.getCities?country_id=1&count=100&q=" + $(this).val()
+                var link = "https://api.vk.com/method/database.getCities?country_id=1&count=1000&need_all=1&q=" + $(this).val()
 
                 $.get(link, {}, function (response) {
                     var html = "";

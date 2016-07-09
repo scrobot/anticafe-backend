@@ -39,7 +39,7 @@ class ApiController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->api = new API();
+        $this->api = new API($request);
         $this->request = $request;
         $this->client = Client::where('authToken', $request->header("authToken"))->first();
         $this->response = [
@@ -508,7 +508,8 @@ class ApiController extends Controller
 
     public function cities()
     {
-        return $this->api->getCities();
+        $this->response['cities'] = $this->api->getCities();
+        return response()->json($this->response);
     }
 
     /**
